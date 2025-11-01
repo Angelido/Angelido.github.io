@@ -1,0 +1,8 @@
+{
+  "site": { "title": "Angelo Nardone — Sito personale" },
+  "brand": "Angelo Nardone",
+  "nav": { "academic": "Accademico", "personal": "Personale", "pubs": "Pubblicazioni" },
+  "section": { "about": "Chi sono", "research": "Research topics", "education": "Formazione ed esperienze", "publications": "Pubblicazioni" },
+  "action": { "readmore": "Leggi di più", "viewall": "Vedi tutto", "back": "Indietro" },
+  "footer": { "top": "Torna su ↑" }
+}

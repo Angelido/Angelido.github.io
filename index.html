@@ -1,0 +1,50 @@
+<!-- ========================= index.html ========================= -->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="site.title">Angelo Nardone — Sito personale</title>
+  <meta name="description" content="Sito personale: profilo accademico, pubblicazioni, note personali." />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="preload" href="assets/profile.jpg" as="image" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta property="og:title" content="Angelo Nardone — Sito personale" />
+  <meta property="og:description" content="Profilo accademico, pubblicazioni e interessi personali." />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#/accademico" class="brand" data-i18n="brand">Angelo Nardone</a>
+      <nav class="nav-links" aria-label="Navigazione principale">
+        <a href="#/accademico" data-i18n="nav.academic">Accademico</a>
+        <a href="#/personale" data-i18n="nav.personal">Personale</a>
+        <button id="langToggle" class="btn btn-outline" aria-label="Cambia lingua">IT/EN</button>
+        <button id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Apri menu">☰</button>
+      </nav>
+    </div>
+    <div id="mobileMenu" class="container mobile-menu" role="region" aria-label="Menu mobile">
+      <a href="#/accademico" data-i18n="nav.academic">Accademico</a>
+      <a href="#/personale" data-i18n="nav.personal">Personale</a>
+    </div>
+  </header>
+
+  <main id="app" class="container">
+    <!-- Il contenuto viene iniettato da main.js in base all'hash route -->
+    <noscript>
+      <p>Attiva JavaScript per visualizzare il sito.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row space-between">
+      <span>© <span id="year"></span> <span data-i18n="brand">Angelo Nardone</span></span>
+      <a href="#/accademico" class="to-top" data-i18n="footer.top">Torna su ↑</a>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
+

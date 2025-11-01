@@ -1,0 +1,16 @@
+{
+  "name": "Angelo Nardone",
+  "role": "Dottorando / Ricercatore",
+  "affiliation": "Dip. Informatica — Università X",
+  "tagline": "Mi occupo di algoritmi, strutture dati e modelli I/O.",
+  "cv": "assets/cv.pdf",
+  "about": {
+    "short": "Sono interessato a strutture dati per stringhe, analisi I/O e stabilità numerica.",
+    "long": "Ricerca su algoritmi per l'indicizzazione efficiente, lower bounds nel modello a due livelli di memoria e applicazioni numeriche (Cholesky) a problemi di ML. Mi piace divulgare e insegnare."
+  },
+  "links": {
+    "github": "https://github.com/tuo-username",
+    "linkedin": "https://www.linkedin.com/in/tuo-username/",
+    "email": "nome.cognome@example.com"
+  }
+}

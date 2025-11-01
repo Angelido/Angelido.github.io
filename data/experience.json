@@ -1,0 +1,11 @@
+[
+  {
+    "type": "Ricerca",
+    "title": "Research Assistant",
+    "company": "Laboratorio Algoritmi",
+    "city": "Roma",
+    "from": "2024",
+    "to": null,
+    "details": "Sperimentazioni con fattorizzazione di Cholesky e analisi I/O di algoritmi su stringhe."
+  }
+]
