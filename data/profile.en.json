@@ -1,0 +1,16 @@
+{
+  "name": "Angelo Nardone",
+  "role": "PhD Student / Researcher",
+  "affiliation": "Dept. of Computer Science — University X",
+  "tagline": "I work on algorithms, data structures and I/O models.",
+  "cv": "assets/cv.pdf",
+  "about": {
+    "short": "Interested in string data structures, I/O analysis and numerical stability.",
+    "long": "Research on efficient indexing algorithms, lower bounds in two-level memory models, and numerical applications (Cholesky) to ML problems. Passionate about teaching."
+  },
+  "links": {
+    "github": "https://github.com/your-username",
+    "linkedin": "https://www.linkedin.com/in/your-username/",
+    "email": "name.surname@example.com"
+  }
+}
