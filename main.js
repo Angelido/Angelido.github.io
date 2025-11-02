@@ -4,14 +4,9 @@
   // --------------------------
   const state = {
     lang: localStorage.getItem('lang') || 'it',
+    theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
     i18n: {},
-    data: {
-      profile: null,
-      education: [],
-      experience: [],
-      publications: [],
-      topics: []
-    }
+    data: { profile:null, education:[], experience:[], publications:[], topics:[] }
   };
 
   const $ = (sel, root=document) => root.querySelector(sel);
@@ -274,12 +269,29 @@
     let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
   }
 
+  function setTheme(mode){
+    state.theme = mode;
+    localStorage.setItem('theme', mode);
+    document.documentElement.setAttribute('data-theme', mode);
+  }
+
+
+
   // --------------------------
   // Boot
   // --------------------------
   async function boot(){
     setYear();
     toggleMobileMenu();
+
+    // Imposta il tema al primo avvio
+    document.documentElement.setAttribute('data-theme', state.theme);
+
+    // Bottone toggle tema
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+      setTheme(state.theme === 'dark' ? 'light' : 'dark');
+    });
+
     await loadI18n();
     await loadData();
 
@@ -296,4 +308,5 @@
     onRouteChange();
   }
   boot();
+  
 })();
