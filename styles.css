@@ -119,21 +119,24 @@ html[data-theme="dark"] .topbar-btn{
 .sunmoon{ display:block; transition: transform .35s ease; }
 .sunmoon .sunCore{ transition: transform .40s ease, opacity .40s ease; }
 .sunmoon .rays{ transition: opacity .35s ease; }
+.sunmoon .raysDiag{ transition: opacity .35s ease; }     /* NEW */
 .sunmoon .crescent{ transition: opacity .35s ease; }
 .sunmoon .cutout{ transition: cx .40s ease, cy .40s ease, r .40s ease; }
-/* raggi allineati ai pixel */
+/* piccoli rettangoli (cardinali) netti sui pixel */
 .sunmoon rect{ shape-rendering: crispEdges; }
 
-/* LIGHT: sole pieno; luna invisibile; cutout lontano; raggi visibili */
+/* LIGHT: sole pieno; raggi visibili (cardinali + diagonali); luna invisibile */
 html[data-theme="light"] .sunmoon{ transform: rotate(0deg); }
 html[data-theme="light"] .sunmoon .sunCore{ transform: scale(1); opacity: 1; }
 html[data-theme="light"] .sunmoon .rays{ opacity: 1; }
+html[data-theme="light"] .sunmoon .raysDiag{ opacity: 1; }   /* NEW */
 html[data-theme="light"] .sunmoon .crescent{ opacity: 0; }
 html[data-theme="light"] .sunmoon .cutout{ cx: 28px; cy: -4px; r: 9px; }
 
-/* DARK: luna visibile; cutout entra creando falce; raggi nascosti */
+/* DARK: luna visibile; raggi spenti (tutti) */
 html[data-theme="dark"] .sunmoon{ transform: rotate(18deg); }
 html[data-theme="dark"] .sunmoon .sunCore{ transform: scale(.95); opacity: .9; }
-html[data-theme="dark"] .sunmoon .rays{ opacity: 0; }     /* <-- spegne i raggi */
+html[data-theme="dark"] .sunmoon .rays{ opacity: 0; }
+html[data-theme="dark"] .sunmoon .raysDiag{ opacity: 0; }    /* NEW */
 html[data-theme="dark"] .sunmoon .crescent{ opacity: 1; }
-html[data-theme="dark"] .sunmoon .cutout{ cx: 14px; cy: 10px; r: 9px; } /* regola “magrezza” falce */
+html[data-theme="dark"] .sunmoon .cutout{ cx: 14px; cy: 10px; r: 9px; }

@@ -20,28 +20,38 @@
       <!-- SVG inline con mask: sole ↔ luna -->
       <svg class="sunmoon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
         <defs>
-          <!-- MASCHERA: il cerchio “morde” il sole creando la luna -->
           <mask id="moonMask">
             <rect width="100%" height="100%" fill="white"/>
-            <!-- nero = ritaglio; in light lo teniamo lontano -->
             <circle class="cutout" cx="28" cy="-4" r="9" fill="black"/>
           </mask>
         </defs>
 
-        <!-- Disco del sole, mascherato -->
+        <!-- Disco del sole -->
         <g class="sunCore" mask="url(#moonMask)" fill="currentColor">
           <circle cx="12" cy="12" r="5"></circle>
         </g>
 
-        <!-- Raggi cardinali (niente diagonali/rotate) -->
+        <!-- Raggi cardinali (N,S,E,O) -->
         <g class="rays" fill="currentColor">
-          <rect x="11" y="1"  width="2" height="4" rx="1"></rect>  <!-- N -->
-          <rect x="11" y="19" width="2" height="4" rx="1"></rect>  <!-- S -->
-          <rect x="19" y="11" width="4" height="2" rx="1"></rect>  <!-- E -->
-          <rect x="1"  y="11" width="4" height="2" rx="1"></rect>  <!-- W -->
+          <rect x="11" y="1"  width="2" height="4" rx="1"></rect>
+          <rect x="11" y="19" width="2" height="4" rx="1"></rect>
+          <rect x="19" y="11" width="4" height="2" rx="1"></rect>
+          <rect x="1"  y="11" width="4" height="2" rx="1"></rect>
         </g>
 
-        <!-- Profilo della luna (facoltativo, per rendere la falce più “magra”) -->
+        <!-- Raggi diagonali (NE, SE, SW, NW) come linee sottili -->
+        <g class="raysDiag" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke">
+          <!-- NE -->
+          <line x1="16.5" y1="7.5" x2="19.0" y2="5.0"/>
+          <!-- SE -->
+          <line x1="16.5" y1="16.5" x2="19.0" y2="19.0"/>
+          <!-- SW -->
+          <line x1="7.5"  y1="16.5" x2="5.0"  y2="19.0"/>
+          <!-- NW -->
+          <line x1="7.5"  y1="7.5"  x2="5.0"  y2="5.0"/>
+        </g>
+
+        <!-- Profilo della luna (opzionale) -->
         <path class="crescent" fill="currentColor"
               d="M20.4 13A8.4 8.4 0 1 1 11.6 3a7 7 0 0 0 8.8 10z"
               opacity="0"></path>
