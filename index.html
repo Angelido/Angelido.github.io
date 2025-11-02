@@ -14,6 +14,41 @@
   <meta property="og:type" content="website" />
 </head>
 <body>
+  <!-- TOPBAR con linea separatrice e pulsante tema -->
+  <div class="topbar" role="navigation" aria-label="Impostazioni sito">
+    <button id="themeToggle" class="topbar-btn" title="Cambia tema" aria-label="Cambia tema">
+      <!-- SVG inline con mask: sole ↔ luna -->
+      <svg class="sunmoon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <!-- MASCHERA: il cerchio “morde” il sole creando la luna -->
+          <mask id="moonMask">
+            <rect width="100%" height="100%" fill="white"/>
+            <!-- nero = ritaglio; in light lo teniamo lontano -->
+            <circle class="cutout" cx="28" cy="-4" r="9" fill="black"/>
+          </mask>
+        </defs>
+
+        <!-- Disco del sole, mascherato -->
+        <g class="sunCore" mask="url(#moonMask)" fill="currentColor">
+          <circle cx="12" cy="12" r="5"></circle>
+        </g>
+
+        <!-- Raggi cardinali (niente diagonali/rotate) -->
+        <g class="rays" fill="currentColor">
+          <rect x="11" y="1"  width="2" height="4" rx="1"></rect>  <!-- N -->
+          <rect x="11" y="19" width="2" height="4" rx="1"></rect>  <!-- S -->
+          <rect x="19" y="11" width="4" height="2" rx="1"></rect>  <!-- E -->
+          <rect x="1"  y="11" width="4" height="2" rx="1"></rect>  <!-- W -->
+        </g>
+
+        <!-- Profilo della luna (facoltativo, per rendere la falce più “magra”) -->
+        <path class="crescent" fill="currentColor"
+              d="M20.4 13A8.4 8.4 0 1 1 11.6 3a7 7 0 0 0 8.8 10z"
+              opacity="0"></path>
+      </svg>
+    </button>
+  </div>
+
   <header class="site-header">
     <div class="container nav">
       <a href="#/accademico" class="brand" data-i18n="brand">Angelo Nardone</a>
@@ -47,4 +82,3 @@
   <script src="main.js" defer></script>
 </body>
 </html>
-

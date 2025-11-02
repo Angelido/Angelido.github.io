@@ -1,9 +1,40 @@
 :root{
-  --bg:#0b0c10;--panel:#11131a;--text:#e7e7e7;--muted:#b9b9b9;
-  --brand:#4f46e5;--accent:#22c55e;--radius:14px;--maxw:1200px;--shadow:0 10px 30px rgba(0,0,0,.25)
+  --radius:14px; --maxw:1200px; --shadow:0 10px 30px rgba(0,0,0,.25);
+  /* fallback (verranno sovrascritti dal tema attivo) */
+  --bg:#f6f8fc; --panel:#ffffff; --text:#1a1d25; --muted:#5f6b7a; --brand:#3b82f6; --accent:#16a34a;
 }
+/* CHIARO (default) */
+html[data-theme="light"]{
+  --bg:#f6f8fc;
+  --panel:#ffffff;
+  --text:#1a1d25;
+  --muted:#5f6b7a;
+  --brand:#3b82f6;
+  --accent:#16a34a;
+}
+/* SCURO */
+html[data-theme="dark"]{
+  --bg:#14161d;
+  --panel:#1a1d26;
+  --text:#e9e9ee;
+  --muted:#a5adbd;
+  --brand:#809bff;
+  --accent:#58d199;
+}
+
+
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 5% -10%, rgba(128,155,255,.14), transparent 60%),
+    radial-gradient(1000px 500px at 105% 10%, rgba(88,209,153,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  line-height:1.6;
+}
+
 img{max-width:100%;display:block}
 
 /* === Layout base: DESKTOP-FIRST === */
@@ -57,3 +88,52 @@ img{max-width:100%;display:block}
   .nav-links{gap:.8rem}
   .hero h1{font-size:clamp(1.8rem,6vw,2.4rem)}
 }
+
+/* ===== TOPBAR =================================================== */
+.topbar{
+  width:100%;
+  background: var(--panel);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  padding:.35rem .75rem;
+}
+html[data-theme="dark"] .topbar{ border-bottom-color: rgba(255,255,255,.12); }
+
+.topbar-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.35rem .55rem;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  cursor: pointer;
+  color:#4b5563;                 /* colore icona in LIGHT */
+}
+html[data-theme="dark"] .topbar-btn{
+  border-color: rgba(255,255,255,.18);
+  color:#ffffff;                 /* icona bianca in DARK */
+}
+
+/* ===== SUN ↔ MOON (SVG mask) =================================== */
+.sunmoon{ display:block; transition: transform .35s ease; }
+.sunmoon .sunCore{ transition: transform .40s ease, opacity .40s ease; }
+.sunmoon .rays{ transition: opacity .35s ease; }
+.sunmoon .crescent{ transition: opacity .35s ease; }
+.sunmoon .cutout{ transition: cx .40s ease, cy .40s ease, r .40s ease; }
+/* raggi allineati ai pixel */
+.sunmoon rect{ shape-rendering: crispEdges; }
+
+/* LIGHT: sole pieno; luna invisibile; cutout lontano; raggi visibili */
+html[data-theme="light"] .sunmoon{ transform: rotate(0deg); }
+html[data-theme="light"] .sunmoon .sunCore{ transform: scale(1); opacity: 1; }
+html[data-theme="light"] .sunmoon .rays{ opacity: 1; }
+html[data-theme="light"] .sunmoon .crescent{ opacity: 0; }
+html[data-theme="light"] .sunmoon .cutout{ cx: 28px; cy: -4px; r: 9px; }
+
+/* DARK: luna visibile; cutout entra creando falce; raggi nascosti */
+html[data-theme="dark"] .sunmoon{ transform: rotate(18deg); }
+html[data-theme="dark"] .sunmoon .sunCore{ transform: scale(.95); opacity: .9; }
+html[data-theme="dark"] .sunmoon .rays{ opacity: 0; }     /* <-- spegne i raggi */
+html[data-theme="dark"] .sunmoon .crescent{ opacity: 1; }
+html[data-theme="dark"] .sunmoon .cutout{ cx: 14px; cy: 10px; r: 9px; } /* regola “magrezza” falce */
