@@ -109,7 +109,7 @@
         </div>
         <aside>
           <div class="card" style="text-align:center">
-            <img src="assets/profile.jpg" alt="Foto profilo" style="border-radius:12px;margin:auto;max-width:260px" />
+            <img src="assets/personal.jpg" alt="Foto profilo di Angelo Nardone" style="border-radius:12px;margin:auto;max-width:260px" />
             <div class="row" style="justify-content:center;margin-top:.8rem">
               ${socialButtons(profile.links)}
             </div>
@@ -308,5 +308,5 @@
     onRouteChange();
   }
   boot();
-  
+
 })();
