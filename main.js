@@ -4,7 +4,7 @@
   // --------------------------
   const state = {
     lang: localStorage.getItem('lang') || 'it',
-    theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    theme: localStorage.getItem('theme') || 'light',
     i18n: {},
     data: { profile:null, education:[], experience:[], publications:[], topics:[] }
   };
