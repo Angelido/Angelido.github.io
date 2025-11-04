@@ -57,6 +57,24 @@
               opacity="0"></path>
       </svg>
     </button>
+    <!-- Selettore lingua -->
+    <div class="lang-switch">
+      <button id="langBtn" class="topbar-btn lang-btn" aria-haspopup="true" aria-expanded="false">
+        <span class="flag">🇮🇹</span>
+        <span class="lang-code">IT</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div id="langMenu" class="lang-menu" role="menu" aria-hidden="true">
+        <button class="lang-item" data-lang="it" role="menuitem">
+          <span class="flag">🇮🇹</span>
+          <span class="lang-code">IT</span>
+        </button>
+        <button class="lang-item" data-lang="en" role="menuitem">
+          <span class="flag">🇬🇧</span>
+          <span class="lang-code">EN</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <header class="site-header">
@@ -65,7 +83,6 @@
       <nav class="nav-links" aria-label="Navigazione principale">
         <a href="#/accademico" data-i18n="nav.academic">Accademico</a>
         <a href="#/personale" data-i18n="nav.personal">Personale</a>
-        <button id="langToggle" class="btn btn-outline" aria-label="Cambia lingua">IT/EN</button>
         <button id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Apri menu">☰</button>
       </nav>
     </div>

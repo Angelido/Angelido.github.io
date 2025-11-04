@@ -115,6 +115,85 @@ html[data-theme="dark"] .topbar-btn{
   color:#ffffff;                 /* icona bianca in DARK */
 }
 
+/* ===== LANGUAGE SWITCH ========================================= */
+.topbar{
+  width:100%;
+  background: var(--panel);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:.5rem;                   /* piccolo spazio tra tema e lingua */
+  padding:.35rem .75rem;
+}
+
+.lang-switch{
+  position:relative;
+}
+
+.lang-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+}
+
+.lang-btn .flag{
+  font-size:1rem;
+}
+
+.lang-btn .chevron{
+  font-size:.7rem;
+  opacity:.7;
+  margin-left:.1rem;
+}
+
+.lang-menu{
+  position:absolute;
+  top:115%;
+  right:0;
+  background: var(--panel);
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,.12);
+  padding:.35rem;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  min-width:90px;
+  z-index:100;
+}
+
+html[data-theme="dark"] .lang-menu{
+  border-color: rgba(255,255,255,.18);
+}
+
+.lang-menu[aria-hidden="true"]{
+  display:none;
+}
+
+.lang-item{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  width:100%;
+  padding:.35rem .6rem;
+  border-radius:8px;
+  background:transparent;
+  border:1px solid transparent;
+  color:var(--text);
+  cursor:pointer;
+  font-size:.9rem;
+}
+
+.lang-item .flag{
+  font-size:1rem;
+}
+
+.lang-item.active{
+  border-color: var(--brand);
+}
+
+
 /* ===== SUN ↔ MOON (SVG mask) =================================== */
 .sunmoon{ display:block; transition: transform .35s ease; }
 .sunmoon .sunCore{ transition: transform .40s ease, opacity .40s ease; }
