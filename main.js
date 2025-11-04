@@ -275,6 +275,27 @@
     document.documentElement.setAttribute('data-theme', mode);
   }
 
+  function syncLangUI(){
+    const langBtn = $('#langBtn');
+    if (langBtn){
+      const flagSpan = langBtn.querySelector('.flag');
+      const codeSpan = langBtn.querySelector('.lang-code');
+      if (state.lang === 'it'){
+        flagSpan.textContent = '🇮🇹';
+        codeSpan.textContent = 'IT';
+      } else {
+        flagSpan.textContent = '🇬🇧';
+        codeSpan.textContent = 'EN';
+      }
+    }
+    $$('#langMenu .lang-item').forEach(item => {
+      const isActive = item.dataset.lang === state.lang;
+      item.classList.toggle('active', isActive);
+      item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+
 
 
   // --------------------------
@@ -286,7 +307,6 @@
 
     // Imposta il tema al primo avvio
     document.documentElement.setAttribute('data-theme', state.theme);
-
     // Bottone toggle tema
     document.getElementById('themeToggle')?.addEventListener('click', () => {
       setTheme(state.theme === 'dark' ? 'light' : 'dark');
@@ -295,13 +315,33 @@
     await loadI18n();
     await loadData();
 
-    // lang toggle
-    $('#langToggle').addEventListener('click', async () => {
-      state.lang = state.lang === 'it' ? 'en' : 'it';
-      localStorage.setItem('lang', state.lang);
-      await loadI18n();
-      await loadData();
-      onRouteChange();
+    // --- language dropdown ---
+    const langBtn = $('#langBtn');
+    const langMenu = $('#langMenu');
+
+    // inizializza UI in base a state.lang (default 'it')
+    syncLangUI();
+
+    langBtn?.addEventListener('click', () => {
+      const open = langMenu.getAttribute('aria-hidden') === 'false';
+      langMenu.setAttribute('aria-hidden', open ? 'true' : 'false');
+      langBtn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+
+    $$('#langMenu .lang-item').forEach(item => {
+      item.addEventListener('click', async (e) => {
+        const newLang = e.currentTarget.dataset.lang;
+        if (newLang && newLang !== state.lang){
+          state.lang = newLang;
+          localStorage.setItem('lang', newLang);
+          await loadI18n();
+          await loadData();
+          onRouteChange();
+          syncLangUI();
+        }
+        langMenu.setAttribute('aria-hidden','true');
+        langBtn.setAttribute('aria-expanded','false');
+      });
     });
 
     window.addEventListener('hashchange', onRouteChange);
