@@ -114,25 +114,39 @@ html[data-theme="dark"] .topbar-btn{
   border-color: rgba(255,255,255,.18);
   color:#ffffff;                 /* icona bianca in DARK */
 }
-/* Bottone tema “invisibile” (solo icona) */
+/* Bottone tema “invisibile” (solo icona) + colori moderni */
 .theme-btn{
   border:none;
   background:transparent;
-  padding:.25rem .25rem;         /* area clic un po' più piccola, ma sempre comoda */
+  padding:.25rem;
+  cursor:pointer;
+
+  /* colore icona in LIGHT: “nero vetro” */
+  color:#020617; /* quasi nero, molto profondo */
 }
+
+/* Effetto “riflesso”/glow sulla icona tema */
+.theme-btn .sunmoon{
+  filter: drop-shadow(0 1px 2px rgba(15,23,42,.20));
+}
+
+html[data-theme="dark"] .theme-btn .sunmoon{
+  filter: drop-shadow(0 0 6px rgba(248,245,236,.35));
+}
+
 
 html[data-theme="dark"] .theme-btn{
-  border:none;                   /* assicura che in dark non riappaia */
+  border:none;
+  /* colore icona in DARK: “avorio” caldo */
+  color:#f8f5ec;
 }
 
-/* Focus tastiera: leggero alone, non un box grosso */
+/* Focus tastiera: solo piccolo alone */
 .theme-btn:focus-visible{
   outline:2px solid var(--brand);
   outline-offset:2px;
 }
-.theme-btn:hover{
-  filter:none;
-}
+
 
 
 
@@ -216,7 +230,12 @@ html[data-theme="dark"] .lang-menu{
 
 
 /* ===== SUN ↔ MOON (SVG mask) =================================== */
-.sunmoon{ display:block; transition: transform .35s ease; }
+.sunmoon{
+  display:block;
+  width:20px;          /* larghezza icona */
+  height:20px;         /* altezza icona */
+  transition: transform .35s ease;
+}
 .sunmoon .sunCore{ transition: transform .40s ease, opacity .40s ease; }
 .sunmoon .rays{ transition: opacity .35s ease; }
 .sunmoon .raysDiag{ transition: opacity .35s ease; }     /* NEW */
