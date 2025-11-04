@@ -16,7 +16,26 @@
 <body>
   <!-- TOPBAR con linea separatrice e pulsante tema -->
   <div class="topbar" role="navigation" aria-label="Impostazioni sito">
-    <button id="themeToggle" class="topbar-btn" title="Cambia tema" aria-label="Cambia tema">
+    <!-- Selettore lingua -->
+    <div class="lang-switch">
+      <button id="langBtn" class="topbar-btn lang-btn" aria-haspopup="true" aria-expanded="false">
+        <span class="flag">🇮🇹</span>
+        <span class="lang-code">IT</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div id="langMenu" class="lang-menu" role="menu" aria-hidden="true">
+        <button class="lang-item" data-lang="it" role="menuitem">
+          <span class="flag">🇮🇹</span>
+          <span class="lang-code">IT</span>
+        </button>
+        <button class="lang-item" data-lang="en" role="menuitem">
+          <span class="flag">🇬🇧</span>
+          <span class="lang-code">EN</span>
+        </button>
+      </div>
+    </div>
+    <!-- Toogle tema -->
+    <button id="themeToggle" class="topbar-btn theme-btn" title="Cambia tema" aria-label="Cambia tema">
       <!-- SVG inline con mask: sole ↔ luna -->
       <svg class="sunmoon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
         <defs>
@@ -57,24 +76,6 @@
               opacity="0"></path>
       </svg>
     </button>
-    <!-- Selettore lingua -->
-    <div class="lang-switch">
-      <button id="langBtn" class="topbar-btn lang-btn" aria-haspopup="true" aria-expanded="false">
-        <span class="flag">🇮🇹</span>
-        <span class="lang-code">IT</span>
-        <span class="chevron">▾</span>
-      </button>
-      <div id="langMenu" class="lang-menu" role="menu" aria-hidden="true">
-        <button class="lang-item" data-lang="it" role="menuitem">
-          <span class="flag">🇮🇹</span>
-          <span class="lang-code">IT</span>
-        </button>
-        <button class="lang-item" data-lang="en" role="menuitem">
-          <span class="flag">🇬🇧</span>
-          <span class="lang-code">EN</span>
-        </button>
-      </div>
-    </div>
   </div>
 
   <header class="site-header">
