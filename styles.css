@@ -114,6 +114,27 @@ html[data-theme="dark"] .topbar-btn{
   border-color: rgba(255,255,255,.18);
   color:#ffffff;                 /* icona bianca in DARK */
 }
+/* Bottone tema “invisibile” (solo icona) */
+.theme-btn{
+  border:none;
+  background:transparent;
+  padding:.25rem .25rem;         /* area clic un po' più piccola, ma sempre comoda */
+}
+
+html[data-theme="dark"] .theme-btn{
+  border:none;                   /* assicura che in dark non riappaia */
+}
+
+/* Focus tastiera: leggero alone, non un box grosso */
+.theme-btn:focus-visible{
+  outline:2px solid var(--brand);
+  outline-offset:2px;
+}
+.theme-btn:hover{
+  filter:none;
+}
+
+
 
 /* ===== LANGUAGE SWITCH ========================================= */
 .topbar{
