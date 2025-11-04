@@ -16,15 +16,15 @@
   // UI helpers
   // --------------------------
   function setYear(){ $('#year').textContent = new Date().getFullYear(); }
-  function toggleMobileMenu(){
-    const menuBtn = $('#menuBtn');
-    const mobile = $('#mobileMenu');
-    menuBtn?.addEventListener('click', () => {
-      const open = mobile.style.display === 'block';
-      mobile.style.display = open ? 'none' : 'block';
-      menuBtn.setAttribute('aria-expanded', String(!open));
-    });
-  }
+  // function toggleMobileMenu(){
+  //   const menuBtn = $('#menuBtn');
+  //   const mobile = $('#mobileMenu');
+  //   menuBtn?.addEventListener('click', () => {
+  //     const open = mobile.style.display === 'block';
+  //     mobile.style.display = open ? 'none' : 'block';
+  //     menuBtn.setAttribute('aria-expanded', String(!open));
+  //   });
+  // }
 
   // --------------------------
   // I18N
@@ -76,8 +76,10 @@
     const path = parseHash();
     const view = routes[path] || renderNotFound;
     view();
+    updateModeLink();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 
   // --------------------------
   // Render: Accademico (home)
@@ -86,35 +88,32 @@
     const { profile, topics } = state.data;
     const app = $('#app');
     app.innerHTML = `
-      <section class="hero two-col">
-        <div>
-          <p class="kicker">${profile.affiliation || ''}</p>
-          <h1>${profile.name} — ${profile.role}</h1>
-          <p>${profile.tagline}</p>
-          <div class="row">
-            <a class="btn" href="${profile.cv || '#'}" target="_blank" rel="noopener">CV (PDF)</a>
-            <a class="btn btn-outline" href="#/accademico/pubblicazioni" data-i18n="nav.pubs">Pubblicazioni</a>
-          </div>
-          <div class="section">
-            <h2 data-i18n="section.about">Chi sono</h2>
-            <div class="card" id="aboutCard">
-              <p id="aboutText">${profile.about.short}</p>
-              <button class="btn btn-outline" id="aboutMoreBtn" data-i18n="action.readmore">Leggi di più</button>
-            </div>
-          </div>
-          <div class="section">
-            <h2 data-i18n="section.research">Research topics</h2>
-            <div class="tags">${topics.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-          </div>
+      <section class="hero hero-centered">
+        <div class="hero-avatar">
+          <img src="assets/personal.jpg" alt="Foto profilo di ${profile.name}" />
         </div>
-        <aside>
-          <div class="card" style="text-align:center">
-            <img src="assets/personal.jpg" alt="Foto profilo di Angelo Nardone" style="border-radius:12px;margin:auto;max-width:260px" />
-            <div class="row" style="justify-content:center;margin-top:.8rem">
-              ${socialButtons(profile.links)}
-            </div>
-          </div>
-        </aside>
+        <h1 class="hero-name">${profile.name}</h1>
+        <p class="hero-role">${profile.role}</p>
+        <div class="social-row">
+          ${socialIcon('linkedin', profile.links.linkedin)}
+          ${socialIcon('github', profile.links.github)}
+          ${socialIcon('email', profile.links.email)}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="card" id="aboutCard">
+          <h2 data-i18n="section.about">Chi sono</h2>
+          <p id="aboutText">${profile.about.short}</p>
+          <button class="btn btn-outline" id="aboutMoreBtn" data-i18n="action.readmore">Leggi di più</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 data-i18n="section.research">Research topics</h2>
+        <div class="tags">
+          ${topics.map(t=>`<span class="tag">${t}</span>`).join('')}
+        </div>
       </section>
 
       <section class="section">
@@ -126,7 +125,7 @@
       </section>
     `;
 
-    // About expand
+    // About espandibile
     const btn = $('#aboutMoreBtn');
     btn?.addEventListener('click', () => {
       const el = $('#aboutText');
@@ -134,13 +133,14 @@
       btn.remove();
     });
 
-    // Education preview (prime 3 voci miste da education/experience)
+    // Education preview (prime 3 voci da education+experience)
     const list = (state.data.education.concat(state.data.experience))
-      .sort((a,b)=> (b.to||'9999') .localeCompare(a.to||'9999'))
+      .sort((a,b)=> (b.to||'9999').localeCompare(a.to||'9999'))
       .slice(0,3);
     const wrap = $('#eduPreview');
     wrap.innerHTML = list.map(item => eduCard(item)).join('');
   }
+
 
   function socialButtons(links){
     const btn = (href, label) => href ? `<a class="btn btn-outline" href="${href}" target="_blank" rel="noopener">${label}</a>` : '';
@@ -161,6 +161,31 @@
         <p>${x.details || ''}</p>
       </article>`;
   }
+
+  function socialIcon(type, value){
+    if (!value) return '';
+    let href = '#', label = '', content = '';
+
+    if (type === 'linkedin'){
+      href = value;
+      label = 'LinkedIn';
+      content = '<span class="icon-text">in</span>';
+    } else if (type === 'github'){
+      href = value;
+      label = 'GitHub';
+      content = '<span class="icon-text">GH</span>';
+    } else if (type === 'email'){
+      href = `mailto:${value}`;
+      label = 'Email';
+      content = '<span class="icon-text">@</span>';
+    }
+
+    return `
+      <a class="icon-btn" href="${href}" target="_blank" rel="noopener" aria-label="${label}">
+        ${content}
+      </a>`;
+  }
+
 
   // --------------------------
   // Render: Pubblicazioni
@@ -295,7 +320,24 @@
     });
   }
 
+  function updateModeLink(){
+    const link = $('#modeLink');
+    if (!link) return;
 
+    const path = parseHash();
+    const isAcademic = path.startsWith('/accademico');
+
+    const target = isAcademic ? '/personale' : '/accademico';
+    link.setAttribute('href', `#${target}`);
+
+    // Testo in base alla lingua
+    const nav = state.i18n?.nav;
+    if (nav){
+      link.textContent = isAcademic ? nav.personal : nav.academic;
+    } else {
+      link.textContent = isAcademic ? 'Personale' : 'Accademico';
+    }
+  }
 
 
   // --------------------------
@@ -303,7 +345,6 @@
   // --------------------------
   async function boot(){
     setYear();
-    toggleMobileMenu();
 
     // Imposta il tema al primo avvio
     document.documentElement.setAttribute('data-theme', state.theme);
@@ -321,6 +362,8 @@
 
     // inizializza UI in base a state.lang (default 'it')
     syncLangUI();
+    updateModeLink();
+
 
     langBtn?.addEventListener('click', () => {
       const open = langMenu.getAttribute('aria-hidden') === 'false';
