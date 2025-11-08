@@ -63,11 +63,23 @@
   // Router
   // --------------------------
   const routes = {
+    // Home (default)
     '/accademico': renderAcademicHome,
+
+    // Nuova pagina "Work" (Projects & Publications + formazione)
+    '/work': renderWork,
+
+    // Pagina CV
+    '/cv': renderCV,
+
+    // Route “interne” che riusiamo (restano valide)
     '/accademico/pubblicazioni': renderPublications,
     '/accademico/education': renderEducation,
+
+    // Pagina personale
     '/personale': renderPersonalStub
   };
+
   function parseHash(){
     const h = location.hash.replace(/^#/, '');
     return h || '/accademico';
@@ -85,7 +97,7 @@
   // Render: Accademico (home)
   // --------------------------
   function renderAcademicHome(){
-    const { profile, topics } = state.data;
+    const { profile } = state.data;
     const app = $('#app');
     app.innerHTML = `
       <section class="hero hero-centered">
@@ -100,9 +112,24 @@
           ${socialIcon('email', profile.links.email)}
         </div>
       </section>
+    `;
+  }
 
+  // --------------------------
+  // Render: Work (Projects & Publications + formazione)
+  // --------------------------
+  function renderWork(){
+    const { profile, topics } = state.data;
+    const app = $('#app');
+
+    const list = (state.data.education.concat(state.data.experience))
+      .sort((a,b)=> (b.to||'9999').localeCompare(a.to||'9999'))
+      .slice(0,3);
+
+    app.innerHTML = `
       <section class="section">
         <div class="card" id="aboutCard">
+          <h1>Projects & Publications</h1>
           <h2 data-i18n="section.about">Chi sono</h2>
           <p id="aboutText">${profile.about.short}</p>
           <button class="btn btn-outline" id="aboutMoreBtn" data-i18n="action.readmore">Leggi di più</button>
@@ -123,6 +150,15 @@
         </div>
         <div class="grid grid-3" id="eduPreview"></div>
       </section>
+
+      <section class="section">
+        <div class="row space-between">
+          <h2 data-i18n="section.publications">Pubblicazioni</h2>
+          <a class="btn" href="#/accademico/pubblicazioni">
+            Vai a tutte le pubblicazioni
+          </a>
+        </div>
+      </section>
     `;
 
     // About espandibile
@@ -133,13 +169,35 @@
       btn.remove();
     });
 
-    // Education preview (prime 3 voci da education+experience)
-    const list = (state.data.education.concat(state.data.experience))
-      .sort((a,b)=> (b.to||'9999').localeCompare(a.to||'9999'))
-      .slice(0,3);
+    // Preview education/experience (prime 3)
     const wrap = $('#eduPreview');
     wrap.innerHTML = list.map(item => eduCard(item)).join('');
   }
+
+    // --------------------------
+  // Render: CV
+  // --------------------------
+  function renderCV(){
+    const { profile } = state.data;
+    const app = $('#app');
+
+    app.innerHTML = `
+      <section class="section">
+        <div class="card">
+          <h1>Curriculum Vitae</h1>
+          <p>
+            Puoi scaricare il mio CV aggiornato in formato PDF.
+          </p>
+          <div style="margin-top:1rem;">
+            <a class="btn" href="${profile.cv || '#'}" target="_blank" rel="noopener">
+              Apri CV (PDF)
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
 
 
   function socialButtons(links){
@@ -320,25 +378,16 @@
     });
   }
 
+  // Evidenzia voce attiva nel menu topbar
   function updateModeLink(){
-    const link = $('#modeLink');
-    if (!link) return;
-
     const path = parseHash();
-    const isAcademic = path.startsWith('/accademico');
 
-    const target = isAcademic ? '/personale' : '/accademico';
-    link.setAttribute('href', `#${target}`);
-
-    // Testo in base alla lingua
-    const nav = state.i18n?.nav;
-    if (nav){
-      link.textContent = isAcademic ? nav.personal : nav.academic;
-    } else {
-      link.textContent = isAcademic ? 'Personale' : 'Accademico';
-    }
+    $$('.primary-nav .nav-item').forEach(link => {
+      const route = link.dataset.route;
+      const isActive = path === route;
+      link.classList.toggle('active', isActive);
+    });
   }
-
 
   // --------------------------
   // Boot
