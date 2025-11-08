@@ -378,11 +378,11 @@
     });
   }
 
-  // Evidenzia voce attiva nel menu topbar
+  // Evidenzia voce attiva nel menu (desktop + mobile)
   function updateModeLink(){
     const path = parseHash();
 
-    $$('.primary-nav .nav-item').forEach(link => {
+    $$('.nav-item[data-route]').forEach(link => {
       const route = link.dataset.route;
       const isActive = path === route;
       link.classList.toggle('active', isActive);
@@ -413,7 +413,6 @@
     syncLangUI();
     updateModeLink();
 
-
     langBtn?.addEventListener('click', () => {
       const open = langMenu.getAttribute('aria-hidden') === 'false';
       langMenu.setAttribute('aria-hidden', open ? 'true' : 'false');
@@ -436,7 +435,37 @@
       });
     });
 
-    window.addEventListener('hashchange', onRouteChange);
+    // --- HAMBURGER / MENU MOBILE ---
+    const navToggle = $('#navToggle');
+    const mobileNav = $('#mobileNav');
+
+    navToggle?.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      mobileNav.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    });
+
+    // chiudi menu mobile quando clicchi un link
+    $$('#mobileNav .nav-item').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        navToggle.setAttribute('aria-expanded','false');
+      });
+    });
+
+    window.addEventListener('hashchange', () => {
+      onRouteChange();
+      // per sicurezza chiudiamo il menu mobile al cambio pagina
+      const mobileNav = $('#mobileNav');
+      const navToggle = $('#navToggle');
+      if (mobileNav && navToggle){
+        mobileNav.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        navToggle.setAttribute('aria-expanded','false');
+      }
+    });
+
     onRouteChange();
   }
   boot();
