@@ -109,39 +109,76 @@ html[data-theme="dark"] .site-header{
   background: var(--panel);
   border-bottom: 1px solid rgba(0,0,0,.08);
   display:flex;
-  justify-content:space-between;    /* link a sinistra, pulsanti a destra */
+  justify-content:space-between;
   align-items:center;
-  padding:.35rem .75rem;
+  padding:.7rem 1.4rem;          /* più alta e più “importante” */
 }
 
 html[data-theme="dark"] .topbar{
   border-bottom-color: rgba(255,255,255,.12);
 }
 
+/* Parte sinistra: brand + nav */
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+}
+
+/* Nome in alto a sinistra */
+.brand-link{
+  font-size:1.05rem;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-decoration:none;
+  color:var(--text);
+  white-space:nowrap;
+}
+
+/* Menu principale */
+.primary-nav{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+}
+
+.nav-item{
+  font-size:.9rem;
+  font-weight:600;
+  text-decoration:none;
+  color:var(--muted);
+  padding:.25rem .7rem;
+  border-radius:999px;
+  border:1px solid transparent;
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.nav-item:hover{
+  color:var(--text);
+  border-color:rgba(0,0,0,.08);
+}
+
+html[data-theme="dark"] .nav-item:hover{
+  border-color:rgba(255,255,255,.16);
+}
+
+/* Link attivo (pagina corrente) */
+.nav-item.active{
+  color:#ffffff;
+  background:var(--brand);
+  border-color:transparent;
+}
+
+html[data-theme="dark"] .nav-item.active{
+  color:#0b1120;
+}
+
+
 /* Gruppo di destra (lingua + tema) */
 .topbar-right{
   display:flex;
   align-items:center;
   gap:.5rem;
-}
-
-/* Link Accademico/Personale a sinistra */
-.mode-link{
-  font-size:.9rem;
-  font-weight:600;
-  text-decoration:none;
-  color:var(--text);
-  padding:.25rem .5rem;
-  border-radius:999px;
-  border:1px solid transparent;
-}
-
-.mode-link:hover{
-  border-color:rgba(0,0,0,.12);
-}
-
-html[data-theme="dark"] .mode-link:hover{
-  border-color:rgba(255,255,255,.16);
 }
 
 .topbar-btn{
