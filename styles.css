@@ -125,19 +125,14 @@ html[data-theme="dark"] .topbar{
   gap:1.2rem;
 }
 
-/* Nome in alto a sinistra, stile un po’ più “fancy” */
+/* Nome in alto a sinistra: più pulito, colore uniforme */
 .brand-link{
-  font-size:1.15rem;
+  font-size:1.3rem;              /* un po' più grande del resto */
   font-weight:800;
-  letter-spacing:.06em;
+  letter-spacing:.03em;          /* meno “spaziato” */
   text-decoration:none;
   white-space:nowrap;
-
-  /* effetto sfumatura moderno */
-  background:linear-gradient(120deg, var(--brand), var(--accent));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+  color:var(--brand);            /* colore uniforme, come i bottoni */
 }
 
 .brand-link:hover{
@@ -194,6 +189,7 @@ html[data-theme="dark"] .nav-item.active{
   display:none;                  /* di default nascosto (desktop) */
   align-items:center;
   justify-content:center;
+  flex-direction:column;         /* <<< le linee vanno in colonna */
   width:34px;
   height:34px;
   border-radius:999px;
@@ -209,13 +205,14 @@ html[data-theme="dark"] .nav-item.active{
   height:2px;
   border-radius:999px;
   background:#64748b;
-  margin:2px 0;
+  margin:2px 0;                  /* spazio verticale tra le linee */
   transition:transform .18s ease, opacity .18s ease;
 }
 
 html[data-theme="dark"] .nav-toggle span{
   background:#e5e7eb;
 }
+
 
 /* Menu mobile a tendina */
 .mobile-nav{

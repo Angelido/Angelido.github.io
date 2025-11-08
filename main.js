@@ -466,6 +466,17 @@
       }
     });
 
+    // chiudi il menu mobile se si torna a larghezza desktop
+    window.addEventListener('resize', () => {
+      const mobileNav = $('#mobileNav');
+      const navToggle = $('#navToggle');
+      if (window.innerWidth > 768 && mobileNav && navToggle){
+        mobileNav.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        navToggle.setAttribute('aria-expanded','false');
+      }
+    });
+
     onRouteChange();
   }
   boot();
