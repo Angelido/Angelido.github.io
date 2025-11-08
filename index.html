@@ -14,15 +14,22 @@
   <meta property="og:type" content="website" />
 </head>
 <body>
-  <!-- TOPBAR con navigazione principale + lingua + tema -->
+   <!-- TOPBAR con navigazione principale + lingua + tema -->
   <div class="topbar" role="navigation" aria-label="Navigazione principale sito">
     <div class="topbar-left">
+      <!-- Bottone hamburger (solo mobile) -->
+      <button id="navToggle" class="nav-toggle" aria-label="Apri menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <!-- Nome (brand) → sempre verso Home -->
       <a href="#/accademico" class="brand-link">
         Angelo Nardone
       </a>
 
-      <!-- Menu sezioni -->
+      <!-- Menu sezioni (desktop) -->
       <nav class="primary-nav" aria-label="Sezioni">
         <a href="#/accademico" class="nav-item" data-route="/accademico">
           Home
@@ -94,6 +101,22 @@
       </button>
     </div>
   </div>
+
+  <!-- Menu mobile (tendina verticale) -->
+  <nav id="mobileNav" class="mobile-nav" aria-label="Sezioni (mobile)" aria-hidden="true">
+    <a href="#/accademico" class="nav-item" data-route="/accademico">
+      Home
+    </a>
+    <a href="#/work" class="nav-item" data-route="/work">
+      Work
+    </a>
+    <a href="#/cv" class="nav-item" data-route="/cv">
+      CV
+    </a>
+    <a href="#/personale" class="nav-item" data-route="/personale">
+      Personal
+    </a>
+  </nav>
 
 
   <main id="app" class="container">

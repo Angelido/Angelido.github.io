@@ -111,31 +111,40 @@ html[data-theme="dark"] .site-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:.7rem 1.4rem;          /* più alta e più “importante” */
+  padding:.7rem 1.4rem;
 }
 
 html[data-theme="dark"] .topbar{
   border-bottom-color: rgba(255,255,255,.12);
 }
 
-/* Parte sinistra: brand + nav */
+/* Parte sinistra: hamburger (mobile) + brand + nav (desktop) */
 .topbar-left{
   display:flex;
   align-items:center;
-  gap:1.5rem;
+  gap:1.2rem;
 }
 
-/* Nome in alto a sinistra */
+/* Nome in alto a sinistra, stile un po’ più “fancy” */
 .brand-link{
-  font-size:1.05rem;
+  font-size:1.15rem;
   font-weight:800;
-  letter-spacing:.04em;
+  letter-spacing:.06em;
   text-decoration:none;
-  color:var(--text);
   white-space:nowrap;
+
+  /* effetto sfumatura moderno */
+  background:linear-gradient(120deg, var(--brand), var(--accent));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
-/* Menu principale */
+.brand-link:hover{
+  opacity:.9;
+}
+
+/* Menu principale (desktop) */
 .primary-nav{
   display:flex;
   align-items:center;
@@ -173,13 +182,88 @@ html[data-theme="dark"] .nav-item.active{
   color:#0b1120;
 }
 
-
 /* Gruppo di destra (lingua + tema) */
 .topbar-right{
   display:flex;
   align-items:center;
   gap:.5rem;
 }
+
+/* Bottone hamburger (solo mobile) */
+.nav-toggle{
+  display:none;                  /* di default nascosto (desktop) */
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:1px solid transparent;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+}
+
+.nav-toggle span{
+  display:block;
+  width:18px;
+  height:2px;
+  border-radius:999px;
+  background:#64748b;
+  margin:2px 0;
+  transition:transform .18s ease, opacity .18s ease;
+}
+
+html[data-theme="dark"] .nav-toggle span{
+  background:#e5e7eb;
+}
+
+/* Menu mobile a tendina */
+.mobile-nav{
+  position:fixed;
+  top:60px;       /* circa l’altezza della topbar */
+  left:0;
+  right:0;
+  background:var(--panel);
+  border-bottom:1px solid rgba(15,23,42,.08);
+  padding:.6rem 1.25rem 1rem;
+  display:none;
+  flex-direction:column;
+  gap:.35rem;
+  z-index:40;
+}
+
+html[data-theme="dark"] .mobile-nav{
+  border-bottom-color:rgba(255,255,255,.12);
+}
+
+.mobile-nav .nav-item{
+  width:max-content;
+}
+
+/* Stato aperto */
+.mobile-nav.open{
+  display:flex;
+}
+
+/* BREAKPOINT: mobile */
+@media (max-width: 768px){
+  .primary-nav{
+    display:none;           /* nascondi nav orizzontale */
+  }
+
+  .nav-toggle{
+    display:inline-flex;    /* mostra hamburger */
+  }
+
+  .topbar{
+    padding:.55rem .9rem;
+  }
+
+  .mobile-nav{
+    top:52px;               /* leggermente più compatto su mobile */
+  }
+}
+
 
 .topbar-btn{
   display:inline-flex; align-items:center; justify-content:center;
