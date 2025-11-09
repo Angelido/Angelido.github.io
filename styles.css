@@ -12,24 +12,25 @@
   --accent: #059669;
 }
 
-/* LIGHT THEME – blu moderno e leggero */
+/* LIGHT THEME – Soft Blue minimal */
 html[data-theme="light"]{
-  --bg:     #F6F9FC;     /* sfondo chiaro, luminoso */
-  --panel:  #FFFFFF;     /* topbar e card */
-  --text:   #0F172A;     /* testo principale */
-  --muted:  #6B7280;     /* testo secondario */
-  --brand:  #2563EB;     /* blu moderno (stile Tailwind Blue-600) */
-  --accent: #2563EB;     /* stesso blu per coerenza */
+  --bg: #f5f7fa;        /* sfondo generale chiaro e neutro */
+  --panel: #ffffff;     /* pannelli e topbar */
+  --text: #1f2937;      /* testo principale (grigio profondo) */
+  --muted: #6b7280;     /* testo secondario */
+  --brand: #2563eb;     /* blu moderno per bottoni */
+  --accent: #1d9d74;    /* verde elegante (solo per eventuali accenti) */
 }
 
-/* DARK THEME – verde elegante e luminoso */
+
+/* DARK THEME – Minimal Gemini */
 html[data-theme="dark"]{
-  --bg:     #161B22;     /* sfondo tipo GitHub */
-  --panel:  #010409;     /* topbar quasi nera */
-  --text:   #E6EDF3;
-  --muted:  #8B949E;
-  --brand:  #00C184;     /* verde smeraldo elegante */
-  --accent: #00C184;
+  --bg: #1a1b1e;       /* sfondo principale (grigio-nero, non puro) */
+  --panel: #232427;    /* topbar/pannelli leggermente più chiari per stacco */
+  --text: #f5f5f5;     /* testo principale (quasi bianco) */
+  --muted: #a0a0a5;    /* testo secondario (grigio tenue) */
+  --brand: #4fc3f7;    /* azzurro “Gemini” per bottoni */
+  --accent: #82b1ff;   /* blu acceso per piccoli accenti */
 }
 
 *{box-sizing:border-box}
@@ -51,11 +52,9 @@ html[data-theme="light"] body{
     var(--bg);
 }
 
-/* DARK: nessun gradiente, solo grigio uniforme */
 html[data-theme="dark"] body{
-  background: var(--bg);
+  background: var(--bg); /* piatto, elegante */
 }
-
 
 img{max-width:100%;display:block}
 
@@ -147,24 +146,26 @@ html[data-theme="dark"] .topbar{
   gap:1.2rem;
 }
 
-/* Nome in topbar */
+/* Nome in topbar in stile minimal, come Gemini */
 .brand-link{
-  font-size:1.35rem;
-  font-weight:800;
-  letter-spacing:.04em;
+  font-size:1.3rem;
+  font-weight:700;
+  letter-spacing:-0.02em;
   text-decoration:none;
   white-space:nowrap;
   color:var(--brand);
-  transition:color .2s ease, text-shadow .3s ease;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  transition: opacity .2s ease, transform .2s ease;
 }
 
-/* leggero bagliore per dare “profondità” */
 .brand-link:hover{
-  text-shadow:0 0 10px rgba(0,0,0,.1);
-  opacity:.95;
+  opacity:.85;
+  transform: translateY(-1px);
 }
-html[data-theme="dark"] .brand-link:hover{
-  text-shadow:0 0 8px rgba(0,193,132,.35);
+
+/* Dark: nome bianco pulito, non blu */
+html[data-theme="dark"] .brand-link{
+  color:#f5f5f5;
 }
 
 /* Bottoni principali */
