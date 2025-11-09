@@ -395,8 +395,13 @@
   async function boot(){
     setYear();
 
-    // Imposta il tema al primo avvio
-    document.documentElement.setAttribute('data-theme', state.theme);
+    // Se non c'è ancora un tema salvato, forza LIGHT come default
+    if (!localStorage.getItem('theme')) {
+      setTheme('light');
+    } else {
+      // Applica quello salvato (dark o light)
+      setTheme(state.theme);
+    }
     // Bottone toggle tema
     document.getElementById('themeToggle')?.addEventListener('click', () => {
       setTheme(state.theme === 'dark' ? 'light' : 'dark');
