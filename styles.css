@@ -1,39 +1,61 @@
 :root{
-  --radius:14px; --maxw:1200px; --shadow:0 10px 30px rgba(0,0,0,.25);
-  /* fallback (verranno sovrascritti dal tema attivo) */
-  --bg:#f6f8fc; --panel:#ffffff; --text:#1a1d25; --muted:#5f6b7a; --brand:#3b82f6; --accent:#16a34a;
+  --radius:14px;
+  --maxw:1200px;
+  --shadow:0 10px 30px rgba(0,0,0,.25);
+
+  /* fallback (stessi del tema light) */
+  --bg:     #F5FAFF;
+  --panel:  #FFFFFF;
+  --text:   #111827;
+  --muted:  #6B7280;
+  --brand:  #2563EB;
+  --accent: #059669;
 }
-/* CHIARO (default) */
+
+/* LIGHT THEME – blu moderno e leggero */
 html[data-theme="light"]{
-  --bg:#f6f8fc;
-  --panel:#ffffff;
-  --text:#1a1d25;
-  --muted:#5f6b7a;
-  --brand:#3b82f6;
-  --accent:#16a34a;
+  --bg:     #F6F9FC;     /* sfondo chiaro, luminoso */
+  --panel:  #FFFFFF;     /* topbar e card */
+  --text:   #0F172A;     /* testo principale */
+  --muted:  #6B7280;     /* testo secondario */
+  --brand:  #2563EB;     /* blu moderno (stile Tailwind Blue-600) */
+  --accent: #2563EB;     /* stesso blu per coerenza */
 }
-/* SCURO */
+
+/* DARK THEME – verde elegante e luminoso */
 html[data-theme="dark"]{
-  --bg:#14161d;
-  --panel:#1a1d26;
-  --text:#e9e9ee;
-  --muted:#a5adbd;
-  --brand:#809bff;
-  --accent:#58d199;
+  --bg:     #161B22;     /* sfondo tipo GitHub */
+  --panel:  #010409;     /* topbar quasi nera */
+  --text:   #E6EDF3;
+  --muted:  #8B949E;
+  --brand:  #00C184;     /* verde smeraldo elegante */
+  --accent: #00C184;
 }
 
+*{box-sizing:border-box}
+html,body{height:100%}
 
-*{box-sizing:border-box}html,body{height:100%}
+/* base body */
 body{
   margin:0;
-  background:
-    radial-gradient(1200px 600px at 5% -10%, rgba(128,155,255,.14), transparent 60%),
-    radial-gradient(1000px 500px at 105% 10%, rgba(88,209,153,.10), transparent 55%),
-    var(--bg);
+  background: var(--bg);  /* fallback semplice */
   color:var(--text);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   line-height:1.6;
 }
+
+/* LIGHT: alone solo blu, niente verdino */
+html[data-theme="light"] body{
+  background:
+    radial-gradient(900px 500px at 0% 0%, rgba(37,99,235,.14), transparent 60%),
+    var(--bg);
+}
+
+/* DARK: nessun gradiente, solo grigio uniforme */
+html[data-theme="dark"] body{
+  background: var(--bg);
+}
+
 
 img{max-width:100%;display:block}
 
@@ -125,18 +147,46 @@ html[data-theme="dark"] .topbar{
   gap:1.2rem;
 }
 
-/* Nome in alto a sinistra: più pulito, colore uniforme */
+/* Nome in topbar */
 .brand-link{
-  font-size:1.3rem;              /* un po' più grande del resto */
+  font-size:1.35rem;
   font-weight:800;
-  letter-spacing:.03em;          /* meno “spaziato” */
+  letter-spacing:.04em;
   text-decoration:none;
   white-space:nowrap;
-  color:var(--brand);            /* colore uniforme, come i bottoni */
+  color:var(--brand);
+  transition:color .2s ease, text-shadow .3s ease;
 }
 
+/* leggero bagliore per dare “profondità” */
 .brand-link:hover{
-  opacity:.9;
+  text-shadow:0 0 10px rgba(0,0,0,.1);
+  opacity:.95;
+}
+html[data-theme="dark"] .brand-link:hover{
+  text-shadow:0 0 8px rgba(0,193,132,.35);
+}
+
+/* Bottoni principali */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.75rem 1.1rem;
+  border-radius:calc(var(--radius) - 4px);
+  background:var(--brand);     /* colore pieno */
+  color:#fff;
+  border:none;
+  box-shadow:0 3px 10px rgba(0,0,0,.15);
+  font-weight:600;
+  text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.08);
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
 }
 
 /* Menu principale (desktop) */
