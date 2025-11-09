@@ -506,33 +506,46 @@ html[data-theme="dark"] .hero-avatar{
   margin-bottom:1.5rem;
 }
 
+/* Bottoni social */
 .icon-btn{
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   border-radius:999px;
   border:1px solid rgba(0,0,0,.12);
-  background:rgba(255,255,255,.8);
+  background:var(--panel);
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  text-decoration:none;
-  font-size:.85rem;
-  font-weight:600;
-  color:#111827;
-  box-shadow:0 4px 10px rgba(15,23,42,.18);
-  transition:transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+  color:var(--brand);
+  box-shadow:0 3px 8px rgba(0,0,0,.12);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease, background .25s ease;
 }
 
 .icon-btn:hover{
   transform:translateY(-1px);
-  box-shadow:0 8px 16px rgba(15,23,42,.24);
+  filter:brightness(1.1);
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
 
+/* Modalità dark: sfondo bianco per visibilità icone */
 html[data-theme="dark"] .icon-btn{
-  background:rgba(15,23,42,.95);
-  border-color:rgba(255,255,255,.16);
-  color:#e5e7eb;
+  background:#ffffff;          /* bianco pieno per contrasto */
+  border-color:rgba(255,255,255,.2);
+  color:#000000;               /* colore di fallback per eventuali SVG neri */
 }
+
+.icon-btn img{
+  width:20px;
+  height:20px;
+  display:block;
+  filter:none;
+}
+
+/* Opzionale: leggera trasparenza hover in dark mode */
+html[data-theme="dark"] .icon-btn:hover{
+  background:#f2f2f2;
+}
+
 
 .icon-text{
   font-size:.9rem;

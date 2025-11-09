@@ -220,29 +220,33 @@
       </article>`;
   }
 
-  function socialIcon(type, value){
+ function socialIcon(type, value){
     if (!value) return '';
-    let href = '#', label = '', content = '';
+
+    let href = '#';
+    let label = '';
+    let iconFile = '';
 
     if (type === 'linkedin'){
       href = value;
       label = 'LinkedIn';
-      content = '<span class="icon-text">in</span>';
+      iconFile = 'linkedin.svg';
     } else if (type === 'github'){
       href = value;
       label = 'GitHub';
-      content = '<span class="icon-text">GH</span>';
+      iconFile = 'github-mark.svg';
     } else if (type === 'email'){
       href = `mailto:${value}`;
       label = 'Email';
-      content = '<span class="icon-text">@</span>';
+      iconFile = 'gmail.svg';   // usa il nome che hai dato al file
     }
 
     return `
       <a class="icon-btn" href="${href}" target="_blank" rel="noopener" aria-label="${label}">
-        ${content}
+        <img src="assets/${iconFile}" alt="${label} icon">
       </a>`;
   }
+
 
 
   // --------------------------
