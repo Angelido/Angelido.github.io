@@ -97,10 +97,11 @@
   // Render: Accademico (home)
   // --------------------------
   function renderAcademicHome(){
-    const { profile } = state.data;
-    const app = $('#app');
-    app.innerHTML = `
-      <section class="hero hero-centered">
+  const { profile } = state.data;
+  const app = $('#app');
+  app.innerHTML = `
+    <section class="hero hero-home">
+      <div class="hero-left">
         <div class="hero-avatar">
           <img src="assets/personal.jpg" alt="Foto profilo di ${profile.name}" />
         </div>
@@ -111,9 +112,18 @@
           ${socialIcon('github', profile.links.github)}
           ${socialIcon('email', profile.links.email)}
         </div>
-      </section>
-    `;
-  }
+      </div>
+
+      <div class="hero-right">
+        <h2 class="about-title">About me</h2>
+        <p class="about-body">
+          ${profile.about.long}
+        </p>
+      </div>
+    </section>
+  `;
+}
+
 
   // --------------------------
   // Render: Work (Projects & Publications + formazione)

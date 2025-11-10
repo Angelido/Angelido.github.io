@@ -39,10 +39,19 @@ html,body{height:100%}
 /* base body */
 body{
   margin:0;
-  background: var(--bg);  /* fallback semplice */
+  min-height:100vh;          /* ← per avere almeno l'altezza viewport */
+  display:flex;              /* ← layout a colonna */
+  flex-direction:column;     /* topbar → main → footer */
+  background: var(--bg);     /* fallback semplice */
   color:var(--text);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   line-height:1.6;
+}
+
+/* main prende tutto lo spazio verticale disponibile tra topbar e footer */
+main{
+  flex:1;
+  width:100%;
 }
 
 /* LIGHT: alone solo blu, niente verdino */
@@ -84,7 +93,66 @@ html[data-theme="dark"] .site-header{
   border-bottom-color:rgba(255,255,255,.08);
 }
 
-.site-footer{border-top:1px solid rgba(255,255,255,.08);padding:2rem 0;color:var(--muted)}
+/* ===== FOOTER ================================================== */
+.site-footer{
+  margin-top:2rem;
+  border-top:1px solid rgba(0,0,0,.05);   /* barra più sottile e delicata */
+  padding:1rem 0;                         /* meno spazio verticale */
+  color:var(--muted);
+  background:var(--panel);
+  font-size:.9rem;
+}
+
+html[data-theme="dark"] .site-footer{
+  border-top-color:rgba(255,255,255,.08);
+}
+
+/* Layout 3 colonne */
+.footer-content{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:.8rem;
+}
+
+/* Elementi specifici */
+.footer-link{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:.9rem;
+  font-weight:500;
+  transition:color .2s ease;
+}
+
+.footer-link:hover{
+  color:var(--brand);
+}
+
+.footer-center small{
+  color:var(--muted);
+  font-size:.8rem;
+  text-align:center;
+  display:block;
+}
+
+/* Mobile: stack verticale */
+@media (max-width: 700px){
+  .footer-content{
+    flex-direction:column;
+    text-align:center;
+    gap:.5rem;
+  }
+
+  .footer-right .footer-link{
+    margin:0 .4rem;
+  }
+}
+
+html[data-theme="dark"] .site-footer{
+  border-top-color:rgba(255,255,255,.12);
+}
+
 
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.1rem;border-radius:calc(var(--radius) - 4px);background:var(--brand);color:#fff;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);font-weight:600;text-decoration:none}
 .btn:hover{text-decoration:none;filter:brightness(1.05)}
@@ -480,11 +548,77 @@ html[data-theme="dark"] .hero-avatar{
   box-shadow:0 10px 30px rgba(0,0,0,.7);
 }
 
-.hero-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;       /* taglia la foto in cerchio con la faccia al centro */
+/* ===== HERO HOME A DUE COLONNE (HOME) ========================== */
+
+.hero-home{
+  display:grid;
+  grid-template-columns:minmax(0, 0.9fr) minmax(0, 1.6fr);
+  align-items:center;
+  gap:3rem;
 }
+
+
+.hero-left{
+  text-align:center;              /* testo centrato */
+  display:flex;
+  flex-direction:column;
+  align-items:center;             /* tutto centrato nella colonna */
+}
+
+/* Colonna destra: About me */
+.hero-right{
+  max-width:640px;
+}
+
+.about-title{
+  font-size:clamp(1.7rem, 2.2vw, 2rem);
+  font-weight:700;
+  margin:0 0 .9rem;
+}
+
+.about-body{
+  margin:0;
+  font-size:1.08rem;
+  line-height:1.85;
+  color:var(--text);      /* un po' più leggibile, non troppo sbiadito */
+}
+
+
+/* MOBILE: una colonna, About me sotto la foto */
+@media (max-width: 900px){
+  .hero-home{
+    grid-template-columns:1fr;
+    gap:1.8rem;
+  }
+
+  .hero-left{
+    text-align:center;
+  }
+
+  .hero-right{
+    max-width:100%;
+    text-align:left;
+    margin-inline:auto;
+  }
+}
+
+
+.hero-avatar{
+  width:190px;
+  height:190px;
+  margin:0 0 1.2rem;  /* sinistra di default */
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid rgba(0,0,0,.06);
+  box-shadow:0 10px 30px rgba(15,23,42,.18);
+}
+
+@media (max-width: 900px){
+  .hero-avatar{
+    margin:0 auto 1.2rem;  /* centrata su mobile */
+  }
+}
+
 
 .hero-name{
   font-size:clamp(2.1rem,3vw,2.7rem);
@@ -502,7 +636,7 @@ html[data-theme="dark"] .hero-avatar{
 /* Social icons rotonde */
 .social-row{
   display:flex;
-  justify-content:center;
+  justify-content:center;   /* sempre centrati nella colonna */
   gap:.7rem;
   margin-bottom:1.5rem;
 }
