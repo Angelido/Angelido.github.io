@@ -4,5 +4,8 @@
   "nav": { "academic": "Academic", "personal": "Personal", "pubs": "Publications" },
   "section": { "about": "About me", "research": "Research topics", "education": "Education & Experience", "publications": "Publications" },
   "action": { "readmore": "Read more", "viewall": "View all", "back": "Back" },
-  "footer": { "top": "Back to top ↑" }
+  "footer": {
+  "quote": "If ChatGPT can make mistakes, imagine me."
+}
+
 }
