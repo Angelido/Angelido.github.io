@@ -22,7 +22,6 @@ html[data-theme="light"]{
   --accent: #1d9d74;    /* verde elegante (solo per eventuali accenti) */
 }
 
-
 /* DARK THEME – Minimal Gemini */
 html[data-theme="dark"]{
   --bg: #1a1b1e;       /* sfondo principale (grigio-nero, non puro) */
@@ -33,20 +32,34 @@ html[data-theme="dark"]{
   --accent: #82b1ff;   /* blu acceso per piccoli accenti */
 }
 
-*{box-sizing:border-box}
+/* Nasconde le scrollbar ma lascia lo scroll funzionante */
+html{
+  scrollbar-width: none;        /* Firefox */
+}
+
+html::-webkit-scrollbar{
+  width: 0;
+  height: 0;                    /* Chrome / Edge / Safari */
+}
+
 html,body{height:100%}
 
-/* base body */
 body{
   margin:0;
-  min-height:100vh;          /* ← per avere almeno l'altezza viewport */
-  display:flex;              /* ← layout a colonna */
-  flex-direction:column;     /* topbar → main → footer */
-  background: var(--bg);     /* fallback semplice */
+  background: var(--bg);
   color:var(--text);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   line-height:1.6;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
 }
+
+/* fai crescere il main per “spingere” il footer in basso */
+main{
+  flex:1;
+}
+
 
 /* main prende tutto lo spazio verticale disponibile tra topbar e footer */
 main{
@@ -96,8 +109,8 @@ html[data-theme="dark"] .site-header{
 /* ===== FOOTER ================================================== */
 .site-footer{
   margin-top:2rem;
-  border-top:1px solid rgba(0,0,0,.05);   /* barra più sottile e delicata */
-  padding:1rem 0;                         /* meno spazio verticale */
+  border-top:1px solid rgba(0,0,0,.04);
+  padding:.9rem 0;
   color:var(--muted);
   background:var(--panel);
   font-size:.9rem;
@@ -107,50 +120,86 @@ html[data-theme="dark"] .site-footer{
   border-top-color:rgba(255,255,255,.08);
 }
 
-/* Layout 3 colonne */
 .footer-content{
-  display:flex;
+  display:grid;
+  grid-template-columns: auto 1fr auto;
   align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:.8rem;
+  gap:.7rem;
 }
 
-/* Elementi specifici */
+.footer-center{
+  text-align:center;
+}
+
+.footer-center small{
+  color:var(--muted);
+  font-size:.8rem;
+}
+
+
+/* Icone social nel footer (colori originali) */
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+
+.footer-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:6px;
+  transition:transform .18s ease, opacity .18s ease;
+}
+
+.footer-icon img{
+  width:20px;
+  height:20px;
+  opacity:.85;
+}
+
+/* GitHub: bianco in dark mode, nero in light */
+html[data-theme="dark"] .footer-icon img.github-icon{
+  filter:invert(1);
+}
+
+.footer-icon:hover img{
+  opacity:1;
+  transform:scale(1.05);
+}
+
+.footer-right{
+  display:flex;
+  align-items:center;
+  gap:.4rem;           /* piccolo gap base */
+}
+
 .footer-link{
   color:var(--muted);
   text-decoration:none;
-  margin-left:.9rem;
   font-weight:500;
   transition:color .2s ease;
+  margin-left:1.2rem;  /* sposta Privacy più a destra rispetto al nome */
 }
 
 .footer-link:hover{
   color:var(--brand);
 }
 
-.footer-center small{
-  color:var(--muted);
-  font-size:.8rem;
-  text-align:center;
-  display:block;
-}
-
-/* Mobile: stack verticale */
-@media (max-width: 700px){
+/* Mobile layout */
+@media (max-width:700px){
   .footer-content{
     flex-direction:column;
     text-align:center;
-    gap:.5rem;
+    gap:.4rem;
   }
 
-  .footer-right .footer-link{
-    margin:0 .4rem;
+  .footer-left,
+  .footer-right{
+    justify-content:center;
   }
-}
-
-html[data-theme="dark"] .site-footer{
-  border-top-color:rgba(255,255,255,.12);
 }
 
 
@@ -197,21 +246,44 @@ html[data-theme="dark"] .site-footer{
   width:100%;
   background: var(--panel);
   border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+/* interno topbar: full-width, con padding ai lati */
+.topbar-inner{
   display:flex;
-  justify-content:space-between;
+  justify-content:space-between;   /* sinistra e destra agli estremi */
   align-items:center;
-  padding:.7rem 1.4rem;
+  padding:.7rem 1.4rem;            /* distanza dal bordo finestra */
+  max-width:100%;                  /* niente max-width come la .container */
 }
 
 html[data-theme="dark"] .topbar{
   border-bottom-color: rgba(255,255,255,.12);
 }
 
-/* Parte sinistra: hamburger (mobile) + brand + nav (desktop) */
+/* Sinistra: hamburger + brand + nav */
 .topbar-left{
   display:flex;
   align-items:center;
   gap:1.2rem;
+}
+
+/* Destra: lingua + tema, sempre allineati a destra */
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+
+/* Mobile: solo il menu orizzontale sparisce, destra resta visibile */
+@media (max-width: 768px){
+  .primary-nav{
+    display:none;
+  }
+
+  .nav-toggle{
+    display:inline-flex;
+  }
 }
 
 /* Nome in topbar in stile minimal, come Gemini */
@@ -296,13 +368,6 @@ html[data-theme="dark"] .nav-item.active{
   color:#0b1120;
 }
 
-/* Gruppo di destra (lingua + tema) */
-.topbar-right{
-  display:flex;
-  align-items:center;
-  gap:.5rem;
-}
-
 /* Bottone hamburger (solo mobile) */
 .nav-toggle{
   display:none;                  /* di default nascosto (desktop) */
@@ -369,10 +434,6 @@ html[data-theme="dark"] .mobile-nav{
 
   .nav-toggle{
     display:inline-flex;    /* mostra hamburger */
-  }
-
-  .topbar{
-    padding:.55rem .9rem;
   }
 
   .mobile-nav{

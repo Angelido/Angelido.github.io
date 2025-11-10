@@ -77,7 +77,8 @@
     '/accademico/education': renderEducation,
 
     // Pagina personale
-    '/personale': renderPersonalStub
+    '/personale': renderPersonalStub,
+    '/privacy': renderPrivacy,
   };
 
   function parseHash(){
@@ -230,32 +231,31 @@
       </article>`;
   }
 
- function socialIcon(type, value){
-    if (!value) return '';
-
+  function socialIcon(type){
     let href = '#';
     let label = '';
     let iconFile = '';
 
     if (type === 'linkedin'){
-      href = value;
+      href = 'https://www.linkedin.com/in/nardone-angelo';
       label = 'LinkedIn';
       iconFile = 'linkedin.svg';
     } else if (type === 'github'){
-      href = value;
+      href = 'https://github.com/Angelido';
       label = 'GitHub';
       iconFile = 'github-mark.svg';
     } else if (type === 'email'){
-      href = `mailto:${value}`;
+      href = 'mailto:angelo.nardone17@gmail.com';
       label = 'Email';
-      iconFile = 'gmail.svg';   // usa il nome che hai dato al file
+      iconFile = 'gmail.svg';
     }
 
     return `
       <a class="icon-btn" href="${href}" target="_blank" rel="noopener" aria-label="${label}">
-        <img src="assets/${iconFile}" alt="${label} icon">
+        <img src="assets/${iconFile}" alt="${label}">
       </a>`;
   }
+
 
 
 
@@ -353,6 +353,55 @@
           <img src="assets/placeholder-personale.jpg" alt="Anteprima sezione personale" />
         </div>
       </section>`;
+  }
+
+  function renderPrivacy(){
+    const app = $('#app');
+    const isIt = state.lang === 'it';
+
+    const title = isIt ? 'Privacy' : 'Privacy';
+    const intro = isIt
+      ? 'Questo sito personale non utilizza cookie di profilazione e non raccoglie dati personali oltre a quelli strettamente necessari al funzionamento tecnico.'
+      : 'This personal website does not use profiling cookies and does not collect personal data beyond what is strictly necessary for its technical operation.';
+
+    const contact = isIt
+      ? 'Per qualsiasi domanda relativa alla privacy puoi contattarmi via email.'
+      : 'For any questions about privacy, you can contact me via email.';
+
+    const emailLabel = 'angelo.nardone17@gmail.com';
+
+    const dataSectionTitle = isIt ? 'Dati raccolti' : 'Data collected';
+    const dataSectionText = isIt
+      ? 'Il sito può registrare informazioni tecniche standard (come indirizzi IP anonimizzati, log del server o statistiche aggregate di traffico) esclusivamente per finalità di sicurezza e manutenzione.'
+      : 'The site may log standard technical information (such as anonymized IP addresses, server logs or aggregated traffic statistics) solely for security and maintenance purposes.';
+
+    const linksTitle = isIt ? 'Link esterni' : 'External links';
+    const linksText = isIt
+      ? 'I link a GitHub e LinkedIn rimandano a servizi esterni che adottano le proprie politiche di trattamento dati. Ti invito a consultare le loro privacy policy.'
+      : 'Links to GitHub and LinkedIn point to external services which apply their own data protection policies. Please refer to their respective privacy policies.';
+
+    app.innerHTML = `
+      <section class="section">
+        <div class="card">
+          <h1>${title}</h1>
+          <p>${intro}</p>
+
+          <h2 style="margin-top:1.2rem;">${dataSectionTitle}</h2>
+          <p>${dataSectionText}</p>
+
+          <h2 style="margin-top:1.2rem;">${linksTitle}</h2>
+          <p>${linksText}</p>
+
+          <h2 style="margin-top:1.2rem;">${isIt ? 'Contatti' : 'Contact'}</h2>
+          <p>${contact}</p>
+          <p>
+            <a href="mailto:${emailLabel}" class="btn btn-outline">
+              ${emailLabel}
+            </a>
+          </p>
+        </div>
+      </section>
+    `;
   }
 
   function renderNotFound(){
