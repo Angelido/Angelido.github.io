@@ -663,7 +663,6 @@ html[data-theme="dark"] .hero-avatar{
   }
 }
 
-
 .hero-avatar{
   width:190px;
   height:190px;
@@ -680,7 +679,6 @@ html[data-theme="dark"] .hero-avatar{
   }
 }
 
-
 .hero-name{
   font-size:clamp(2.1rem,3vw,2.7rem);
   margin:0 .5rem;
@@ -688,18 +686,75 @@ html[data-theme="dark"] .hero-avatar{
   letter-spacing:.04em;
 }
 
+/* Tutte e tre le righe (PhD, Dip, Uni) */
+.hero-role,
+.hero-affil-line{
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+/* PhD leggermente più grande */
 .hero-role{
-  margin:.4rem 0 1.3rem;
-  font-size:1rem;
+  font-size: 1rem;
+}
+
+/* Dip e Uni leggermente più piccole */
+.hero-affil-line{
+  font-size: .95rem;
+}
+
+/* Spacing uniforme — più compatto */
+.hero-role,
+.hero-affil-line{
+  margin-top: .28rem;          /* 💡 accorciato: più elegante */
+}
+
+/* Prima riga dopo il nome */
+.hero-name + .hero-role{
+  margin-top: .30rem;
+}
+
+/* Prima riga dell'affiliazione */
+.hero-role + .hero-affil .hero-affil-line:first-child{
+  margin-top: .30rem;
+}
+
+@media (max-width: 900px){
+
+  .hero-role,
+  .hero-affil-line{
+    margin-top: .24rem;       /* ancora più compatto su mobile */
+    line-height: 1.22;
+  }
+
+  .hero-name + .hero-role{
+    margin-top: .26rem;
+  }
+
+  .hero-role + .hero-affil .hero-affil-line:first-child{
+    margin-top: .26rem;
+  }
+
+  /* Social icon — più lontane */ 
+  .social-row{
+    margin-top: 1.2rem;
+  }
+}
+
+.hero-tagline{
+  margin:.4rem 0 1.1rem;
+  font-size:.9rem;
   color:var(--muted);
 }
 
-/* Social icons rotonde */
 .social-row{
   display:flex;
-  justify-content:center;   /* sempre centrati nella colonna */
+  justify-content:center;
   gap:.7rem;
-  margin-bottom:1.5rem;
+  margin-top: 1rem;         /* 🔥 AGGIUNTO — separa il blocco */
+  margin-bottom:1.8rem;     /* leggermente più aria sotto */
 }
 
 /* Bottoni social */
@@ -741,7 +796,6 @@ html[data-theme="dark"] .icon-btn{
 html[data-theme="dark"] .icon-btn:hover{
   background:#f2f2f2;
 }
-
 
 .icon-text{
   font-size:.9rem;

@@ -1,8 +1,9 @@
 {
   "name": "Angelo Nardone",
-  "role": "PhD Student / Researcher",
-  "affiliation": "Dept. of Computer Science — University X",
-  "tagline": "I work on algorithms, data structures and I/O models.",
+  "role": "PhD Student",
+  "affiliation": "Department of Computer Science — University of Pisa",
+  "department": "Department of Computer Science",
+  "university": "University of Pisa",
   "cv": "assets/cv.pdf",
   "about": {
     "short": "Interested in string data structures, I/O analysis and numerical stability.",
