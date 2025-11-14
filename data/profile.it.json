@@ -1,8 +1,9 @@
 {
   "name": "Angelo Nardone",
-  "role": "Dottorando / Ricercatore",
-  "affiliation": "Dip. Informatica — Università X",
-  "tagline": "Mi occupo di algoritmi, strutture dati e modelli I/O.",
+  "role": "PhD Student",
+  "affiliation": "Dipartimento di Informatica — Università di Pisa",
+  "department": "Dipartimento di Informatica",
+  "university": "Università di Pisa",
   "cv": "assets/cv.pdf",
   "about": {
     "short": "Sono interessato a strutture dati per stringhe, analisi I/O e stabilità numerica.",

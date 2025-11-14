@@ -98,32 +98,37 @@
   // Render: Accademico (home)
   // --------------------------
   function renderAcademicHome(){
-  const { profile } = state.data;
-  const app = $('#app');
-  app.innerHTML = `
-    <section class="hero hero-home">
-      <div class="hero-left">
-        <div class="hero-avatar">
-          <img src="assets/personal.jpg" alt="Foto profilo di ${profile.name}" />
+    const { profile } = state.data;
+    const app = $('#app');
+    app.innerHTML = `
+      <section class="hero hero-home">
+        <div class="hero-left">
+          <div class="hero-avatar">
+            <img src="assets/personal.jpg" alt="Foto profilo di ${profile.name}" />
+          </div>
+          <h1 class="hero-name">${profile.name}</h1>
+          <p class="hero-role">${profile.role}</p>
+          <div class="hero-affil">
+            <p class="hero-affil-line">${profile.department}</p>
+            <p class="hero-affil-line">${profile.university}</p>
+          </div>
+          <div class="social-row">
+            ${socialIcon('linkedin', profile.links.linkedin)}
+            ${socialIcon('github', profile.links.github)}
+            ${socialIcon('email', profile.links.email)}
+          </div>
         </div>
-        <h1 class="hero-name">${profile.name}</h1>
-        <p class="hero-role">${profile.role}</p>
-        <div class="social-row">
-          ${socialIcon('linkedin', profile.links.linkedin)}
-          ${socialIcon('github', profile.links.github)}
-          ${socialIcon('email', profile.links.email)}
-        </div>
-      </div>
 
-      <div class="hero-right">
-        <h2 class="about-title">About me</h2>
-        <p class="about-body">
-          ${profile.about.long}
-        </p>
-      </div>
-    </section>
-  `;
-}
+        <div class="hero-right">
+          <h2 class="about-title">About me</h2>
+          <p class="about-body">
+            ${profile.about.long}
+          </p>
+        </div>
+      </section>
+    `;
+  }
+
 
 
   // --------------------------
