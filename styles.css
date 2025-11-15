@@ -22,7 +22,7 @@ html[data-theme="light"]{
   --accent: #1d9d74;    /* verde elegante (solo per eventuali accenti) */
 }
 
-/*DARK  THEME – Minimal Gemini */
+/* DARK THEME – Minimal Gemini */
 html[data-theme="dark"]{
   --bg: #1a1b1e;       /* sfondo principale (grigio-nero, non puro) */
   --panel: #232427;    /* topbar/pannelli leggermente più chiari per stacco */
@@ -617,7 +617,14 @@ html[data-theme="dark"] .hero-avatar{
   gap:3rem;
 }
 
-
+/* Su schermi grandi, blocco sinistro (foto + dati) resta visibile */
+@media (min-width: 900px){
+  .hero-left{
+    position: sticky;
+    top: 6rem;          /* distanza dal top, sotto la topbar */
+    align-self: flex-start;
+  }
+}
 
 .hero-left{
   text-align:center;              /* testo centrato */

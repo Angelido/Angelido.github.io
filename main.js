@@ -3,7 +3,7 @@
   // Config di base
   // --------------------------
   const state = {
-    lang: localStorage.getItem('lang') || 'it',
+    lang: localStorage.getItem('lang') || 'en',
     theme: localStorage.getItem('theme') || 'light',
     i18n: {},
     data: { profile:null, education:[], experience:[], publications:[], topics:[] }
@@ -171,8 +171,13 @@
   // Render: Work (Projects & Publications + formazione)
   // --------------------------
   function renderWork(){
-    const { profile, topics } = state.data;
+    const { topics } = state.data;
     const app = $('#app');
+
+    const title = state.lang === 'it' ? 'Projects & Publications' : 'Projects & Publications';
+    const intro = state.lang === 'it'
+      ? 'Qui trovi una panoramica dei progetti e delle pubblicazioni, insieme a un estratto del mio percorso accademico.'
+      : 'Here you can find an overview of my projects and publications, together with a snapshot of my academic path.';
 
     const list = (state.data.education.concat(state.data.experience))
       .sort((a,b)=> (b.to||'9999').localeCompare(a.to||'9999'))
@@ -181,9 +186,8 @@
     app.innerHTML = `
       <section class="section">
         <div class="card" id="aboutCard">
-          <h1>Projects & Publications</h1>
-          <h2 data-i18n="section.about">Chi sono</h2>
-          <p id="aboutText">${profile.about.long}</p>
+          <h1>${title}</h1>
+          <p>${intro}</p>
         </div>
       </section>
 
@@ -212,10 +216,10 @@
       </section>
     `;
 
-    // Preview education/experience (prime 3)
     const wrap = $('#eduPreview');
     wrap.innerHTML = list.map(item => eduCard(item)).join('');
   }
+
 
     // --------------------------
   // Render: CV
@@ -490,13 +494,19 @@
   async function boot(){
     setYear();
 
-    // Se non c'è ancora un tema salvato, forza LIGHT come default
-    if (!localStorage.getItem('theme')) {
-      setTheme('light');
+    // Tema: se è già salvato, usa quello;
+    // altrimenti usa il tema preferito dal sistema (light/dark)
+    const storedTheme = localStorage.getItem('theme');
+
+    if (!storedTheme){
+      const prefersDark = window.matchMedia &&
+                          window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      setTheme(initialTheme);
     } else {
-      // Applica quello salvato (dark o light)
-      setTheme(state.theme);
+      setTheme(storedTheme);
     }
+    
     // Bottone toggle tema
     document.getElementById('themeToggle')?.addEventListener('click', () => {
       setTheme(state.theme === 'dark' ? 'light' : 'dark');
