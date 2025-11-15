@@ -22,7 +22,7 @@ html[data-theme="light"]{
   --accent: #1d9d74;    /* verde elegante (solo per eventuali accenti) */
 }
 
-/* DARK THEME – Minimal Gemini */
+/*DARK  THEME – Minimal Gemini */
 html[data-theme="dark"]{
   --bg: #1a1b1e;       /* sfondo principale (grigio-nero, non puro) */
   --panel: #232427;    /* topbar/pannelli leggermente più chiari per stacco */
@@ -70,7 +70,6 @@ main{
 /* LIGHT: alone solo blu, niente verdino */
 html[data-theme="light"] body{
   background:
-    radial-gradient(900px 500px at 0% 0%, rgba(37,99,235,.14), transparent 60%),
     var(--bg);
 }
 
@@ -614,9 +613,10 @@ html[data-theme="dark"] .hero-avatar{
 .hero-home{
   display:grid;
   grid-template-columns:minmax(0, 0.9fr) minmax(0, 1.6fr);
-  align-items:center;
+  align-items:flex-start;   /* 👈 allinea in alto le due colonne */
   gap:3rem;
 }
+
 
 
 .hero-left{
@@ -637,12 +637,42 @@ html[data-theme="dark"] .hero-avatar{
   margin:0 0 .9rem;
 }
 
+.about-title{
+  font-size:clamp(1.7rem, 2.2vw, 2rem);
+  font-weight:700;
+  margin:0 0 .9rem;
+}
+
 .about-body{
   margin:0;
-  font-size:1.08rem;
-  line-height:1.85;
-  color:var(--text);      /* un po' più leggibile, non troppo sbiadito */
+  font-size:1.05rem;
+  line-height:1.8;
+  color:var(--text);
 }
+
+.about-body p{
+  margin:0 0 .9rem;
+}
+
+.about-body strong{
+  font-weight:600;
+}
+
+.about-toggle-btn{
+  margin-top:.4rem;
+  padding:.25rem .5rem;
+  border:none;
+  background:transparent;
+  color:var(--brand);
+  font-size:.9rem;
+  font-weight:500;
+  cursor:pointer;
+}
+
+.about-toggle-btn:hover{
+  text-decoration:underline;
+}
+
 
 
 /* MOBILE: una colonna, About me sotto la foto */

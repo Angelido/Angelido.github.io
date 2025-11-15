@@ -93,6 +93,16 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // --- Helpers per About me (paragrafi + bold + Read more) ---
+  function splitParagraphs(text){
+    return text.trim().split(/\n\s*\n/);
+  }
+
+  function renderParagraphHTML(p){
+    // converte **testo** in <strong>testo</strong>
+    return p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
 
   // --------------------------
   // Render: Accademico (home)
@@ -100,6 +110,15 @@
   function renderAcademicHome(){
     const { profile } = state.data;
     const app = $('#app');
+
+    const aboutText = profile.about.long || '';
+    const paragraphs = splitParagraphs(aboutText);
+    const firstHtml = renderParagraphHTML(paragraphs[0] || '');
+    const fullHtml = paragraphs.map(p => `<p>${renderParagraphHTML(p)}</p>`).join('');
+
+    const moreLabel  = state.lang === 'it' ? 'Continua a leggere' : 'Read more';
+    const lessLabel  = state.lang === 'it' ? 'Mostra meno' : 'Show less';
+
     app.innerHTML = `
       <section class="hero hero-home">
         <div class="hero-left">
@@ -113,21 +132,38 @@
             <p class="hero-affil-line">${profile.university}</p>
           </div>
           <div class="social-row">
-            ${socialIcon('linkedin', profile.links.linkedin)}
-            ${socialIcon('github', profile.links.github)}
-            ${socialIcon('email', profile.links.email)}
+            ${socialIcon('linkedin')}
+            ${socialIcon('github')}
+            ${socialIcon('email')}
           </div>
         </div>
 
         <div class="hero-right">
-          <h2 class="about-title">About me</h2>
-          <p class="about-body">
-            ${profile.about.long}
-          </p>
+          <h2 class="about-title">${state.lang === 'it' ? 'Chi sono' : 'About me'}</h2>
+          <div class="about-body" id="aboutBody">
+            <p>${firstHtml}</p>
+          </div>
+          <button class="about-toggle-btn" id="aboutToggle">${moreLabel}</button>
         </div>
       </section>
     `;
+
+    const aboutBody  = $('#aboutBody');
+    const toggleBtn  = $('#aboutToggle');
+    let expanded = false;
+
+    toggleBtn.addEventListener('click', () => {
+      expanded = !expanded;
+      if (expanded){
+        aboutBody.innerHTML = fullHtml;
+        toggleBtn.textContent = lessLabel;
+      } else {
+        aboutBody.innerHTML = `<p>${firstHtml}</p>`;
+        toggleBtn.textContent = moreLabel;
+      }
+    });
   }
+
 
 
 
@@ -147,8 +183,7 @@
         <div class="card" id="aboutCard">
           <h1>Projects & Publications</h1>
           <h2 data-i18n="section.about">Chi sono</h2>
-          <p id="aboutText">${profile.about.short}</p>
-          <button class="btn btn-outline" id="aboutMoreBtn" data-i18n="action.readmore">Leggi di più</button>
+          <p id="aboutText">${profile.about.long}</p>
         </div>
       </section>
 
@@ -176,14 +211,6 @@
         </div>
       </section>
     `;
-
-    // About espandibile
-    const btn = $('#aboutMoreBtn');
-    btn?.addEventListener('click', () => {
-      const el = $('#aboutText');
-      el.textContent = profile.about.long;
-      btn.remove();
-    });
 
     // Preview education/experience (prime 3)
     const wrap = $('#eduPreview');

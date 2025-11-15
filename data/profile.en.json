@@ -5,13 +5,9 @@
   "department": "Department of Computer Science",
   "university": "University of Pisa",
   "cv": "assets/cv.pdf",
+  
   "about": {
-    "short": "Interested in string data structures, I/O analysis and numerical stability.",
-    "long": "Research on efficient indexing algorithms, lower bounds in two-level memory models, and numerical applications (Cholesky) to ML problems. Passionate about teaching."
-  },
-  "links": {
-    "github": "https://github.com/your-username",
-    "linkedin": "https://www.linkedin.com/in/your-username/",
-    "email": "name.surname@example.com"
+    "long": "Hi! I’m Angelo, a **PhD candidate in Computer Science** at the University of Pisa. After earning a **Bachelor’s degree in Mathematics** and a **Master’s degree in Computer Science** — with a specialization in Artificial Intelligence — I decided to pursue this path driven by a long-standing fascination for research and a curiosity that has never really left me.\n\nMy work primarily focuses on **lossless text compression**, especially for **source code**, with a particular interest in methods that integrate **Large Language Models** into the encoding process. It’s a rapidly evolving area where **classical theory** and **modern architectures** constantly meet, clash, and ultimately reinforce one another.\n\nIn parallel, I’ve also worked — and continue to work — on applications in the **medical domain**, a field I find consistently stimulating. In particular, I’ve developed **Deep Learning models** aimed at extracting meaningful embeddings from clinical data.\n\nI’m deeply fascinated by **algorithms** and by the challenge of finding solutions that are smarter, more elegant, or simply new. With my background, the intersection between **algorithmic thinking** and **Artificial Intelligence** is something I follow with genuine enthusiasm, always trying to keep both theory and practice in view.\n\nOn this website, you'll find an overview of the projects I’ve worked on, as well as those I am currently developing. If something sparks your interest or you’d like to learn more, feel free to get in touch — you’ll find my email along with my LinkedIn and GitHub profiles in the contact section.\n\nAnd if you’re curious about who I am outside the academic world, there’s also a small personal corner: you’re welcome to explore it… **at your own risk**.\n\nEnjoy your visit!"
   }
+
 }
