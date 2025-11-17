@@ -221,30 +221,93 @@
   }
 
 
-    // --------------------------
+  // --------------------------
   // Render: CV
   // --------------------------
   function renderCV(){
-    const { profile } = state.data;
     const app = $('#app');
+
+    const lang = state.lang;
+    const title = 'Curriculum Vitae';
+
+    const intro = lang === 'it'
+      ? 'Qui puoi consultare e scaricare il mio CV in italiano e in inglese.'
+      : 'Here you can view and download my CV in both Italian and English.';
+
+    const itLabel = lang === 'it' ? 'CV in italiano' : 'Italian CV';
+    const enLabel = lang === 'it' ? 'CV in inglese' : 'English CV';
+
+    const openText = lang === 'it'
+      ? 'Apri in una nuova scheda'
+      : 'Open in a new tab';
+
+    const downloadText = lang === 'it'
+      ? 'Scarica PDF'
+      : 'Download PDF';
+
+    // Percorsi dei file PDF (modifica qui se i nomi sono diversi)
+    const cvIt = 'assets/cv-it.pdf';
+    const cvEn = 'assets/cv-en.pdf';
 
     app.innerHTML = `
       <section class="section">
-        <div class="card">
-          <h1>Curriculum Vitae</h1>
-          <p>
-            Puoi scaricare il mio CV aggiornato in formato PDF.
-          </p>
-          <div style="margin-top:1rem;">
-            <a class="btn" href="${profile.cv || '#'}" target="_blank" rel="noopener">
-              Apri CV (PDF)
-            </a>
-          </div>
+        <h1>${title}</h1>
+        <p>${intro}</p>
+
+        <div class="cv-grid">
+          <!-- CV ITALIANO -->
+          <article class="card cv-card">
+            <h2>${itLabel}</h2>
+            <div class="cv-buttons">
+              <a class="btn"
+                 href="${cvIt}"
+                 target="_blank"
+                 rel="noopener">
+                ${openText}
+              </a>
+              <a class="btn btn-outline"
+                 href="${cvIt}"
+                 download>
+                ${downloadText}
+              </a>
+            </div>
+            <div class="cv-preview">
+              <iframe
+                src="${cvIt}#view=FitH"
+                class="cv-iframe"
+                title="${itLabel}">
+              </iframe>
+            </div>
+          </article>
+
+          <!-- CV INGLESE -->
+          <article class="card cv-card">
+            <h2>${enLabel}</h2>
+            <div class="cv-buttons">
+              <a class="btn"
+                 href="${cvEn}"
+                 target="_blank"
+                 rel="noopener">
+                ${openText}
+              </a>
+              <a class="btn btn-outline"
+                 href="${cvEn}"
+                 download>
+                ${downloadText}
+              </a>
+            </div>
+            <div class="cv-preview">
+              <iframe
+                src="${cvEn}#view=FitH"
+                class="cv-iframe"
+                title="${enLabel}">
+              </iframe>
+            </div>
+          </article>
         </div>
       </section>
     `;
   }
-
 
 
   function socialButtons(links){
@@ -506,7 +569,7 @@
     } else {
       setTheme(storedTheme);
     }
-    
+
     // Bottone toggle tema
     document.getElementById('themeToggle')?.addEventListener('click', () => {
       setTheme(state.theme === 'dark' ? 'light' : 'dark');
