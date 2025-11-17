@@ -840,3 +840,57 @@ html[data-theme="dark"] .icon-btn:hover{
   text-transform:uppercase;
   letter-spacing:.06em;
 }
+
+/* ===== CV PAGE ================================================== */
+
+.cv-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:1.5rem;
+  margin-top:1.4rem;
+}
+
+.cv-card h2{
+  margin-top:0;
+  margin-bottom:.5rem;
+}
+
+.cv-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin-bottom:.8rem;
+}
+
+/* Box di anteprima PDF */
+.cv-preview{
+  border-radius:var(--radius);
+  border:1px solid rgba(0,0,0,.08);
+  background:#ffffff;
+  overflow:hidden;
+  height:520px;              /* altezza visibile dell'anteprima */
+  margin-top:.4rem;
+}
+
+html[data-theme="dark"] .cv-preview{
+  border-color:rgba(255,255,255,.14);
+  background:#111827;
+}
+
+.cv-iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+/* Responsive: su schermi piccoli le card vanno in colonna
+   e nascondiamo l'anteprima (rimangono i bottoni) */
+@media (max-width: 900px){
+  .cv-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cv-preview{
+    display:none;
+  }
+}
