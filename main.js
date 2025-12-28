@@ -107,17 +107,14 @@
   // --------------------------
   // Render: Accademico (home)
   // --------------------------
+
   function renderAcademicHome(){
     const { profile } = state.data;
     const app = $('#app');
 
     const aboutText = profile.about.long || '';
     const paragraphs = splitParagraphs(aboutText);
-    const firstHtml = renderParagraphHTML(paragraphs[0] || '');
     const fullHtml = paragraphs.map(p => `<p>${renderParagraphHTML(p)}</p>`).join('');
-
-    const moreLabel  = state.lang === 'it' ? 'Continua a leggere' : 'Read more';
-    const lessLabel  = state.lang === 'it' ? 'Mostra meno' : 'Show less';
 
     app.innerHTML = `
       <section class="hero hero-home">
@@ -141,30 +138,12 @@
         <div class="hero-right">
           <h2 class="about-title">${state.lang === 'it' ? 'Chi sono' : 'About me'}</h2>
           <div class="about-body" id="aboutBody">
-            <p>${firstHtml}</p>
+            ${fullHtml}
           </div>
-          <button class="about-toggle-btn" id="aboutToggle">${moreLabel}</button>
         </div>
       </section>
     `;
-
-    const aboutBody  = $('#aboutBody');
-    const toggleBtn  = $('#aboutToggle');
-    let expanded = false;
-
-    toggleBtn.addEventListener('click', () => {
-      expanded = !expanded;
-      if (expanded){
-        aboutBody.innerHTML = fullHtml;
-        toggleBtn.textContent = lessLabel;
-      } else {
-        aboutBody.innerHTML = `<p>${firstHtml}</p>`;
-        toggleBtn.textContent = moreLabel;
-      }
-    });
   }
-
-
 
 
   // --------------------------
