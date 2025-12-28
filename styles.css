@@ -593,16 +593,6 @@ html[data-theme="dark"] .sunmoon .cutout{ cx: 14px; cy: 10px; r: 9px; }
   text-align:center;
 }
 
-.hero-avatar{
-  width:190px;
-  height:190px;
-  margin:0 auto 1.2rem;
-  border-radius:50%;
-  overflow:hidden;
-  border:3px solid rgba(0,0,0,.06);
-  box-shadow:0 10px 30px rgba(15,23,42,.18);
-}
-
 html[data-theme="dark"] .hero-avatar{
   border-color:rgba(255,255,255,.08);
   box-shadow:0 10px 30px rgba(0,0,0,.7);
@@ -610,33 +600,38 @@ html[data-theme="dark"] .hero-avatar{
 
 /* ===== HERO HOME A DUE COLONNE (HOME) ========================== */
 
+/* ===== HOME: sidebar a sinistra + testo centrato (stile AcademicPages) ===== */
 .hero-home{
   display:grid;
-  grid-template-columns:minmax(0, 0.9fr) minmax(0, 1.6fr);
-  align-items:flex-start;   /* 👈 allinea in alto le due colonne */
-  gap:3rem;
+
+  /* Sidebar più stretta, testo molto più largo, colonna destra più piccola */
+  grid-template-columns: 220px minmax(680px, 980px) 160px;
+
+  column-gap: 3.2rem;
+  align-items:start;
 }
 
-/* Su schermi grandi, blocco sinistro (foto + dati) resta visibile */
-@media (min-width: 900px){
-  .hero-left{
-    position: sticky;
-    top: 6rem;          /* distanza dal top, sotto la topbar */
-    align-self: flex-start;
-  }
-}
 
+/* Sidebar: centrata DENTRO la colonna, ma colonna sta a sinistra */
 .hero-left{
-  text-align:center;              /* testo centrato */
   display:flex;
   flex-direction:column;
-  align-items:center;             /* tutto centrato nella colonna */
+  align-items:center;
+  text-align:center;
+
+  position: sticky;
+  top: 6rem;
+
+  /* 👇 spinge la sidebar verso il margine sinistro della pagina */
+  margin-left: calc(-1 * (max(0px, (100vw - var(--maxw)) / 2)) + 16px);
 }
 
-/* Colonna destra: About me */
+/* Testo: NON centrato come testo, ma colonna centrale */
 .hero-right{
-  max-width:640px;
+  max-width: 720px;
+  text-align: left;
 }
+
 
 .about-title{
   font-size:clamp(1.7rem, 2.2vw, 2rem);
@@ -665,50 +660,61 @@ html[data-theme="dark"] .hero-avatar{
   font-weight:600;
 }
 
-.about-toggle-btn{
-  margin-top:.4rem;
-  padding:.25rem .5rem;
-  border:none;
-  background:transparent;
-  color:var(--brand);
-  font-size:.9rem;
-  font-weight:500;
-  cursor:pointer;
-}
-
-.about-toggle-btn:hover{
-  text-decoration:underline;
-}
-
-
-
-/* MOBILE: una colonna, About me sotto la foto */
 @media (max-width: 900px){
   .hero-home{
-    grid-template-columns:1fr;
-    gap:1.8rem;
+    grid-template-columns: 1fr;
+    row-gap: 1.6rem;
   }
 
   .hero-left{
-    text-align:center;
+    position: static;
   }
 
-  .hero-right{
-    max-width:100%;
-    text-align:left;
-    margin-inline:auto;
+  /* Home: avatar più piccolo su schermi piccoli */
+  .hero-home .hero-avatar{
+    width:96px;
+    height:96px;
+  }
+
+  /* Home: social ancora più compatti su mobile */
+  .hero-home .icon-btn{
+    width:34px;
+    height:34px;
+  }
+
+  .hero-home .icon-btn img{
+    width:17px;
+    height:17px;
+  }
+
+  .hero-home .social-row{
+    gap:.5rem;
+    margin-bottom:1.0rem;
   }
 }
 
+
+/* Default: avatar (usato dove serve) */
 .hero-avatar{
   width:190px;
   height:190px;
-  margin:0 0 1.2rem;  /* sinistra di default */
+  margin:0 0 1.2rem;
   border-radius:50%;
   overflow:hidden;
   border:3px solid rgba(0,0,0,.06);
   box-shadow:0 10px 30px rgba(15,23,42,.18);
 }
+
+/* Home: avatar più piccolo */
+.hero-home .hero-avatar{
+  width:170px;
+  height:170px;
+}
+
+.hero-home .hero-avatar{
+  margin-bottom:1.6rem;
+}
+
 
 @media (max-width: 900px){
   .hero-avatar{
@@ -793,6 +799,23 @@ html[data-theme="dark"] .hero-avatar{
   margin-top: 1rem;         /* 🔥 AGGIUNTO — separa il blocco */
   margin-bottom:1.8rem;     /* leggermente più aria sotto */
 }
+
+/* Home: social buttons più piccoli */
+.hero-home .icon-btn{
+  width:36px;
+  height:36px;
+}
+
+.hero-home .icon-btn img{
+  width:18px;
+  height:18px;
+}
+
+.hero-home .social-row{
+  gap:.55rem;
+  margin-bottom:1.2rem;
+}
+
 
 /* Bottoni social */
 .icon-btn{
