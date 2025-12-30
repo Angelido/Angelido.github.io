@@ -127,6 +127,8 @@
             ${socialIcon('linkedin')}
             ${socialIcon('github')}
             ${socialIcon('email')}
+            ${socialIcon('orcid')}
+            ${socialIcon('scholar')}
           </div>
         </div>
 
@@ -308,6 +310,7 @@
     let href = '#';
     let label = '';
     let iconFile = '';
+    let newTab = true;
 
     if (type === 'linkedin'){
       href = 'https://www.linkedin.com/in/nardone-angelo';
@@ -321,12 +324,35 @@
       href = 'mailto:angelo.nardone17@gmail.com';
       label = 'Email';
       iconFile = 'gmail.svg';
+      newTab = false; // mailto non serve in new tab
+    } else if (type === 'orcid'){
+      // <<< METTI QUI il tuo link ORCID
+      href = 'https://orcid.org/0000-0000-0000-0000';
+      label = 'ORCID';
+      iconFile = 'orcid.svg';
+    } else if (type === 'scholar'){
+      // <<< METTI QUI il tuo link Google Scholar
+      href = 'https://scholar.google.com/citations?user=YOUR_ID';
+      label = 'Scholar';
+      iconFile = 'scholar.svg'; // ATTENZIONE: hai detto "scolar.svg" (non scholar.svg)
     }
 
+
     return `
-      <a class="icon-btn" href="${href}" target="_blank" rel="noopener" aria-label="${label}">
-        <img src="assets/${iconFile}" alt="${label}">
-      </a>`;
+      <div class="social-item">
+        <a class="icon-btn"
+          href="${href}"
+          ${newTab ? 'target="_blank" rel="noopener"' : ''}
+          aria-label="${label}">
+          <img src="assets/${iconFile}" alt="${label}">
+        </a>
+        <a class="social-text"
+          href="${href}"
+          ${newTab ? 'target="_blank" rel="noopener"' : ''}>
+          ${label}
+        </a>
+      </div>
+    `;
   }
 
 
