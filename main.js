@@ -63,23 +63,18 @@
   // Router
   // --------------------------
   const routes = {
-    // Home (default)
     '/accademico': renderAcademicHome,
 
-    // Nuova pagina "Work" (Projects & Publications + formazione)
-    '/work': renderWork,
+    '/research': renderResearch,
+    '/experience': renderExperience,
 
-    // Pagina CV
     '/cv': renderCV,
 
-    // Route “interne” che riusiamo (restano valide)
-    '/accademico/pubblicazioni': renderPublications,
-    '/accademico/education': renderEducation,
+    '/research/publications': renderPublications,
 
-    // Pagina personale
-    '/personale': renderPersonalStub,
     '/privacy': renderPrivacy,
   };
+
 
   function parseHash(){
     const h = location.hash.replace(/^#/, '');
@@ -147,9 +142,9 @@
 
 
   // --------------------------
-  // Render: Work (Projects & Publications + formazione)
+  // Render: Research (Projects & Publications + formazione)
   // --------------------------
-  function renderWork(){
+  function renderResearch(){
     const { topics } = state.data;
     const app = $('#app');
 
@@ -180,7 +175,7 @@
       <section class="section">
         <div class="row space-between">
           <h2 data-i18n="section.education">Formazione ed esperienze</h2>
-          <a class="btn btn-outline" href="#/accademico/education" data-i18n="action.viewall">Vedi tutto</a>
+          <a class="btn btn-outline" href="#/experience" data-i18n="action.viewall">Vedi tutto</a>
         </div>
         <div class="grid grid-3" id="eduPreview"></div>
       </section>
@@ -188,7 +183,7 @@
       <section class="section">
         <div class="row space-between">
           <h2 data-i18n="section.publications">Pubblicazioni</h2>
-          <a class="btn" href="#/accademico/pubblicazioni">
+          <a class="btn" href="#/research/publications">
             Vai a tutte le pubblicazioni
           </a>
         </div>
@@ -347,7 +342,7 @@
       <section class="section">
         <div class="row space-between">
           <h1 data-i18n="section.publications">Pubblicazioni</h1>
-          <a class="btn btn-outline" href="#/accademico">← <span data-i18n="action.back">Indietro</span></a>
+          <a class="btn btn-outline" href="#/research">← <span data-i18n="action.back">Indietro</span></a>
         </div>
         <div class="toolbar">
           <input id="q" class="input" placeholder="Cerca titolo/autori/venue" />
@@ -395,7 +390,10 @@
   // --------------------------
   // Render: Education + Experience (timeline)
   // --------------------------
-  function renderEducation(){
+  const renderEducation = renderExperience;
+
+
+  function renderExperience(){
     const app = $('#app');
     const items = state.data.education.concat(state.data.experience)
       .sort((a,b)=> (b.to||'9999').localeCompare(a.to||'9999'));
@@ -416,21 +414,6 @@
         <div class="pub-meta">${x.from} — ${x.to || 'in corso'}</div>
         ${x.details ? `<p>${x.details}</p>`:''}
       </li>`).join('');
-  }
-
-  // --------------------------
-  // Render: Personale (stub)
-  // --------------------------
-  function renderPersonalStub(){
-    const app = $('#app');
-    app.innerHTML = `
-      <section class="hero">
-        <h1 data-i18n="nav.personal">Personale</h1>
-        <p class="kicker">Sezione in costruzione</p>
-        <div class="card" style="max-width:520px">
-          <img src="assets/placeholder-personale.jpg" alt="Anteprima sezione personale" />
-        </div>
-      </section>`;
   }
 
   function renderPrivacy(){
