@@ -611,6 +611,12 @@ html[data-theme="dark"] .hero-avatar{
   align-items:start;
 }
 
+@media (max-width: 900px){
+  .hero-home .social-text{
+    display:none;
+  }
+}
+
 
 /* Sidebar: centrata DENTRO la colonna, ma colonna sta a sinistra */
 .hero-left{
@@ -674,22 +680,6 @@ html[data-theme="dark"] .hero-avatar{
   .hero-home .hero-avatar{
     width:96px;
     height:96px;
-  }
-
-  /* Home: social ancora più compatti su mobile */
-  .hero-home .icon-btn{
-    width:34px;
-    height:34px;
-  }
-
-  .hero-home .icon-btn img{
-    width:17px;
-    height:17px;
-  }
-
-  .hero-home .social-row{
-    gap:.5rem;
-    margin-bottom:1.0rem;
   }
 }
 
@@ -862,6 +852,92 @@ html[data-theme="dark"] .icon-btn:hover{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:.06em;
+}
+
+/* ===========================
+   Social buttons: wide (desktop list) + mobile icons
+=========================== */
+
+/* --- Desktop list item: circle icon + label (no overlap) --- */
+.icon-btn--wide{
+  width:100%;
+  height:42px;                 /* riga fissa, niente sovrapposizioni */
+  border-radius:999px;         /* resta circolare/rounded come gli altri */
+  justify-content:flex-start;
+  align-items:center;          /* centra verticalmente logo + testo */
+  gap:.6rem;
+  padding:0 .85rem 0 .55rem;   /* spazio a dx per testo */
+  text-decoration:none;
+}
+
+.icon-btn--wide img{
+  width:18px;                  /* logo più piccolo in desktop */
+  height:18px;
+  flex:0 0 auto;
+}
+
+.icon-label{
+  display:inline-block;
+  font-size:.92rem;
+  font-weight:600;
+  color:var(--text);
+  line-height:1;               /* evita “salti” verticali */
+  overflow:hidden;             /* niente sovrapposizioni */
+  text-overflow:ellipsis;
+  white-space:nowrap;          /* niente a capo */
+}
+
+/* DESKTOP (home): colonna verticale con testo */
+@media (min-width: 901px){
+  .hero-home .social-row{
+    flex-direction:column;
+    align-items:flex-start;   /* testo allineato bene */
+    gap:.6rem;
+    margin-top:1rem;
+  }
+}
+
+/* MOBILE (home): riga orizzontale, solo icone */
+@media (max-width: 900px){
+  .hero-home .social-row{
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:.55rem;
+    width:auto;
+    max-width:none;
+  }
+
+  .hero-home .icon-btn--wide{
+    width:34px;
+    height:34px;
+    padding:0;
+    border-radius:999px;
+    justify-content:center;
+  }
+
+  .hero-home .icon-label{
+    display:none;
+  }
+}
+
+.social-item{
+  display:flex;
+  align-items:center;        /* centro verticale PERFETTO */
+  gap:.7rem;
+}
+
+/* Testo a destra dell’icona */
+.social-text{
+  font-size:.92rem;
+  font-weight:600;
+  color:var(--text);
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.social-text:hover{
+  text-decoration:underline;
 }
 
 /* ===== CV PAGE ================================================== */
