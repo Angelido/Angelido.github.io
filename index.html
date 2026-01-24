@@ -1,83 +1,109 @@
-<!-- ========================= index.html ========================= -->
 <!doctype html>
 <html lang="it" data-theme="light">
 <head>
+  <!-- =========================
+       Document meta
+  ========================== -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title data-i18n="site.title">Angelo Nardone — Sito personale</title>
   <meta name="description" content="Sito personale: profilo accademico, pubblicazioni, note personali." />
+
+  <!-- =========================
+       Icons / social preview
+  ========================== -->
   <link rel="icon" href="assets/favicon.ico" />
-  <link rel="preload" href="assets/profile.jpg" as="image" />
-  <link rel="stylesheet" href="styles.css" />
   <meta property="og:title" content="Angelo Nardone — Sito personale" />
   <meta property="og:description" content="Profilo accademico, pubblicazioni e interessi personali." />
   <meta property="og:type" content="website" />
+
+  <!-- =========================
+       Performance
+  ========================== -->
+  <link rel="preload" href="assets/profile.jpg" as="image" />
+
+  <!-- =========================
+       Styles
+  ========================== -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <!-- TOPBAR con navigazione principale + lingua + tema -->
+  <!-- =========================================================
+       TOPBAR: main navigation + language + theme
+  ========================================================== -->
   <div class="topbar" role="navigation" aria-label="Navigazione principale sito">
     <div class="topbar-inner">
+      <!-- Left: hamburger (mobile) + brand + desktop nav -->
       <div class="topbar-left">
-        <!-- Bottone hamburger (solo mobile) -->
-        <button id="navToggle" class="nav-toggle" aria-label="Apri menu" aria-expanded="false">
+        <!-- Hamburger button (mobile only) -->
+        <button
+          id="navToggle"
+          class="nav-toggle"
+          type="button"
+          aria-label="Apri menu"
+          aria-expanded="false"
+        >
           <span></span>
           <span></span>
           <span></span>
         </button>
 
-        <!-- Nome (brand) → sempre verso Home -->
-        <a href="#/accademico" class="brand-link">
-          Angelo Nardone
-        </a>
+        <!-- Brand link (always goes "Home") -->
+        <a href="#/accademico" class="brand-link">Angelo Nardone</a>
 
-        <!-- Menu sezioni (desktop) -->
+        <!-- Desktop navigation -->
         <nav class="primary-nav" aria-label="Sezioni">
-          <a href="#/accademico" class="nav-item" data-route="/accademico">
-            Home
-          </a>
-
-          <a href="#/research" class="nav-item" data-route="/research">
-            Research
-          </a>
-
-          <a href="#/experience" class="nav-item" data-route="/experience">
-            Education &amp; Experience
-          </a>
-
-          <a href="#/cv" class="nav-item" data-route="/cv">
-            CV
-          </a>
+          <a href="#/accademico" class="nav-item" data-route="/accademico">Home</a>
+          <a href="#/research" class="nav-item" data-route="/research">Research</a>
+          <a href="#/experience" class="nav-item" data-route="/experience">Education &amp; Experience</a>
+          <a href="#/cv" class="nav-item" data-route="/cv">CV</a>
         </nav>
       </div>
 
+      <!-- Right: language + theme -->
       <div class="topbar-right">
-        <!-- Selettore lingua -->
+        <!-- Language dropdown -->
         <div class="lang-switch">
-          <button id="langBtn" class="topbar-btn lang-btn" aria-haspopup="true" aria-expanded="false">
+          <button
+            id="langBtn"
+            class="topbar-btn lang-btn"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <span class="flag">🇮🇹</span>
             <span class="lang-code">IT</span>
             <span class="chevron">▾</span>
           </button>
+
           <div id="langMenu" class="lang-menu" role="menu" aria-hidden="true">
-            <button class="lang-item" data-lang="it" role="menuitem">
+            <button class="lang-item" type="button" data-lang="it" role="menuitem">
               <span class="flag">🇮🇹</span>
               <span class="lang-code">IT</span>
             </button>
-            <button class="lang-item" data-lang="en" role="menuitem">
+            <button class="lang-item" type="button" data-lang="en" role="menuitem">
               <span class="flag">🇬🇧</span>
               <span class="lang-code">EN</span>
             </button>
           </div>
         </div>
 
-        <!-- Toggle tema -->
-        <button id="themeToggle" class="topbar-btn theme-btn" title="Cambia tema" aria-label="Cambia tema">
-          <!-- SVG sole/luna -->
+        <!-- Theme toggle -->
+        <button
+          id="themeToggle"
+          class="topbar-btn theme-btn"
+          type="button"
+          title="Cambia tema"
+          aria-label="Cambia tema"
+        >
+          <!-- Sun/Moon icon (SVG + mask) -->
           <svg class="sunmoon" viewBox="0 0 24 24" aria-hidden="true">
             <defs>
               <mask id="moonMask">
-                <rect width="100%" height="100%" fill="white"/>
-                <circle class="cutout" cx="28" cy="-4" r="9" fill="black"/>
+                <rect width="100%" height="100%" fill="white" />
+                <circle class="cutout" cx="28" cy="-4" r="9" fill="black" />
               </mask>
             </defs>
 
@@ -86,95 +112,92 @@
             </g>
 
             <g class="rays" fill="currentColor">
-              <rect x="11" y="1"  width="2" height="4" rx="1"></rect>
+              <rect x="11" y="1" width="2" height="4" rx="1"></rect>
               <rect x="11" y="19" width="2" height="4" rx="1"></rect>
               <rect x="19" y="11" width="4" height="2" rx="1"></rect>
-              <rect x="1"  y="11" width="4" height="2" rx="1"></rect>
+              <rect x="1" y="11" width="4" height="2" rx="1"></rect>
             </g>
 
             <g class="raysDiag" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke">
-              <line x1="16.5" y1="7.5" x2="19.0" y2="5.0"/>
-              <line x1="16.5" y1="16.5" x2="19.0" y2="19.0"/>
-              <line x1="7.5"  y1="16.5" x2="5.0"  y2="19.0"/>
-              <line x1="7.5"  y1="7.5"  x2="5.0"  y2="5.0"/>
+              <line x1="16.5" y1="7.5" x2="19.0" y2="5.0" />
+              <line x1="16.5" y1="16.5" x2="19.0" y2="19.0" />
+              <line x1="7.5" y1="16.5" x2="5.0" y2="19.0" />
+              <line x1="7.5" y1="7.5" x2="5.0" y2="5.0" />
             </g>
 
-            <path class="crescent" fill="currentColor"
-                  d="M20.4 13A8.4 8.4 0 1 1 11.6 3a7 7 0 0 0 8.8 10z"
-                  opacity="0"></path>
+            <path
+              class="crescent"
+              fill="currentColor"
+              d="M20.4 13A8.4 8.4 0 1 1 11.6 3a7 7 0 0 0 8.8 10z"
+              opacity="0"
+            ></path>
           </svg>
         </button>
       </div>
     </div>
   </div>
 
-
-
-  <!-- Menu mobile (tendina verticale) -->
+  <!-- =========================================================
+       MOBILE NAV: vertical dropdown
+  ========================================================== -->
   <nav id="mobileNav" class="mobile-nav" aria-label="Sezioni (mobile)" aria-hidden="true">
-    <a href="#/accademico" class="nav-item" data-route="/accademico">
-      Home
-    </a>
-
-    <a href="#/research" class="nav-item" data-route="/research">
-      Research
-    </a>
-
-    <a href="#/experience" class="nav-item" data-route="/experience">
-      Education &amp; Experience
-    </a>
-
-    <a href="#/cv" class="nav-item" data-route="/cv">
-      CV
-    </a>
+    <a href="#/accademico" class="nav-item" data-route="/accademico">Home</a>
+    <a href="#/research" class="nav-item" data-route="/research">Research</a>
+    <a href="#/experience" class="nav-item" data-route="/experience">Education &amp; Experience</a>
+    <a href="#/cv" class="nav-item" data-route="/cv">CV</a>
   </nav>
 
-
-
+  <!-- =========================================================
+       APP CONTAINER: injected by main.js (hash router)
+  ========================================================== -->
   <main id="app" class="container">
-    <!-- Il contenuto viene iniettato da main.js in base all'hash route -->
     <noscript>
       <p>Attiva JavaScript per visualizzare il sito.</p>
     </noscript>
   </main>
 
+  <!-- =========================================================
+       FOOTER: icons + quote + copyright
+  ========================================================== -->
   <footer class="site-footer">
     <div class="container footer-content">
-      <!-- SINISTRA: icone -->
+      <!-- Left: social icons -->
       <div class="footer-left">
         <a href="mailto:angelo.nardone17@gmail.com" class="footer-icon" aria-label="Email">
-          <img src="assets/gmail.svg" alt="Email">
+          <img src="assets/gmail.svg" alt="Email" />
         </a>
         <a href="https://github.com/Angelido" class="footer-icon" target="_blank" rel="noopener" aria-label="GitHub">
-          <img src="assets/github-mark.svg" alt="GitHub" class="github-icon">
+          <img src="assets/github-mark.svg" alt="GitHub" class="github-icon" />
         </a>
         <a href="https://www.linkedin.com/in/nardone-angelo" class="footer-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <img src="assets/linkedin.svg" alt="LinkedIn">
+          <img src="assets/linkedin.svg" alt="LinkedIn" />
         </a>
-        <a href="https://orcid.org/0009-0006-2068-5934"
+        <a
+          href="https://orcid.org/0009-0006-2068-5934"
           class="footer-icon"
           target="_blank"
           rel="noopener"
-          aria-label="ORCID">
-          <img src="assets/orcid.svg" alt="ORCID">
+          aria-label="ORCID"
+        >
+          <img src="assets/orcid.svg" alt="ORCID" />
         </a>
-        <a href="https://scholar.google.com/citations?user=C2QAXR4AAAAJ"
+        <a
+          href="https://scholar.google.com/citations?user=C2QAXR4AAAAJ"
           class="footer-icon"
           target="_blank"
           rel="noopener"
-          aria-label="Google Scholar">
-          <img src="assets/scholar.svg" alt="Google Scholar">
+          aria-label="Google Scholar"
+        >
+          <img src="assets/scholar.svg" alt="Google Scholar" />
         </a>
       </div>
 
-      <!-- CENTRO: frase -->
+      <!-- Center: quote -->
       <div class="footer-center">
-        <small data-i18n="footer.quote">
-          Se ChatGPT può commettere errori, figuratevi io.
-        </small>
+        <small data-i18n="footer.quote">Se ChatGPT può commettere errori, figuratevi io.</small>
       </div>
 
-      <!-- DESTRA: © + Privacy -->
+      <!-- Right: copyright + privacy -->
       <div class="footer-right">
         <span>© <span id="year"></span> <span data-i18n="brand">Angelo Nardone</span></span>
         <a href="#/privacy" class="footer-link">Privacy</a>
@@ -182,6 +205,7 @@
     </div>
   </footer>
 
+  <!-- Main script -->
   <script src="main.js" defer></script>
 </body>
 </html>
