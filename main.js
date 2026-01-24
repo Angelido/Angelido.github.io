@@ -6,7 +6,7 @@
     lang: localStorage.getItem('lang') || 'en',
     theme: localStorage.getItem('theme') || 'light',
     i18n: {},
-    data: { profile:null, education:[], experience:[], publications:[], topics:[] }
+    data: { profile:null, home:null, education:[], experience:[], publications:[], topics:[] }
   };
 
   const $ = (sel, root=document) => root.querySelector(sel);
@@ -49,14 +49,16 @@
   // --------------------------
   async function loadData(){
     const base = 'data';
-    const [profile, education, experience, publications, topics] = await Promise.all([
+    const [profile, home, education, experience, publications, topics] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then(r=>r.json()),
+      fetch(`${base}/home.${state.lang}.json`).then(r=>r.json()),
       fetch(`${base}/education.json`).then(r=>r.json()),
       fetch(`${base}/experience.json`).then(r=>r.json()),
       fetch(`${base}/publications.json`).then(r=>r.json()),
       fetch(`${base}/topics.json`).then(r=>r.json()),
     ]);
-    state.data = { profile, education, experience, publications, topics };
+
+    state.data = { profile, home, education, experience, publications, topics };
   }
 
   // --------------------------
@@ -132,12 +134,26 @@
           </div>
         </div>
 
-        <div class="hero-right">
-          <h2 class="about-title">${state.lang === 'it' ? 'Chi sono' : 'About me'}</h2>
-          <div class="about-body" id="aboutBody">
-            ${fullHtml}
+        <div class="hero-center">
+          <div class="about-card">
+            <h2 class="about-title">${state.lang === 'it' ? 'Chi sono' : 'About me'}</h2>
+            <div class="about-body" id="aboutBody">
+              ${fullHtml}
+            </div>
           </div>
         </div>
+
+        <aside class="hero-side" aria-label="Quick info">
+          <div class="side-panel">
+            ${(state.data.home?.cards || []).map(c => `
+              <div class="side-card">
+                <div class="side-kicker">${c.kicker}</div>
+                <div class="side-title">${c.title}</div>
+                <div class="side-text">${c.text}</div>
+              </div>
+            `).join('')}
+          </div>
+        </aside>
       </section>
     `;
   }
@@ -306,56 +322,44 @@
       </article>`;
   }
 
-  function socialIcon(type){
-    let href = '#';
-    let label = '';
-    let iconFile = '';
-    let newTab = true;
+function socialIcon(type){
+  let href = '#';
+  let label = '';
+  let iconFile = '';
+  let newTab = true;
 
-    if (type === 'linkedin'){
-      href = 'https://www.linkedin.com/in/nardone-angelo';
-      label = 'LinkedIn';
-      iconFile = 'linkedin.svg';
-    } else if (type === 'github'){
-      href = 'https://github.com/Angelido';
-      label = 'GitHub';
-      iconFile = 'github-mark.svg';
-    } else if (type === 'email'){
-      href = 'mailto:angelo.nardone17@gmail.com';
-      label = 'Email';
-      iconFile = 'gmail.svg';
-      newTab = false; // mailto non serve in new tab
-    } else if (type === 'orcid'){
-      // <<< METTI QUI il tuo link ORCID
-      href = 'https://orcid.org/0009-0006-2068-5934';
-      label = 'ORCID';
-      iconFile = 'orcid.svg';
-    } else if (type === 'scholar'){
-      // <<< METTI QUI il tuo link Google Scholar
-      href = 'https://scholar.google.com/citations?user=C2QAXR4AAAAJ';
-      label = 'Scholar';
-      iconFile = 'scholar.svg'; // ATTENZIONE: hai detto "scolar.svg" (non scholar.svg)
-    }
-
-
-    return `
-      <div class="social-item">
-        <a class="icon-btn"
-          href="${href}"
-          ${newTab ? 'target="_blank" rel="noopener"' : ''}
-          aria-label="${label}">
-          <img src="assets/${iconFile}" alt="${label}">
-        </a>
-        <a class="social-text"
-          href="${href}"
-          ${newTab ? 'target="_blank" rel="noopener"' : ''}>
-          ${label}
-        </a>
-      </div>
-    `;
+  if (type === 'linkedin'){
+    href = 'https://www.linkedin.com/in/nardone-angelo';
+    label = 'LinkedIn';
+    iconFile = 'linkedin.svg';
+  } else if (type === 'github'){
+    href = 'https://github.com/Angelido';
+    label = 'GitHub';
+    iconFile = 'github-mark.svg';
+  } else if (type === 'email'){
+    href = 'mailto:angelo.nardone17@gmail.com';
+    label = 'Email';
+    iconFile = 'gmail.svg';
+    newTab = false;
+  } else if (type === 'orcid'){
+    href = 'https://orcid.org/0009-0006-2068-5934';
+    label = 'ORCID';
+    iconFile = 'orcid.svg';
+  } else if (type === 'scholar'){
+    href = 'https://scholar.google.com/citations?user=C2QAXR4AAAAJ';
+    label = 'Scholar';
+    iconFile = 'scholar.svg';
   }
 
-
+  return `
+    <a class="icon-btn icon-btn--circle"
+       href="${href}"
+       ${newTab ? 'target="_blank" rel="noopener"' : ''}
+       aria-label="${label}">
+      <img src="assets/${iconFile}" alt="${label}">
+    </a>
+  `;
+}
 
 
   // --------------------------
