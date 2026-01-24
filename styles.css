@@ -1,15 +1,14 @@
 /* =========================================================
-   CSS VARIABLES (Design tokens)
+   1) CSS VARIABLES (Design Tokens)
    ---------------------------------------------------------
-   NOTE: :root appears multiple times in the original file.
-   Here we keep ALL variables, grouped together.
+   Shared values used across themes and components.
 ========================================================= */
 :root{
   --radius:14px;
   --maxw:1200px;
   --shadow:0 10px 30px rgba(0,0,0,.25);
 
-  /* Fallback (same as light theme) */
+  /* Fallback colors (same as light theme) */
   --bg:     #F5FAFF;
   --panel:  #FFFFFF;
   --text:   #111827;
@@ -21,7 +20,7 @@
   --shadow-soft: 0 10px 28px rgba(0,0,0,.12);
 
   /* Home layout/tuning variables */
-  --home-switch: 1100px;
+  --home-switch: 1100px; /* currently not used in @media, kept as-is */
   --topbar-h: 72px;
   --home-gap-mobile: 22px;
   --home-gap-desktop: clamp(18px, 2.2vw, 34px);
@@ -33,7 +32,9 @@
 }
 
 /* =========================================================
-   THEME OVERRIDES
+   2) THEME OVERRIDES
+   ---------------------------------------------------------
+   Only override semantic variables (colors, shadows, etc.).
 ========================================================= */
 
 /* LIGHT THEME – Soft Blue minimal */
@@ -62,7 +63,7 @@ html[data-theme="dark"]{
 }
 
 /* =========================================================
-   SCROLLBAR VISIBILITY
+   3) SCROLLBAR VISIBILITY
    ---------------------------------------------------------
    Hide scrollbars but keep scrolling enabled.
 ========================================================= */
@@ -76,7 +77,9 @@ html::-webkit-scrollbar{
 }
 
 /* =========================================================
-   BASE / RESET
+   4) BASE / RESET
+   ---------------------------------------------------------
+   Minimal reset + app layout baseline.
 ========================================================= */
 html,body{ height:100%; }
 
@@ -108,7 +111,9 @@ img{
 }
 
 /* =========================================================
-   GENERIC LAYOUT UTILITIES (desktop-first helpers)
+   5) GENERIC LAYOUT UTILITIES
+   ---------------------------------------------------------
+   Reusable helpers for layout and grids (desktop-first).
 ========================================================= */
 .container{ width:min(100% - 2.5rem,var(--maxw)); margin-inline:auto; }
 .row{ display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
@@ -124,7 +129,9 @@ img{
 }
 
 /* =========================================================
-   BUTTONS / BADGES / CARDS (generic)
+   6) GENERIC UI COMPONENTS
+   ---------------------------------------------------------
+   Buttons, badges, cards, tags, inputs.
 ========================================================= */
 .btn{
   display:inline-flex;
@@ -175,8 +182,27 @@ img{
   box-shadow:var(--shadow);
 }
 
+/* Text input */
+.input{
+  padding:.6rem .8rem;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(17,19,26,.6);
+  color:var(--text);
+}
+
+/* Tags */
+.tags{ display:flex; flex-wrap:wrap; gap:.4rem; }
+.tag{
+  padding:.25rem .55rem;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;
+  font-size:.85rem;
+  color:#cfe7d7;
+}
+
 /* =========================================================
-   TYPOGRAPHY / SECTIONS
+   7) TYPOGRAPHY & GENERIC SECTIONS
 ========================================================= */
 .hero{ padding:4.5rem 0 3rem; }
 .hero h1{ font-size:clamp(2.2rem,2.5vw,3rem); line-height:1.15; margin:.2rem 0; }
@@ -184,7 +210,9 @@ img{
 .kicker{ color:var(--muted); font-size:1rem; }
 .section{ margin:2.2rem 0; }
 
-/* Lists, timeline, publications */
+/* =========================================================
+   8) CONTENT PATTERNS (lists, timeline, publications)
+========================================================= */
 .list{ display:grid; gap:.9rem; }
 
 .timeline{ position:relative; }
@@ -227,26 +255,13 @@ img{
   margin:.6rem 0;
 }
 
-.input{
-  padding:.6rem .8rem;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(17,19,26,.6);
-  color:var(--text);
-}
-
-.tags{ display:flex; flex-wrap:wrap; gap:.4rem; }
-.tag{
-  padding:.25rem .55rem;
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:999px;
-  font-size:.85rem;
-  color:#cfe7d7;
-}
-
 /* =========================================================
-   SITE HEADER (sticky)
+   9) SITE CHROME (header/footer/topbar/nav)
+   ---------------------------------------------------------
+   Global UI that appears across pages.
 ========================================================= */
+
+/* --- Sticky header wrapper (if used) --- */
 .site-header{
   position:sticky;
   top:0;
@@ -255,14 +270,11 @@ img{
   border-bottom:1px solid rgba(15,23,42,.06);
   backdrop-filter:blur(4px);
 }
-
 html[data-theme="dark"] .site-header{
   border-bottom-color:rgba(255,255,255,.08);
 }
 
-/* =========================================================
-   FOOTER
-========================================================= */
+/* --- Footer --- */
 .site-footer{
   margin-top:2rem;
   border-top:1px solid rgba(0,0,0,.04);
@@ -271,7 +283,6 @@ html[data-theme="dark"] .site-header{
   background:var(--panel);
   font-size:.9rem;
 }
-
 html[data-theme="dark"] .site-footer{
   border-top-color:rgba(255,255,255,.08);
 }
@@ -335,14 +346,11 @@ html[data-theme="dark"] .footer-icon img.github-icon{
   transition:color .2s ease;
   margin-left:1.2rem;
 }
-
 .footer-link:hover{
   color:var(--brand);
 }
 
-/* =========================================================
-   TOPBAR (the full-width “control” bar)
-========================================================= */
+/* --- Topbar (full-width control bar) --- */
 .topbar{
   position:sticky;
   top:0;
@@ -351,7 +359,6 @@ html[data-theme="dark"] .footer-icon img.github-icon{
   background:var(--panel);
   border-bottom:1px solid rgba(0,0,0,.08);
 }
-
 html[data-theme="dark"] .topbar{
   border-bottom-color:rgba(255,255,255,.12);
 }
@@ -390,12 +397,10 @@ html[data-theme="dark"] .topbar{
   font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   transition:opacity .2s ease, transform .2s ease;
 }
-
 .brand-link:hover{
   opacity:.85;
   transform:translateY(-1px);
 }
-
 html[data-theme="dark"] .brand-link{
   color:#f5f5f5;
 }
@@ -417,12 +422,10 @@ html[data-theme="dark"] .brand-link{
   border:1px solid transparent;
   transition:background .15s ease, color .15s ease, border-color .15s ease;
 }
-
 .nav-item:hover{
   color:var(--text);
   border-color:rgba(0,0,0,.08);
 }
-
 html[data-theme="dark"] .nav-item:hover{
   border-color:rgba(255,255,255,.16);
 }
@@ -433,7 +436,6 @@ html[data-theme="dark"] .nav-item:hover{
   background:var(--brand);
   border-color:transparent;
 }
-
 html[data-theme="dark"] .nav-item.active{
   color:#0b1120;
 }
@@ -462,7 +464,6 @@ html[data-theme="dark"] .nav-item.active{
   margin:2px 0;
   transition:transform .18s ease, opacity .18s ease;
 }
-
 html[data-theme="dark"] .nav-toggle span{
   background:#e5e7eb;
 }
@@ -481,7 +482,6 @@ html[data-theme="dark"] .nav-toggle span{
   gap:.35rem;
   z-index:40;
 }
-
 html[data-theme="dark"] .mobile-nav{
   border-bottom-color:rgba(255,255,255,.12);
 }
@@ -489,7 +489,6 @@ html[data-theme="dark"] .mobile-nav{
 .mobile-nav .nav-item{
   width:max-content;
 }
-
 .mobile-nav.open{
   display:flex;
 }
@@ -506,7 +505,6 @@ html[data-theme="dark"] .mobile-nav{
   cursor:pointer;
   color:#4b5563; /* icon color (light) */
 }
-
 html[data-theme="dark"] .topbar-btn{
   border-color:rgba(255,255,255,.18);
   color:#ffffff;
@@ -520,7 +518,6 @@ html[data-theme="dark"] .topbar-btn{
   cursor:pointer;
   color:#020617; /* deep “glass black” */
 }
-
 html[data-theme="dark"] .theme-btn{
   border:none;
   color:#f8f5ec; /* warm ivory */
@@ -530,7 +527,6 @@ html[data-theme="dark"] .theme-btn{
 .theme-btn .sunmoon{
   filter:drop-shadow(0 1px 2px rgba(15,23,42,.20));
 }
-
 html[data-theme="dark"] .theme-btn .sunmoon{
   filter:drop-shadow(0 0 6px rgba(248,245,236,.35));
 }
@@ -541,7 +537,7 @@ html[data-theme="dark"] .theme-btn .sunmoon{
 }
 
 /* =========================================================
-   LANGUAGE SWITCHER
+   10) LANGUAGE SWITCHER (dropdown)
 ========================================================= */
 .lang-switch{ position:relative; }
 
@@ -550,7 +546,6 @@ html[data-theme="dark"] .theme-btn .sunmoon{
   align-items:center;
   gap:.35rem;
 }
-
 .lang-btn .flag{ font-size:1rem; }
 
 .lang-btn .chevron{
@@ -574,7 +569,6 @@ html[data-theme="dark"] .theme-btn .sunmoon{
   min-width:90px;
   z-index:100;
 }
-
 html[data-theme="dark"] .lang-menu{
   border-color:rgba(255,255,255,.18);
 }
@@ -594,7 +588,6 @@ html[data-theme="dark"] .lang-menu{
   cursor:pointer;
   font-size:.9rem;
 }
-
 .lang-item .flag{ font-size:1rem; }
 
 .lang-item.active{
@@ -602,7 +595,9 @@ html[data-theme="dark"] .lang-menu{
 }
 
 /* =========================================================
-   SUN ↔ MOON ICON (SVG mask transitions)
+   11) SUN ↔ MOON ICON (SVG mask transitions)
+   ---------------------------------------------------------
+   The icon is driven by CSS transforms + SVG mask properties.
 ========================================================= */
 .sunmoon{
   display:block;
@@ -635,7 +630,7 @@ html[data-theme="dark"] .sunmoon .crescent{ opacity:1; }
 html[data-theme="dark"] .sunmoon .cutout{ cx:14px; cy:10px; r:9px; }
 
 /* =========================================================
-   HERO (avatar + name + role lines)
+   12) PAGE: HERO (avatar + name + role lines)
 ========================================================= */
 .hero-avatar{
   width:190px;
@@ -646,7 +641,6 @@ html[data-theme="dark"] .sunmoon .cutout{ cx:14px; cy:10px; r:9px; }
   border:3px solid rgba(0,0,0,.06);
   box-shadow:0 10px 30px rgba(15,23,42,.18);
 }
-
 html[data-theme="dark"] .hero-avatar{
   border-color:rgba(255,255,255,.08);
   box-shadow:0 10px 30px rgba(0,0,0,.7);
@@ -666,7 +660,6 @@ html[data-theme="dark"] .hero-avatar{
   color:var(--muted);
   line-height:1.25;
 }
-
 .hero-role{ font-size:1rem; }
 .hero-affil-line{ font-size:.95rem; }
 
@@ -686,7 +679,7 @@ html[data-theme="dark"] .hero-avatar{
 }
 
 /* =========================================================
-   SOCIAL BUTTONS (generic)
+   13) SOCIAL BUTTONS (generic)
 ========================================================= */
 .social-row{
   display:flex;
@@ -697,8 +690,8 @@ html[data-theme="dark"] .hero-avatar{
 }
 
 .icon-btn{
-  width:50px;
-  height:50px;
+  width:42px;
+  height:42px;
   border-radius:999px;
   border:1px solid rgba(0,0,0,.12);
   background:var(--panel);
@@ -709,7 +702,6 @@ html[data-theme="dark"] .hero-avatar{
   box-shadow:0 3px 8px rgba(0,0,0,.12);
   transition:transform .15s ease, box-shadow .15s ease, filter .15s ease, background .25s ease;
 }
-
 .icon-btn:hover{
   transform:translateY(-1px);
   filter:brightness(1.1);
@@ -782,11 +774,10 @@ html[data-theme="dark"] .icon-btn:hover{
   text-decoration:none;
   white-space:nowrap;
 }
-
 .social-text:hover{ text-decoration:underline; }
 
 /* =========================================================
-   CV PAGE
+   14) PAGE: CV
 ========================================================= */
 .cv-grid{
   display:grid;
@@ -815,7 +806,6 @@ html[data-theme="dark"] .icon-btn:hover{
   height:520px;
   margin-top:.4rem;
 }
-
 html[data-theme="dark"] .cv-preview{
   border-color:rgba(255,255,255,.14);
   background:#111827;
@@ -828,7 +818,7 @@ html[data-theme="dark"] .cv-preview{
 }
 
 /* =========================================================
-   RIGHT PANELS (Home text styles)
+   15) PAGE: HOME (right panels / about)
 ========================================================= */
 .side-kicker{
   font-size:.72rem;
@@ -866,24 +856,20 @@ html[data-theme="dark"] .cv-preview{
   opacity:.92;
 }
 
-/* =========================================================
-   ABOUT TEXT BLOCK
-========================================================= */
+/* About text block */
 .about-body{
   margin:0;
   font-size:1.05rem;
   line-height:1.8;
   color:var(--text);
 }
-
 .about-body p{ margin:0 0 .9rem; }
 .about-body strong{ font-weight:600; }
 
 /* =========================================================
-   HOME LAYOUT (mobile default, desktop switch @1100px)
+   16) PAGE: HOME LAYOUT (default/mobile-first)
    ---------------------------------------------------------
-   Kept identical to your logic; only cleaned duplicates and
-   commented the sections.
+   Desktop behaviour is defined in media queries at bottom.
 ========================================================= */
 
 /* Mobile default: one column, centered */
@@ -996,12 +982,12 @@ html[data-theme="dark"] .cv-preview{
   transform:translateY(0);
   transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-
 .side-card:hover{
   transform:translateY(-2px);
   filter:brightness(1.02);
 }
 
+/* On mobile we center the title “dot + text” */
 .side-title{
   display:flex;
   justify-content:center;
@@ -1010,7 +996,14 @@ html[data-theme="dark"] .cv-preview{
   margin-bottom:.25rem;
 }
 
-/* Desktop switch (>= 1100px) */
+/* =========================================================
+   17) RESPONSIVE RULES (Media Queries)
+   ---------------------------------------------------------
+   Kept in the SAME relative order as your original blocks,
+   but moved together at the end for maintainability.
+========================================================= */
+
+/* Desktop switch (>= 1100px): Home 3-column + sticky sides */
 @media (min-width:1100px){
   .hero-home{
     width:100vw;
@@ -1095,17 +1088,7 @@ html[data-theme="dark"] .cv-preview{
   .about-card{ margin-bottom:0; }
 }
 
-/* =========================================================
-   HOME – Social behaviour by breakpoint
-   ---------------------------------------------------------
-   IMPORTANT:
-   In your original file there were multiple conflicting
-   @media (min-width:1100px) blocks for social buttons.
-   The FINAL one forces “desktop = circle icons only”.
-   We keep that final behaviour as-is.
-========================================================= */
-
-/* Mobile (<1100): horizontal row + icon-only */
+/* Home – Social behaviour: Mobile (<1100): horizontal row + icon-only */
 @media (max-width:1099px){
   .hero-left .social-row{
     flex-direction:row;
@@ -1135,7 +1118,7 @@ html[data-theme="dark"] .cv-preview{
   }
 }
 
-/* Mobile sizing: allow panels to stretch more with viewport */
+/* Home – Mobile sizing: allow panels to stretch more with viewport */
 @media (max-width:1099px){
   .hero-left,
   .hero-center,
@@ -1152,7 +1135,7 @@ html[data-theme="dark"] .cv-preview{
   }
 }
 
-/* Desktop (>=1100): circle icons only (final intended result) */
+/* Home – Social behaviour: Desktop (>=1100): circle icons only */
 @media (min-width:1100px){
   .hero-left .social-row{
     display:flex;
@@ -1182,9 +1165,7 @@ html[data-theme="dark"] .cv-preview{
   }
 }
 
-/* =========================================================
-   RESPONSIVE: general mobile layout (<900px)
-========================================================= */
+/* General responsive: mobile layout (<900px) */
 @media(max-width:900px){
   .container{ width:min(100% - 1.5rem,var(--maxw)); }
   .hero{ padding:3rem 0 2rem; }
@@ -1193,9 +1174,7 @@ html[data-theme="dark"] .cv-preview{
   .hero h1{ font-size:clamp(1.8rem,6vw,2.4rem); }
 }
 
-/* =========================================================
-   TOPBAR – Mobile: hide desktop nav, show hamburger
-========================================================= */
+/* Topbar – Mobile: hide desktop nav, show hamburger */
 @media (max-width:768px){
   .primary-nav{ display:none !important; }
   .nav-toggle{ display:inline-flex !important; }
