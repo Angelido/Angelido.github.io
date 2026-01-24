@@ -20,7 +20,6 @@
   --shadow-soft: 0 10px 28px rgba(0,0,0,.12);
 
   /* Home layout/tuning variables */
-  --home-switch: 1100px; /* currently not used in @media, kept as-is */
   --topbar-h: 72px;
   --home-gap-mobile: 22px;
   --home-gap-desktop: clamp(18px, 2.2vw, 34px);

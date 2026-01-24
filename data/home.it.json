@@ -2,18 +2,18 @@
   "cards": [
     {
       "kicker": "Ruolo",
-      "title": "PhD Student",
-      "text": "Università di Pisa · Computer Science"
+      "title": "Dottorando",
+      "text": "Università di Pisa · Informatica"
     },
     {
-      "kicker": "Research attuale",
-      "title": "Lossless compression of text",
-      "text": "Using AI tools (in progress)"
+      "kicker": "Ambito di ricerca",
+      "title": "Compressione Lossless",
+      "text": "Testo · Codice sorgente · Compressione basata su LLM"
     },
     {
-      "kicker": "Research interests",
-      "title": "Interessi di ricerca",
-      "text": "—"
+      "kicker": "Interessi di ricerca",
+      "title": "Interessi e metodologie",
+      "text": "Compressione · NLP · AI per la medicina · Algoritmi e strutture dati"
     }
   ]
 }
