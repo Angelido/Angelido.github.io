@@ -187,19 +187,7 @@ html[data-theme="dark"] .footer-icon img.github-icon{
   color:var(--brand);
 }
 
-/* Mobile layout */
-@media (max-width:700px){
-  .footer-content{
-    flex-direction:column;
-    text-align:center;
-    gap:.4rem;
-  }
 
-  .footer-left,
-  .footer-right{
-    justify-content:center;
-  }
-}
 
 
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.1rem;border-radius:calc(var(--radius) - 4px);background:var(--brand);color:#fff;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);font-weight:600;text-decoration:none}
@@ -274,16 +262,6 @@ html[data-theme="dark"] .topbar{
   gap:.5rem;
 }
 
-/* Mobile: solo il menu orizzontale sparisce, destra resta visibile */
-@media (max-width: 768px){
-  .primary-nav{
-    display:none;
-  }
-
-  .nav-toggle{
-    display:inline-flex;
-  }
-}
 
 /* Nome in topbar in stile minimal, come Gemini */
 .brand-link{
@@ -423,21 +401,6 @@ html[data-theme="dark"] .mobile-nav{
 /* Stato aperto */
 .mobile-nav.open{
   display:flex;
-}
-
-/* BREAKPOINT: mobile */
-@media (max-width: 768px){
-  .primary-nav{
-    display:none;           /* nascondi nav orizzontale */
-  }
-
-  .nav-toggle{
-    display:inline-flex;    /* mostra hamburger */
-  }
-
-  .mobile-nav{
-    top:52px;               /* leggermente più compatto su mobile */
-  }
 }
 
 
@@ -588,10 +551,6 @@ html[data-theme="dark"] .sunmoon .cutout{ cx: 14px; cy: 10px; r: 9px; }
 
 /* ===== HERO CENTRALE ============================================ */
 
-.hero-centered{
-  padding:3.5rem 0 2.5rem;
-  text-align:center;
-}
 
 html[data-theme="dark"] .hero-avatar{
   border-color:rgba(255,255,255,.08);
@@ -600,56 +559,16 @@ html[data-theme="dark"] .hero-avatar{
 
 /* ===== HERO HOME A DUE COLONNE (HOME) ========================== */
 
-/* ===== HOME: sidebar a sinistra + testo centrato (stile AcademicPages) ===== */
-.hero-home{
-  display:grid;
 
-  /* Sidebar più stretta, testo molto più largo, colonna destra più piccola */
-  grid-template-columns: 220px minmax(680px, 980px) 160px;
 
-  column-gap: 3.2rem;
-  align-items:start;
+/* Safety: niente scroll orizzontale per piccoli overflow */
+html, body{ overflow-x: hidden; }
+
+
+html, body{
+  overflow-x: hidden;
 }
 
-@media (max-width: 900px){
-  .hero-home .social-text{
-    display:none;
-  }
-}
-
-
-/* Sidebar: centrata DENTRO la colonna, ma colonna sta a sinistra */
-.hero-left{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-
-  position: sticky;
-  top: 6rem;
-
-  /* 👇 spinge la sidebar verso il margine sinistro della pagina */
-  margin-left: calc(-1 * (max(0px, (100vw - var(--maxw)) / 2)) + 16px);
-}
-
-/* Testo: NON centrato come testo, ma colonna centrale */
-.hero-right{
-  max-width: 720px;
-  text-align: left;
-}
-
-
-.about-title{
-  font-size:clamp(1.7rem, 2.2vw, 2rem);
-  font-weight:700;
-  margin:0 0 .9rem;
-}
-
-.about-title{
-  font-size:clamp(1.7rem, 2.2vw, 2rem);
-  font-weight:700;
-  margin:0 0 .9rem;
-}
 
 .about-body{
   margin:0;
@@ -657,6 +576,10 @@ html[data-theme="dark"] .hero-avatar{
   line-height:1.8;
   color:var(--text);
 }
+/* =========================================================
+   HOME FULL SCREEN (DESKTOP): sticky L/R + più spazio a destra
+   Obiettivo: sinistra 20% - centro 55% - destra 25%
+========================================================= */
 
 .about-body p{
   margin:0 0 .9rem;
@@ -666,22 +589,6 @@ html[data-theme="dark"] .hero-avatar{
   font-weight:600;
 }
 
-@media (max-width: 900px){
-  .hero-home{
-    grid-template-columns: 1fr;
-    row-gap: 1.6rem;
-  }
-
-  .hero-left{
-    position: static;
-  }
-
-  /* Home: avatar più piccolo su schermi piccoli */
-  .hero-home .hero-avatar{
-    width:96px;
-    height:96px;
-  }
-}
 
 
 /* Default: avatar (usato dove serve) */
@@ -695,22 +602,6 @@ html[data-theme="dark"] .hero-avatar{
   box-shadow:0 10px 30px rgba(15,23,42,.18);
 }
 
-/* Home: avatar più piccolo */
-.hero-home .hero-avatar{
-  width:170px;
-  height:170px;
-}
-
-.hero-home .hero-avatar{
-  margin-bottom:1.6rem;
-}
-
-
-@media (max-width: 900px){
-  .hero-avatar{
-    margin:0 auto 1.2rem;  /* centrata su mobile */
-  }
-}
 
 .hero-name{
   font-size:clamp(2.1rem,3vw,2.7rem);
@@ -754,27 +645,6 @@ html[data-theme="dark"] .hero-avatar{
   margin-top: .30rem;
 }
 
-@media (max-width: 900px){
-
-  .hero-role,
-  .hero-affil-line{
-    margin-top: .24rem;       /* ancora più compatto su mobile */
-    line-height: 1.22;
-  }
-
-  .hero-name + .hero-role{
-    margin-top: .26rem;
-  }
-
-  .hero-role + .hero-affil .hero-affil-line:first-child{
-    margin-top: .26rem;
-  }
-
-  /* Social icon — più lontane */ 
-  .social-row{
-    margin-top: 1.2rem;
-  }
-}
 
 .hero-tagline{
   margin:.4rem 0 1.1rem;
@@ -790,27 +660,17 @@ html[data-theme="dark"] .hero-avatar{
   margin-bottom:1.8rem;     /* leggermente più aria sotto */
 }
 
-/* Home: social buttons più piccoli */
-.hero-home .icon-btn{
-  width:36px;
-  height:36px;
+/* ===== SAFETY: niente overflow per padding/border ===== */
+*, *::before, *::after{
+  box-sizing: border-box;
 }
 
-.hero-home .icon-btn img{
-  width:18px;
-  height:18px;
-}
-
-.hero-home .social-row{
-  gap:.55rem;
-  margin-bottom:1.2rem;
-}
 
 
 /* Bottoni social */
 .icon-btn{
-  width:42px;
-  height:42px;
+  width:50px;
+  height:50px;
   border-radius:999px;
   border:1px solid rgba(0,0,0,.12);
   background:var(--panel);
@@ -887,39 +747,6 @@ html[data-theme="dark"] .icon-btn:hover{
   white-space:nowrap;          /* niente a capo */
 }
 
-/* DESKTOP (home): colonna verticale con testo */
-@media (min-width: 901px){
-  .hero-home .social-row{
-    flex-direction:column;
-    align-items:flex-start;   /* testo allineato bene */
-    gap:.6rem;
-    margin-top:1rem;
-  }
-}
-
-/* MOBILE (home): riga orizzontale, solo icone */
-@media (max-width: 900px){
-  .hero-home .social-row{
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    gap:.55rem;
-    width:auto;
-    max-width:none;
-  }
-
-  .hero-home .icon-btn--wide{
-    width:34px;
-    height:34px;
-    padding:0;
-    border-radius:999px;
-    justify-content:center;
-  }
-
-  .hero-home .icon-label{
-    display:none;
-  }
-}
 
 .social-item{
   display:flex;
@@ -982,100 +809,558 @@ html[data-theme="dark"] .cv-preview{
   border:none;
 }
 
-/* Responsive: su schermi piccoli le card vanno in colonna
-   e nascondiamo l'anteprima (rimangono i bottoni) */
-@media (max-width: 900px){
-  .cv-grid{
-    grid-template-columns:1fr;
-  }
-
-  .cv-preview{
-    display:none;
-  }
-}
 
 /* =========================
-   DESKTOP TUNING (no scroll interni)
-   - tutto più piccolo in desktop
-   - ancora più piccolo su schermi bassi
+   HOME UPGRADE: divider + about card + focus pills
 ========================= */
-@media (min-width: 901px){
 
-  /* Foto profilo più piccola ma sempre rotonda */
-  .hero-home .hero-avatar{
-    width: clamp(120px, 10vw, 155px);
-    height: clamp(120px, 10vw, 155px);
-    margin-bottom: .95rem;
+/* Ombra più soft per componenti "modern" */
+:root{
+  --shadow-soft: 0 10px 28px rgba(0,0,0,.12);
+}
+
+
+
+/* ===== RIGHT PANELS (Home) ===================================== */
+
+
+.side-kicker{
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+
+.side-title{
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: .25rem;
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+}
+
+.side-title::before{
+  content:"";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--brand);
+  display:inline-block;
+  opacity:.95;
+}
+
+.side-text{
+  font-size: .92rem;
+  line-height: 1.35;
+  color: var(--text);
+  opacity: .92;
+}
+
+/* =========================================================
+   HOME (CLEAN REWRITE)
+   - Default = MOBILE (1 colonna, tutto centrato)
+   - Switch NETTO = DESKTOP (30/40/30) sopra --home-switch
+   - Nessuna "terza versione" perché usiamo UN SOLO breakpoint
+========================================================= */
+
+:root{
+  /* Cambia SOLO questo numero per decidere quando scatta il desktop */
+  --home-switch: 1100px;
+
+  /* Sticky offset: altezza topbar (se cambia, cambia qui) */
+  --topbar-h: 72px;
+
+  /* Spazi home */
+  --home-gap-mobile: 22px;
+  --home-gap-desktop: clamp(18px, 2.2vw, 34px);
+
+  /* Card polish */
+  --card-border: rgba(0,0,0,.08);
+  --card-bg: rgba(255,255,255,.68);
+  --card-shadow: 0 14px 34px rgba(0,0,0,.10);
+}
+
+/* Dark tuning card */
+html[data-theme="dark"]{
+  --card-border: rgba(255,255,255,.10);
+  --card-bg: rgba(35,36,39,.70);
+  --card-shadow: 0 18px 46px rgba(0,0,0,.45);
+}
+
+/* Safety */
+*, *::before, *::after{ box-sizing: border-box; }
+html, body{ overflow-x: hidden; }
+
+/* ---------------------------
+   HOME: MOBILE DEFAULT (sempre)
+   1 colonna, tutto centrato, niente sticky, niente linee verticali
+---------------------------- */
+
+.hero-home{
+  width: 100%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: var(--home-gap-mobile);
+
+  justify-items: center;  /* centra i blocchi (left/center/right) */
+  align-items: start;
+}
+
+/* Spegniamo sticky di default (mobile) */
+.hero-left,
+.hero-center,
+.hero-side{
+  position: static;
+  top: auto;
+  width: 100%;
+  min-width: 0;
+}
+
+/* LEFT: centra DAVVERO tutto (foto + testo + bottoni) */
+.hero-left{
+  max-width: 560px;
+  margin-inline: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* <<< centra foto e bottoni */
+  text-align: center;    /* <<< centra i testi */
+}
+
+/* Avatar centrato in mobile */
+.hero-left .hero-avatar{
+  margin: 0 auto 1.2rem;
+}
+
+/* Social row centrata */
+.hero-left .social-row{
+  justify-content: center;
+}
+
+/* Se usi social wide (icona + label) rendili "belli" in mobile */
+.hero-left .icon-btn--wide{
+  width: auto;
+  min-width: 220px;
+  justify-content: center;
+}
+
+/* CENTER: about card con aria sotto (spazio reale per evitare “incastro”) */
+.hero-center{
+  max-width: 560px;
+  margin-inline: auto;
+  padding: 0;
+}
+
+/* Nessuna linea verticale in mobile */
+.hero-center::before,
+.hero-center::after{
+  display: none !important;
+}
+
+/* About card: più bella in mobile e con stacco */
+.about-card{
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+
+  padding: 1.25rem 1.25rem 1.05rem;
+
+  /* Questo risolve il tuo punto (manca spazio verticale) */
+  margin-bottom: 18px;
+}
+
+/* Titolo e testo */
+.about-title{
+  margin: 0 0 .85rem;
+  letter-spacing: -0.02em;
+  font-weight: 850;
+}
+
+.about-body{
+  margin: 0;
+  line-height: 1.8;
+}
+
+/* RIGHT: pannelli sotto l’about, con aria e look migliore */
+.hero-side{
+  max-width: 560px;
+  margin-inline: auto;
+
+  /* Questo + margin-bottom dell’about garantiscono spazio visivo */
+  margin-top: 8px;
+
+  display: flex;
+  justify-content: center;
+}
+
+/* Contenitore pannelli */
+.side-panel{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+/* Card pannelli: centrata + più “premium” */
+.side-card{
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+  padding: 1.05rem 1.1rem;
+
+  text-align: center;
+
+  /* Piccolo effetto “stack” */
+  transform: translateY(0);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.side-card:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+
+/* Titoli pannelli centrati */
+.side-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .25rem;
+}
+
+/* Pallino prima del titolo (se lo vuoi) */
+.side-title::before{
+  content:"";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--brand);
+  opacity: .95;
+}
+
+/* Subtitolo/piccolo kicker */
+.side-kicker{
+  text-transform: uppercase;
+  letter-spacing: .10em;
+  font-weight: 800;
+  font-size: .72rem;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+
+/* Testo pannelli */
+.side-text{
+  opacity: .92;
+  line-height: 1.35;
+}
+
+/* ---------------------------
+   HOME: DESKTOP (switch unico)
+   30 / 40 / 30, sticky, linee verticali
+---------------------------- */
+@media (min-width: 1100px){
+
+  .hero-home{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+
+    display: grid;
+    grid-template-columns: 2fr 5fr 2fr; /* 30 / 40 / 30 */
+    column-gap: var(--home-gap-desktop);
+    align-items: start;
+
+    padding-left: clamp(14px, 2.0vw, 28px);
+    padding-right: clamp(14px, 2.0vw, 28px);
   }
 
-  /* Testo più compatto */
-  .hero-name{
-    font-size: clamp(1.65rem, 1.6vw, 2.25rem);
-    line-height: 1.1;
+  .hero-left{
+    position: sticky;
+    top: var(--topbar-h);
+    justify-self: center;
+
+    max-width: 420px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .hero-role{
-    font-size: clamp(.92rem, .95vw, 1rem);
+  .hero-center{
+    position: relative;
+    justify-self: center;
+
+    max-width: 860px;
+    padding: 0 2.2rem;
   }
 
-  .hero-affil-line{
-    font-size: clamp(.85rem, .9vw, .95rem);
+  /* Linee verticali SOLO desktop */
+  .hero-center::before,
+  .hero-center::after{
+    content:"";
+    position:absolute;
+    top: .6rem;
+    bottom: .6rem;
+    width: 1px;
+    opacity: 1;
   }
 
-  /* Meno “aria” tra le righe */
-  .hero-role,
-  .hero-affil-line{
-    margin-top: .18rem;
+  .hero-center::before{
+    left: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15,23,42,0),
+      rgba(15,23,42,.10),
+      rgba(15,23,42,0)
+    );
   }
 
-  /* Social: un po’ più piccoli in desktop */
-  .hero-home .social-row{
-    gap: .5rem;
-    margin-top: .85rem;
-    margin-bottom: 1rem;
+  .hero-center::after{
+    right: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15,23,42,0),
+      rgba(15,23,42,.10),
+      rgba(15,23,42,0)
+    );
   }
 
-  .hero-home .icon-btn{
-    width: 32px;
-    height: 32px;
+  html[data-theme="dark"] .hero-center::before,
+  html[data-theme="dark"] .hero-center::after{
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0),
+      rgba(255,255,255,.14),
+      rgba(255,255,255,0)
+    );
   }
 
-  .hero-home .icon-btn img{
-    width: 16px;
-    height: 16px;
+  .hero-side{
+    position: sticky;
+    top: var(--topbar-h);
+    justify-self: center;
+
+    max-width: 520px;
+    padding-bottom: 2.2rem;
+
+    margin-top: 0; /* in desktop non serve */
   }
 
-  /* Se usi anche le label in desktop (social-text), rendile più piccole */
-  .social-text{
-    font-size: .9rem;
+  /* In desktop non serve stacco extra sotto about */
+  .about-card{
+    margin-bottom: 0;
   }
 }
 
-/* ===== Schermi desktop "bassi": riduci ancora, così non esce nulla ===== */
-@media (min-width: 901px) and (max-height: 780px){
+/* =========================================================
+   DESKTOP (>=1100): icone PERFETTAMENTE CENTRATE in hero-left
+   testo sempre a destra, allineamento stabile
+========================================================= */
+@media (min-width: 1100px){
 
-  .hero-home .hero-avatar{
-    width: 115px;
-    height: 115px;
-    margin-bottom: .8rem;
+  /* Lista verticale */
+  .hero-left .social-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    width:100%;
+    align-items:stretch; /* <-- fondamentale: niente left/center qui */
   }
 
-  .hero-name{
-    font-size: 1.55rem;
+  /*
+    Ogni bottone:
+    [spazio] [ICONA] [TESTO]
+    L'icona è SEMPRE al centro della riga, quindi al centro di hero-left
+  */
+  .hero-left .icon-btn--wide{
+    width: min(420px, 100%);  /* regola solo la larghezza del bottone */
+    margin-inline: auto;      /* centra l’intero bottone in hero-left */
+
+    display:grid;
+    grid-template-columns: 1fr 42px 1fr; /* 42px = colonna icona */
+    align-items:center;
+    column-gap:.65rem;
+
+    height:42px;
+    padding:0 .85rem;
   }
 
-  .hero-home .social-row{
-    margin-top: .7rem;
-    margin-bottom: .8rem;
+  /* icona: colonna centrale, centrata */
+  .hero-left .icon-btn--wide img{
+    grid-column:2;
+    justify-self:center;
   }
 
-  .hero-home .icon-btn{
-    width: 30px;
-    height: 30px;
+  /* testo: colonna destra, parte subito dopo l’icona */
+  .hero-left .icon-label{
+    grid-column:3;
+    justify-self:start;
+    text-align:left;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* =========================================================
+   HOME – MOBILE: bottoni/social IN ORIZZONTALE, SOLO ICONE
+========================================================= */
+@media (max-width: 1099px){
+  .hero-left .social-row{
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    max-width: none;
   }
 
-  .hero-home .icon-btn img{
-    width: 15px;
-    height: 15px;
+  .hero-left .icon-btn--wide{
+    width: 38px;
+    height: 38px;
+    min-width: 0;
+    padding: 0;
+    border-radius: 999px;
+    justify-content: center;
+  }
+
+  .hero-left .icon-btn--wide img{
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-left .icon-label{
+    display: none !important;
+  }
+}
+
+
+
+/* =========================================================
+   HOME – MOBILE: pannelli che si allargano col viewport
+========================================================= */
+@media (max-width: 1099px){
+  .hero-left,
+  .hero-center,
+  .hero-side{
+    width: 100%;
+    max-width: min(920px, calc(100% - 24px)); /* <<< si allarga fino a 920 */
+    padding-inline: 0;
+    margin-inline: auto;
+  }
+
+  .about-card,
+  .side-card{
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   TOPBAR – MOBILE: hamburger a sinistra + nav a tendina
+========================================================= */
+@media (max-width: 768px){
+  .primary-nav{ display: none !important; }
+  .nav-toggle{ display: inline-flex !important; }
+
+  .mobile-nav{
+    top: 52px;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* =========================================================
+   DESKTOP (>=1100): BOTTONI centrati come blocco + icona centrata
+========================================================= */
+@media (min-width: 1100px){
+
+  /* centra i bottoni nella colonna sinistra */
+  .hero-left .social-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center !important;     /* 🔥 questo centra i bottoni */
+  }
+
+  /* bottone: NON deve essere width:100% */
+  .hero-left .icon-btn--wide{
+    width: 360px !important;           /* scegli tu: 320/340/360 */
+    max-width: calc(100% - 24px) !important;
+    margin: 0 auto !important;
+
+    display:grid !important;
+    grid-template-columns: 1fr 42px 1fr;
+    align-items:center;
+    column-gap:.65rem;
+
+    justify-content: initial !important; /* neutralizza flex-start */
+  }
+
+  .hero-left .icon-btn--wide img{
+    grid-column:2;
+    justify-self:center;
+  }
+
+  .hero-left .icon-label{
+    grid-column:3;
+    justify-self:start;
+    text-align:left;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* =========================================================
+   DESKTOP (>=1100): social SOLO ICONE circolari (NO pill)
+   (metti questo blocco come ULTIMO nel CSS)
+========================================================= */
+@media (min-width: 1100px){
+
+  /* colonna verticale centrata */
+  .hero-left .social-row{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 12px;
+    width:auto;              /* <<< evita stretch */
+  }
+
+  /* ogni link torna ad essere un CERCHIO */
+  .hero-left .icon-btn--wide{
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  /* icona centrata */
+  .hero-left .icon-btn--wide img{
+    width: 20px;
+    height: 20px;
+  }
+
+  /* nascondi label in desktop */
+  .hero-left .icon-btn--wide .icon-label{
+    display:none !important;
   }
 }

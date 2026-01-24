@@ -1,0 +1,19 @@
+{
+  "cards": [
+    {
+      "kicker": "Ruolo",
+      "title": "PhD Student",
+      "text": "Università di Pisa · Computer Science"
+    },
+    {
+      "kicker": "Research attuale",
+      "title": "Lossless compression of text",
+      "text": "Using AI tools (in progress)"
+    },
+    {
+      "kicker": "Research interests",
+      "title": "Interessi di ricerca",
+      "text": "—"
+    }
+  ]
+}
