@@ -327,12 +327,12 @@
       newTab = false; // mailto non serve in new tab
     } else if (type === 'orcid'){
       // <<< METTI QUI il tuo link ORCID
-      href = 'https://orcid.org/0000-0000-0000-0000';
+      href = 'https://orcid.org/0009-0006-2068-5934';
       label = 'ORCID';
       iconFile = 'orcid.svg';
     } else if (type === 'scholar'){
       // <<< METTI QUI il tuo link Google Scholar
-      href = 'https://scholar.google.com/citations?user=YOUR_ID';
+      href = 'https://scholar.google.com/citations?user=C2QAXR4AAAAJ';
       label = 'Scholar';
       iconFile = 'scholar.svg'; // ATTENZIONE: hai detto "scolar.svg" (non scholar.svg)
     }
