@@ -1,11 +1,55 @@
 {
-  "site": { "title": "Angelo Nardone — Personal website" },
-  "brand": "Angelo Nardone",
-  "nav": { "academic": "Academic", "personal": "Personal", "pubs": "Publications" },
-  "section": { "about": "About me", "research": "Research topics", "education": "Education & Experience", "publications": "Publications" },
-  "action": { "readmore": "Read more", "viewall": "View all", "back": "Back" },
+  "site": {
+    "title": "Angelo Nardone — Personal website"
+  },
+  "home": {
+    "aboutTitle": "About me",
+    "quickInfoLabel": "Quick info"
+  },
+  "research": {
+    "title": "Projects & Publications",
+    "intro": "Here you can find an overview of my projects and publications, together with a snapshot of my academic path."
+  },
+  "cv": {
+    "intro": "Here you can view and download my CV in both Italian and English.",
+    "itLabel": "Italian CV",
+    "enLabel": "English CV"
+  },
+  "actions": {
+    "openNewTab": "Open in a new tab",
+    "downloadPdf": "Download PDF",
+    "viewAll": "View all",
+    "back": "Back"
+  },
+  "publications": {
+    "searchPlaceholder": "Search title/authors/venue",
+    "allYears": "All years"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "intro": "This personal website does not use profiling cookies and does not collect personal data beyond what is strictly necessary for its technical operation.",
+    "dataTitle": "Data collected",
+    "dataText": "The site may log standard technical information (such as anonymized IP addresses, server logs or aggregated traffic statistics) solely for security and maintenance purposes.",
+    "linksTitle": "External links",
+    "linksText": "Links to GitHub and LinkedIn point to external services which apply their own data protection policies. Please refer to their respective privacy policies.",
+    "contactTitle": "Contact",
+    "contactText": "For any questions about privacy, you can contact me via email."
+  },
+  "errors": {
+    "notFoundTitle": "404",
+    "notFoundText": "Page not found."
+  },
   "footer": {
-  "quote": "If ChatGPT can make mistakes, imagine me."
-}
-
+    "privacy": "Privacy"
+  },
+  "topbar": {
+    "ariaLabel": "Main site navigation",
+    "openMenu": "Open menu"
+  },
+  "mobileNav": {
+    "ariaLabel": "Sections (mobile)"
+  },
+  "theme": {
+    "toggle": "Toggle theme"
+  }
 }
