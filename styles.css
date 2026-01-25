@@ -816,6 +816,20 @@ html[data-theme="dark"] .cv-preview{
   border:none;
 }
 
+/* --- CV: improve contrast for outline buttons --- */
+.cv-buttons .btn,
+.cv-buttons .btn-outline{
+  background: transparent;
+  color: var(--brand);
+  border: 2px solid var(--brand);
+}
+
+.cv-buttons .btn:hover,
+.cv-buttons .btn-outline:hover{
+  background: var(--brand);
+  color: #ffffff;
+}
+
 /* =========================================================
    15) PAGE: HOME (right panels / about)
 ========================================================= */
