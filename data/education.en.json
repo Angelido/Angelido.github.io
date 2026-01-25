@@ -1,0 +1,53 @@
+[
+  {
+    "type": "Ph.D.",
+    "title": "Ph.D. in Computer Science",
+    "institution": "University of Pisa",
+    "city": "Pisa, Italy",
+    "from": "2025",
+    "to": "Present",
+    "specialization": [
+      "Lossless Compression",
+      "Text Compression",
+      "Large Language Models (LLMs)"
+    ],
+    "supervisor": "Prof. Paolo Ferragina"
+  },
+  {
+    "type": "M.Sc. (LM-18)",
+    "title": "Master's Degree in Computer Science – Artificial Intelligence Curriculum",
+    "institution": "University of Pisa, Department of Computer Science",
+    "city": "Pisa, Italy",
+    "from": "2022",
+    "to": "2025",
+    "finalGrade": "110/110 cum laude",
+    "finalDate": "October 17, 2025",
+    "specialization": [
+      "Lossless Compression",
+      "Algorithms and Optimization",
+      "Deep Learning",
+      "AI for Health"
+    ],
+    "thesis": "Lossless Compression of Source Code using Large Language Models",
+    "supervisor": "Prof. Paolo Ferragina",
+    "opponent": "Prof. Giovanni Manzini"
+  },
+  {
+    "type": "B.Sc. (L-35)",
+    "title": "Bachelor's Degree in Mathematics",
+    "institution": "University of Pisa, Department of Mathematics",
+    "city": "Pisa, Italy",
+    "from": "2016",
+    "to": "2022",
+    "finalGrade": "101/110",
+    "finalDate": "October 28, 2022",
+    "specialization": [
+      "Algorithms and Data Structures",
+      "Scientific Computing",
+      "Cryptography",
+      "Coding Theory"
+    ],
+    "thesis": "Approximate Near Neighbor Searching: methods for similarity search in time series using the Fréchet distance",
+    "supervisor": "Prof. Roberto Grossi"
+  }
+]

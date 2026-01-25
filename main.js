@@ -113,8 +113,8 @@
     const [profile, home, education, experience, publications, topics, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
-      fetch(`${base}/education.json`).then((r) => r.json()),
-      fetch(`${base}/experience.json`).then((r) => r.json()),
+      fetch(`${base}/education.${state.lang}.json`).then(r => r.json()),
+      fetch(`${base}/experience.${state.lang}.json`).then(r => r.json()),
       fetch(`${base}/publications.json`).then((r) => r.json()),
       fetch(`${base}/topics.json`).then((r) => r.json()),
       fetch(`${base}/social.json`).then((r) => r.json()),
@@ -426,34 +426,117 @@
 
   function renderExperience() {
     const app = $('#app');
-    const items = state.data.education
-      .concat(state.data.experience)
-      .sort((a, b) => (b.to || '9999').localeCompare(a.to || '9999'));
+
+    // Titles from i18n (with sensible defaults)
+    const pageTitle =
+      state.i18n?.experiencePage?.title ||
+      state.i18n?.section?.education ||
+      'Education & Experience';
+
+    const expTitle = state.i18n?.experiencePage?.experienceTitle || 'Experience';
+    const eduTitle = state.i18n?.experiencePage?.educationTitle || 'Education';
+
+    const ongoingLabel =
+      state.lang === 'it'
+        ? (state.i18n?.labels?.ongoing || 'in corso')
+        : (state.i18n?.labels?.ongoing || 'ongoing');
+
+    // Sort: most recent first (uses `to`, fallback "9999" for ongoing)
+    const sortByToDesc = (a, b) => (b.to || '9999').localeCompare(a.to || '9999');
+
+    const expItems = (state.data.experience || []).slice().sort(sortByToDesc);
+    const eduItems = (state.data.education || []).slice().sort(sortByToDesc);
+    const specLabel = state.lang === 'it' ? 'Specializzazione:' : 'Specialization:';
+    const thesisLabel = state.lang === 'it' ? 'Titolo tesi:' : 'Thesis:';
+    const supervisorLabel = state.lang === 'it' ? 'Supervisore:' : 'Supervisor:';
+    const opponentLabel = state.lang === 'it' ? 'Controrelatore:' : 'Opponent:';
+
+    const itemRow = (x) => `
+      <li class="tl-item">
+        <span class="tl-dot" aria-hidden="true"></span>
+
+        <h3>${x.title}</h3>
+
+        <div class="pub-meta">
+          ${(x.company || x.institution || '')}${x.city ? ` • ${x.city}` : ''}
+        </div>
+
+
+        <div class="pub-meta">
+          ${x.from} — ${x.to || ongoingLabel}
+          ${x.finalGrade ? ` • <strong>${x.finalGrade}</strong>` : ''}
+        </div>
+
+        ${x.topic ? `
+        <div class="edu-line">
+          <span class="edu-label">${state.lang === 'it' ? 'Tema:' : 'Topic:'}</span>
+          <span class="edu-value"><em>${x.topic}</em></span>
+        </div>
+      ` : ""}
+
+
+        ${x.thesis ? `
+          <div class="edu-line">
+            <span class="edu-label">${thesisLabel}</span>
+            <span class="edu-value"><em>${x.thesis}</em></span>
+          </div>
+        ` : ""}
+
+        ${x.supervisor ? `
+          <div class="edu-line">
+            <span class="edu-label">${supervisorLabel}</span>
+            <span class="edu-value">${x.supervisor}</span>
+          </div>
+        ` : ""}
+
+        ${x.opponent ? `
+          <div class="edu-line">
+            <span class="edu-label">${opponentLabel}</span>
+            <span class="edu-value">${x.opponent}</span>
+          </div>
+          ` : ""}
+      
+          ${x.specialization?.length ? `
+            <div class="edu-spec">
+              <span class="edu-label">${specLabel}</span>
+              <span class="edu-spec-text"><em>${x.specialization.join(" · ")}</em></span>
+            </div>
+          ` : ""}
+      </li>
+    `;
 
     app.innerHTML = `
       <section class="section">
-        <div class="row space-between">
-          <h1 data-i18n="section.education">Formazione ed esperienze</h1>
-          <a class="btn btn-outline" href="#/accademico">← <span data-i18n="action.back">Indietro</span></a>
+        <header class="page-head">
+          <h1>${pageTitle}</h1>
+          ${
+            state.i18n?.experiencePage?.subtitle
+              ? `<p class="page-subtitle">${state.i18n.experiencePage.subtitle}</p>`
+              : ''
+          }
+        </header>
+
+        <div class="expedu-split">
+          <article class="expedu-panel">
+            <div class="expedu-panel-head">
+              <h2>${eduTitle}</h2>
+            </div>
+            <ol class="timeline expedu-timeline">
+              ${eduItems.map(itemRow).join('')}
+            </ol>
+          </article>
+
+          <article class="expedu-panel">
+            <div class="expedu-panel-head">
+              <h2>${expTitle}</h2>
+            </div>
+            <ol class="timeline expedu-timeline">
+              ${expItems.map(itemRow).join('')}
+            </ol>
+          </article>
         </div>
-        <ol class="timeline list" id="tl"></ol>
       </section>
     `;
-
-    const tl = $('#tl');
-    tl.innerHTML = items
-      .map(
-        (x) => `
-        <li class="tl-item">
-          <span class="tl-dot" aria-hidden="true"></span>
-          <h3>${x.title}</h3>
-          <div class="pub-meta">${x.institution || x.company} • ${x.city || ''}</div>
-          <div class="pub-meta">${x.from} — ${x.to || 'in corso'}</div>
-          ${x.details ? `<p>${x.details}</p>` : ''}
-        </li>
-      `
-      )
-      .join('');
   }
 
   const renderEducation = renderExperience;

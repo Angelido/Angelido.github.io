@@ -1010,7 +1010,141 @@ html[data-theme="dark"] .cv-preview{
 }
 
 /* =========================================================
-   17) RESPONSIVE RULES (Media Queries)
+  17) PAGE: EDUCATION & EXPERIENCE (split modern layout)
+========================================================= */
+
+.page-head{
+  margin-bottom: 1rem;
+}
+
+.page-subtitle{
+  margin-top: .35rem;
+  color: var(--muted);
+  max-width: 70ch;
+}
+
+/* Education structured fields */
+
+.edu-spec{
+  margin-top: .35rem;
+  font-size: .95rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.edu-line{
+  margin-top: .3rem;
+  font-size: .95rem;
+  line-height: 1.45;
+}
+
+.edu-label{
+  font-weight: 600;
+  margin-right: .25rem;
+  color: var(--text);
+}
+
+.edu-value{
+  color: var(--text);
+}
+
+.expedu-split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.expedu-panel{
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+  padding: 1.1rem 1.1rem .9rem;
+}
+
+.expedu-panel-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .7rem;
+}
+
+.expedu-panel-head h2{
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.expedu-count{
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1px solid var(--card-border);
+  padding: .2rem .55rem;
+  border-radius: 999px;
+}
+
+.expedu-timeline{
+  margin: 0;
+  padding: 0;
+  list-style: none;  
+}
+
+/* Softer line for this page */
+.expedu-timeline.timeline::before{
+  left: .55rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0),
+    rgba(0,0,0,.12),
+    rgba(0,0,0,0)
+  );
+}
+html[data-theme="dark"] .expedu-timeline.timeline::before{
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.18),
+    rgba(255,255,255,0)
+  );
+}
+
+.expedu-timeline .tl-item{
+  padding-left: 2.1rem;
+  border-radius: 12px;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+}
+
+.expedu-timeline .tl-item:hover{
+  background: rgba(255,255,255,.04);
+}
+html[data-theme="light"] .expedu-timeline .tl-item:hover{
+  background: rgba(15,23,42,.03);
+}
+
+.expedu-timeline .tl-dot{
+  top: .55rem;
+  width: .72rem;
+  height: .72rem;
+  box-shadow: 0 0 0 4px rgba(0,0,0,.04);
+}
+html[data-theme="dark"] .expedu-timeline .tl-dot{
+  box-shadow: 0 0 0 4px rgba(255,255,255,.06);
+}
+
+@media (max-width: 900px){
+  .expedu-split{
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   18) RESPONSIVE RULES (Media Queries)
    ---------------------------------------------------------
    Kept in the SAME relative order as your original blocks,
    but moved together at the end for maintainability.
