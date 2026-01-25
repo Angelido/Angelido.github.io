@@ -33,7 +33,10 @@
   <!-- =========================================================
        TOPBAR: main navigation + language + theme
   ========================================================== -->
-  <div class="topbar" role="navigation" aria-label="Navigazione principale sito">
+  <div class="topbar" role="navigation"
+     aria-label="Navigazione principale sito"
+     data-i18n="topbar.ariaLabel"
+     data-i18n-attr="aria-label">
     <div class="topbar-inner">
       <!-- Left: hamburger (mobile) + brand + desktop nav -->
       <div class="topbar-left">
@@ -43,11 +46,10 @@
           class="nav-toggle"
           type="button"
           aria-label="Apri menu"
+          data-i18n="topbar.openMenu"
+          data-i18n-attr="aria-label"
           aria-expanded="false"
         >
-          <span></span>
-          <span></span>
-          <span></span>
         </button>
 
         <!-- Brand link (always goes "Home") -->
@@ -97,6 +99,8 @@
           type="button"
           title="Cambia tema"
           aria-label="Cambia tema"
+          data-i18n="theme.toggle"
+          data-i18n-attr="title,aria-label"
         >
           <!-- Sun/Moon icon (SVG + mask) -->
           <svg class="sunmoon" viewBox="0 0 24 24" aria-hidden="true">
@@ -140,7 +144,12 @@
   <!-- =========================================================
        MOBILE NAV: vertical dropdown
   ========================================================== -->
-  <nav id="mobileNav" class="mobile-nav" aria-label="Sezioni (mobile)" aria-hidden="true">
+  <nav id="mobileNav" class="mobile-nav"
+     aria-label="Sezioni (mobile)"
+     data-i18n="mobileNav.ariaLabel"
+     data-i18n-attr="aria-label"
+     aria-hidden="true"
+  >
     <a href="#/accademico" class="nav-item" data-route="/accademico">Home</a>
     <a href="#/research" class="nav-item" data-route="/research">Research</a>
     <a href="#/experience" class="nav-item" data-route="/experience">Education &amp; Experience</a>
@@ -200,7 +209,7 @@
       <!-- Right: copyright + privacy -->
       <div class="footer-right">
         <span>© <span id="year"></span> <span data-i18n="brand">Angelo Nardone</span></span>
-        <a href="#/privacy" class="footer-link">Privacy</a>
+        <a href="#/privacy" class="footer-link" data-i18n="footer.privacy">Privacy</a>
       </div>
     </div>
   </footer>

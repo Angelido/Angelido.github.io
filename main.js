@@ -12,7 +12,9 @@
       education: [],
       experience: [],
       publications: [],
-      topics: []
+      topics: [],
+      social: [],
+      cv: null
     }
   };
 
@@ -58,15 +60,24 @@
     $$('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
       const val = key.split('.').reduce((o, k) => o?.[k], state.i18n);
-      if (typeof val === 'string') el.textContent = val;
+      if (typeof val !== 'string') return;
+
+      const attr = el.getAttribute('data-i18n-attr');
+      if (attr) {
+        attr
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .forEach((a) => el.setAttribute(a, val));
+      } else {
+        el.textContent = val;
+      }
     });
 
-    // Keep <html lang=".."> in sync
     document.documentElement.lang = state.lang;
-
-    // Update the browser tab title if provided by i18n
     document.title = state.i18n?.site?.title || document.title;
   }
+
 
   function syncLangUI() {
     const langBtn = $('#langBtn');
@@ -99,16 +110,19 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, home, education, experience, publications, topics] = await Promise.all([
+    const [profile, home, education, experience, publications, topics, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.json`).then((r) => r.json()),
       fetch(`${base}/experience.json`).then((r) => r.json()),
       fetch(`${base}/publications.json`).then((r) => r.json()),
-      fetch(`${base}/topics.json`).then((r) => r.json())
+      fetch(`${base}/topics.json`).then((r) => r.json()),
+      fetch(`${base}/social.json`).then((r) => r.json()),
+      fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, home, education, experience, publications, topics };
+    state.data = { profile, home, education, experience, publications, topics, social, cv };
+
   }
 
   /* =========================================================
@@ -174,41 +188,13 @@
     `;
   }
 
-  function socialIcon(type) {
-    let href = '#';
-    let label = '';
-    let iconFile = '';
-    let newTab = true;
-
-    if (type === 'linkedin') {
-      href = 'https://www.linkedin.com/in/nardone-angelo';
-      label = 'LinkedIn';
-      iconFile = 'linkedin.svg';
-    } else if (type === 'github') {
-      href = 'https://github.com/Angelido';
-      label = 'GitHub';
-      iconFile = 'github-mark.svg';
-    } else if (type === 'email') {
-      href = 'mailto:angelo.nardone17@gmail.com';
-      label = 'Email';
-      iconFile = 'gmail.svg';
-      newTab = false;
-    } else if (type === 'orcid') {
-      href = 'https://orcid.org/0009-0006-2068-5934';
-      label = 'ORCID';
-      iconFile = 'orcid.svg';
-    } else if (type === 'scholar') {
-      href = 'https://scholar.google.com/citations?user=C2QAXR4AAAAJ';
-      label = 'Scholar';
-      iconFile = 'scholar.svg';
-    }
-
+  function socialIcon(item) {
     return `
       <a class="icon-btn icon-btn--circle"
-         href="${href}"
-         ${newTab ? 'target="_blank" rel="noopener"' : ''}
-         aria-label="${label}">
-        <img src="assets/${iconFile}" alt="${label}">
+        href="${item.href}"
+        ${item.newTab ? 'target="_blank" rel="noopener"' : ''}
+        aria-label="${item.label}">
+        <img src="assets/${item.icon}" alt="${item.label}">
       </a>
     `;
   }
@@ -240,24 +226,21 @@
           </div>
 
           <div class="social-row">
-            ${socialIcon('linkedin')}
-            ${socialIcon('github')}
-            ${socialIcon('email')}
-            ${socialIcon('orcid')}
-            ${socialIcon('scholar')}
+            ${(state.data.social || []).map(socialIcon).join('')}
           </div>
+
         </div>
 
         <div class="hero-center">
           <div class="about-card">
-            <h2 class="about-title">${state.lang === 'it' ? 'Chi sono' : 'About me'}</h2>
+            <h2 class="about-title">${state.i18n?.home?.aboutTitle || ''}</h2>
             <div class="about-body" id="aboutBody">
               ${fullHtml}
             </div>
           </div>
         </div>
 
-        <aside class="hero-side" aria-label="Quick info">
+        <aside class="hero-side" aria-label="${state.i18n?.home?.quickInfoLabel || 'Quick info'}">
           <div class="side-panel">
             ${(state.data.home?.cards || [])
               .map(
@@ -280,11 +263,9 @@
     const { topics } = state.data;
     const app = $('#app');
 
-    const title = state.lang === 'it' ? 'Projects & Publications' : 'Projects & Publications';
-    const intro =
-      state.lang === 'it'
-        ? 'Qui trovi una panoramica dei progetti e delle pubblicazioni, insieme a un estratto del mio percorso accademico.'
-        : 'Here you can find an overview of my projects and publications, together with a snapshot of my academic path.';
+    const title = state.i18n?.research?.title || 'Projects & Publications';
+    const intro = state.i18n?.research?.intro || '';
+
 
     const list = state.data.education
       .concat(state.data.experience)
@@ -331,20 +312,15 @@
     const lang = state.lang;
 
     const title = 'Curriculum Vitae';
-    const intro =
-      lang === 'it'
-        ? 'Qui puoi consultare e scaricare il mio CV in italiano e in inglese.'
-        : 'Here you can view and download my CV in both Italian and English.';
+    const intro = state.i18n?.cv?.intro || '';
+    const itLabel = state.i18n?.cv?.itLabel || 'Italian CV';
+    const enLabel = state.i18n?.cv?.enLabel || 'English CV';
 
-    const itLabel = lang === 'it' ? 'CV in italiano' : 'Italian CV';
-    const enLabel = lang === 'it' ? 'CV in inglese' : 'English CV';
+    const openText = state.i18n?.actions?.openNewTab || 'Open in a new tab';
+    const downloadText = state.i18n?.actions?.downloadPdf || 'Download PDF';
 
-    const openText = lang === 'it' ? 'Apri in una nuova scheda' : 'Open in a new tab';
-    const downloadText = lang === 'it' ? 'Scarica PDF' : 'Download PDF';
-
-    // PDF paths (edit here if names differ)
-    const cvIt = 'assets/cv-it.pdf';
-    const cvEn = 'assets/cv-en.pdf';
+    const cvIt = state.data.cv?.it || 'assets/cv-it.pdf';
+    const cvEn = state.data.cv?.en || 'assets/cv-en.pdf';
 
     app.innerHTML = `
       <section class="section">
@@ -390,9 +366,9 @@
         </div>
 
         <div class="toolbar">
-          <input id="q" class="input" placeholder="Cerca titolo/autori/venue" />
+          <input id="q" class="input" placeholder="${state.i18n?.publications?.searchPlaceholder || ''}" />
           <select id="yearSel" class="input">
-            <option value="">Tutti gli anni</option>
+            <option value="">${state.i18n?.publications?.allYears || ''}</option>
             ${Array.from(new Set(pubs.map((p) => p.year)))
               .sort((a, b) => b - a)
               .map((y) => `<option>${y}</option>`)
@@ -484,28 +460,21 @@
 
   function renderPrivacy() {
     const app = $('#app');
-    const isIt = state.lang === 'it';
 
-    const title = 'Privacy';
-    const intro = isIt
-      ? 'Questo sito personale non utilizza cookie di profilazione e non raccoglie dati personali oltre a quelli strettamente necessari al funzionamento tecnico.'
-      : 'This personal website does not use profiling cookies and does not collect personal data beyond what is strictly necessary for its technical operation.';
+    const title = state.i18n?.privacy?.title || 'Privacy';
+    const intro = state.i18n?.privacy?.intro || '';
 
-    const contact = isIt
-      ? 'Per qualsiasi domanda relativa alla privacy puoi contattarmi via email.'
-      : 'For any questions about privacy, you can contact me via email.';
+    const dataTitle = state.i18n?.privacy?.dataTitle || '';
+    const dataText  = state.i18n?.privacy?.dataText  || '';
 
+    const linksTitle = state.i18n?.privacy?.linksTitle || '';
+    const linksText  = state.i18n?.privacy?.linksText  || '';
+
+    const contactTitle = state.i18n?.privacy?.contactTitle || '';
+    const contactText  = state.i18n?.privacy?.contactText  || '';
+
+    // keep as a constant (or move to data/config if you want)
     const emailLabel = 'angelo.nardone17@gmail.com';
-
-    const dataSectionTitle = isIt ? 'Dati raccolti' : 'Data collected';
-    const dataSectionText = isIt
-      ? 'Il sito può registrare informazioni tecniche standard (come indirizzi IP anonimizzati, log del server o statistiche aggregate di traffico) esclusivamente per finalità di sicurezza e manutenzione.'
-      : 'The site may log standard technical information (such as anonymized IP addresses, server logs or aggregated traffic statistics) solely for security and maintenance purposes.';
-
-    const linksTitle = isIt ? 'Link esterni' : 'External links';
-    const linksText = isIt
-      ? 'I link a GitHub e LinkedIn rimandano a servizi esterni che adottano le proprie politiche di trattamento dati. Ti invito a consultare le loro privacy policy.'
-      : 'Links to GitHub and LinkedIn point to external services which apply their own data protection policies. Please refer to their respective privacy policies.';
 
     app.innerHTML = `
       <section class="section">
@@ -513,14 +482,14 @@
           <h1>${title}</h1>
           <p>${intro}</p>
 
-          <h2 style="margin-top:1.2rem;">${dataSectionTitle}</h2>
-          <p>${dataSectionText}</p>
+          <h2 style="margin-top:1.2rem;">${dataTitle}</h2>
+          <p>${dataText}</p>
 
           <h2 style="margin-top:1.2rem;">${linksTitle}</h2>
           <p>${linksText}</p>
 
-          <h2 style="margin-top:1.2rem;">${isIt ? 'Contatti' : 'Contact'}</h2>
-          <p>${contact}</p>
+          <h2 style="margin-top:1.2rem;">${contactTitle}</h2>
+          <p>${contactText}</p>
 
           <p>
             <a href="mailto:${emailLabel}" class="btn btn-outline">${emailLabel}</a>
@@ -530,9 +499,13 @@
     `;
   }
 
+
   function renderNotFound() {
-    $('#app').innerHTML = `<section class="section"><h1>404</h1><p>Pagina non trovata.</p></section>`;
+    const t = state.i18n?.errors?.notFoundTitle || '404';
+    const p = state.i18n?.errors?.notFoundText || 'Page not found.';
+    $('#app').innerHTML = `<section class="section"><h1>${t}</h1><p>${p}</p></section>`;
   }
+
 
   /* =========================================================
      Boot: wire up topbar + router + initial theme/lang

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "linkedin",
+    "label": "LinkedIn",
+    "href": "https://www.linkedin.com/in/nardone-angelo",
+    "icon": "linkedin.svg",
+    "newTab": true
+  },
+  {
+    "id": "github",
+    "label": "GitHub",
+    "href": "https://github.com/Angelido",
+    "icon": "github-mark.svg",
+    "newTab": true
+  },
+  {
+    "id": "email",
+    "label": "Email",
+    "href": "mailto:angelo.nardone17@gmail.com",
+    "icon": "gmail.svg",
+    "newTab": false
+  },
+  {
+    "id": "orcid",
+    "label": "ORCID",
+    "href": "https://orcid.org/0009-0006-2068-5934",
+    "icon": "orcid.svg",
+    "newTab": true
+  },
+  {
+    "id": "scholar",
+    "label": "Google Scholar",
+    "href": "https://scholar.google.com/citations?user=C2QAXR4AAAAJ",
+    "icon": "scholar.svg",
+    "newTab": true
+  }
+]

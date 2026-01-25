@@ -1,8 +1,55 @@
 {
-  "site": { "title": "Angelo Nardone — Sito personale" },
-  "brand": "Angelo Nardone",
-  "nav": { "academic": "Accademico", "personal": "Personale", "pubs": "Pubblicazioni" },
-  "section": { "about": "Chi sono", "research": "Research topics", "education": "Formazione ed esperienze", "publications": "Pubblicazioni" },
-  "action": { "readmore": "Leggi di più", "viewall": "Vedi tutto", "back": "Indietro" },
-  "footer": { "top": "Torna su ↑" }
+  "site": {
+    "title": "Angelo Nardone — Sito personale"
+  },
+  "home": {
+    "aboutTitle": "Chi sono",
+    "quickInfoLabel": "Info rapide"
+  },
+  "research": {
+    "title": "Progetti e pubblicazioni",
+    "intro": "Qui trovi una panoramica dei progetti e delle pubblicazioni, insieme a un estratto del mio percorso accademico."
+  },
+  "cv": {
+    "intro": "Qui puoi consultare e scaricare il mio CV in italiano e in inglese.",
+    "itLabel": "CV in italiano",
+    "enLabel": "CV in inglese"
+  },
+  "actions": {
+    "openNewTab": "Apri in una nuova scheda",
+    "downloadPdf": "Scarica PDF",
+    "viewAll": "Vedi tutto",
+    "back": "Indietro"
+  },
+  "publications": {
+    "searchPlaceholder": "Cerca titolo/autori/venue",
+    "allYears": "Tutti gli anni"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "intro": "Questo sito personale non utilizza cookie di profilazione e non raccoglie dati personali oltre a quelli strettamente necessari al funzionamento tecnico.",
+    "dataTitle": "Dati raccolti",
+    "dataText": "Il sito può registrare informazioni tecniche standard (come indirizzi IP anonimizzati, log del server o statistiche aggregate di traffico) esclusivamente per finalità di sicurezza e manutenzione.",
+    "linksTitle": "Link esterni",
+    "linksText": "I link a GitHub e LinkedIn rimandano a servizi esterni che adottano le proprie politiche di trattamento dati. Ti invito a consultare le loro privacy policy.",
+    "contactTitle": "Contatti",
+    "contactText": "Per qualsiasi domanda relativa alla privacy puoi contattarmi via email."
+  },
+  "errors": {
+    "notFoundTitle": "404",
+    "notFoundText": "Pagina non trovata."
+  },
+  "footer": {
+    "privacy": "Privacy"
+  },
+    "topbar": {
+    "ariaLabel": "Navigazione principale sito",
+    "openMenu": "Apri menu"
+  },
+  "mobileNav": {
+    "ariaLabel": "Sezioni (mobile)"
+  },
+  "theme": {
+    "toggle": "Cambia tema"
+  }
 }
