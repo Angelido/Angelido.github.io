@@ -351,15 +351,20 @@ html[data-theme="dark"] .footer-icon img.github-icon{
 
 /* --- Topbar (full-width control bar) --- */
 .topbar{
-  position:sticky;
+  position:fixed;
   top:0;
-  z-index:50;
+  left: 0;
+  z-index: 1000;
   width:100%;
   background:var(--panel);
   border-bottom:1px solid rgba(0,0,0,.08);
 }
 html[data-theme="dark"] .topbar{
   border-bottom-color:rgba(255,255,255,.12);
+}
+
+main{
+  padding-top: var(--topbar-h);
 }
 
 /* Inner: full-width (no container max-width) */
