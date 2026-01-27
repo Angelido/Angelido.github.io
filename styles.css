@@ -1240,6 +1240,29 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   .about-card{ margin-bottom:0; }
 }
 
+@media (min-width:1600px){
+  .hero-home{
+    grid-template-columns: 1fr 12fr 1fr;
+  }
+}
+
+@media (min-width:1600px){
+  .hero-center{
+    max-width: 1800px; /* oppure 1020px se ti piace più arioso */
+  }
+}
+
+@media (min-width:1700px){
+  .hero-left{ max-width: 360px; }
+  .hero-side{ max-width: 420px; }
+}
+
+@media (min-width:1700px){
+  .hero-center{ padding: 0 1.2rem; }
+}
+
+
+
 /* Home – Social behaviour: Mobile (<1100): horizontal row + icon-only */
 @media (max-width:1099px){
   .hero-left .social-row{
