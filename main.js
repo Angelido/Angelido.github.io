@@ -110,18 +110,23 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, home, education, experience, publications, topics, social, cv] = await Promise.all([
+    const [profile, home, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
-      fetch(`${base}/education.${state.lang}.json`).then(r => r.json()),
-      fetch(`${base}/experience.${state.lang}.json`).then(r => r.json()),
-      fetch(`${base}/publications.json`).then((r) => r.json()),
-      fetch(`${base}/topics.json`).then((r) => r.json()),
+      fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/experience.${state.lang}.json`).then((r) => r.json()),
+
+      // Research page content (language-dependent)
+      fetch(`${base}/publications.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/topics.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/talks.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/projects.${state.lang}.json`).then((r) => r.json()),
+
       fetch(`${base}/social.json`).then((r) => r.json()),
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, home, education, experience, publications, topics, social, cv };
+    state.data = { profile, home, education, experience, publications, topics, talks, projects, social, cv };
 
   }
 
@@ -260,51 +265,155 @@
   }
 
   function renderResearch() {
-    const { topics } = state.data;
     const app = $('#app');
 
-    const title = state.i18n?.research?.title || 'Projects & Publications';
+    const pubs = (state.data.publications || []).slice().sort((a, b) => (b.year || 0) - (a.year || 0));
+    const topics = state.data.topics || [];
+    const talks = state.data.talks || [];
+    const projects = state.data.projects || [];
+
+    const pageTitle = state.i18n?.research?.title || 'Research';
     const intro = state.i18n?.research?.intro || '';
 
+    const sec = state.i18n?.research?.sections || {};
+    const pubsTitle = sec.publications || 'Publications';
+    const talksTitle = sec.talks || 'Talks';
+    const projectsTitle = sec.projects || 'Projects';
+    const topicsTitle = sec.topics || 'Research topics';
 
-    const list = state.data.education
-      .concat(state.data.experience)
-      .sort((a, b) => (b.to || '9999').localeCompare(a.to || '9999'))
-      .slice(0, 3);
+    const searchPH = state.i18n?.publications?.searchPlaceholder || '';
+    const allYears = state.i18n?.publications?.allYears || '';
+
+    const talksEmpty = state.i18n?.talks?.noItems || '';
+    const projEmpty = state.i18n?.projects?.noItems || '';
+    const viewOnGitHub = state.i18n?.projects?.viewOnGitHub || 'View';
+
+    const years = Array.from(new Set(pubs.map((p) => p.year).filter(Boolean)))
+      .sort((a, b) => b - a);
 
     app.innerHTML = `
       <section class="section">
-        <div class="card" id="aboutCard">
-          <h1>${title}</h1>
+        <div class="card">
+          <h1>${pageTitle}</h1>
           <p>${intro}</p>
         </div>
       </section>
 
-      <section class="section">
-        <h2 data-i18n="section.research">Research topics</h2>
-        <div class="tags">
-          ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
-        </div>
-      </section>
+      <section class="section research-grid">
 
-      <section class="section">
-        <div class="row space-between">
-          <h2 data-i18n="section.education">Formazione ed esperienze</h2>
-          <a class="btn btn-outline" href="#/experience" data-i18n="action.viewall">Vedi tutto</a>
-        </div>
-        <div class="grid grid-3" id="eduPreview"></div>
-      </section>
+        <!-- Publications (full width on desktop) -->
+        <article class="card research-panel research-panel--pubs">
+          <h2>${pubsTitle}</h2>
 
-      <section class="section">
-        <div class="row space-between">
-          <h2 data-i18n="section.publications">Pubblicazioni</h2>
-          <a class="btn" href="#/research/publications">Vai a tutte le pubblicazioni</a>
-        </div>
+          <div class="toolbar">
+            <input id="pubQ" class="input" placeholder="${searchPH}" />
+            <select id="pubYear" class="input">
+              <option value="">${allYears}</option>
+              ${years.map((y) => `<option value="${y}">${y}</option>`).join('')}
+            </select>
+          </div>
+
+          <div id="pubList" class="list"></div>
+        </article>
+
+        <!-- Talks -->
+        <article class="card research-panel">
+          <h2>${talksTitle}</h2>
+          <div class="list" id="talkList">
+            ${
+              talks.length
+                ? talks.map((t) => `
+                  <div class="pub-card">
+                    <h3>${t.title || ''}</h3>
+                    <div class="pub-meta">${[t.where, t.date].filter(Boolean).join(' • ')}</div>
+                    ${t.desc ? `<p style="margin:.4rem 0 0;">${t.desc}</p>` : ''}
+                    ${t.link ? `<div class="row" style="margin-top:.6rem;"><a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">Link</a></div>` : ''}
+                  </div>
+                `).join('')
+                : `<p class="pub-meta">${talksEmpty}</p>`
+            }
+          </div>
+        </article>
+
+        <!-- Projects -->
+        <article class="card research-panel">
+          <h2>${projectsTitle}</h2>
+          <div class="list" id="projectList">
+            ${
+              projects.length
+                ? projects.map((p) => `
+                  <div class="pub-card">
+                    <h3>${p.title || ''}</h3>
+                    ${p.desc ? `<div class="pub-meta">${p.desc}</div>` : ''}
+                    ${
+                      Array.isArray(p.tags) && p.tags.length
+                        ? `<div class="tags" style="margin-top:.55rem;">
+                            ${p.tags.map((x) => `<span class="tag">${x}</span>`).join('')}
+                          </div>`
+                        : ''
+                    }
+                    ${
+                      p.link
+                        ? `<div class="row" style="margin-top:.7rem;">
+                            <a class="btn btn-outline" href="${p.link}" target="_blank" rel="noopener">${viewOnGitHub}</a>
+                          </div>`
+                        : ''
+                    }
+                  </div>
+                `).join('')
+                : `<p class="pub-meta">${projEmpty}</p>`
+            }
+          </div>
+        </article>
+
+        <!-- Topics -->
+        <article class="card research-panel">
+          <h2>${topicsTitle}</h2>
+          <div class="tags">
+            ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
+          </div>
+        </article>
+
       </section>
     `;
 
-    const wrap = $('#eduPreview');
-    if (wrap) wrap.innerHTML = list.map((item) => eduCard(item)).join('');
+    // --- Publications render + filter (same logic as your publications page) ---
+    const renderPubs = (items) => {
+      $('#pubList').innerHTML = items
+        .map((p) => `
+          <article class="pub-card">
+            <h3>${p.title || ''}</h3>
+            <div class="pub-meta">${p.authors || ''}${p.venue ? ` — ${p.venue}` : ''}${p.year ? ` (${p.year})` : ''}</div>
+            <div class="row">
+              ${p.pdf ? `<a class="btn" href="${p.pdf}" target="_blank" rel="noopener">PDF</a>` : ''}
+              ${p.doi ? `<a class="btn btn-outline" href="${p.doi}" target="_blank" rel="noopener">DOI</a>` : ''}
+              ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">Code</a>` : ''}
+            </div>
+          </article>
+        `)
+        .join('');
+    };
+
+    const filterPubs = () => {
+      const q = ($('#pubQ').value || '').toLowerCase();
+      const y = $('#pubYear').value;
+
+      const res = pubs.filter((p) =>
+        (!y || String(p.year) === String(y)) &&
+        (
+          (p.title || '').toLowerCase().includes(q) ||
+          (p.authors || '').toLowerCase().includes(q) ||
+          (p.venue || '').toLowerCase().includes(q)
+        )
+      );
+
+      renderPubs(res);
+    };
+
+    renderPubs(pubs);
+
+    $('#pubQ').addEventListener('input', debounce(filterPubs, 180));
+    $('#pubYear').addEventListener('change', filterPubs);
   }
 
   function renderCV() {

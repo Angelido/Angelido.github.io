@@ -8,7 +8,13 @@
   },
   "research": {
     "title": "Projects & Publications",
-    "intro": "Here you can find an overview of my projects and publications, together with a snapshot of my academic path."
+    "intro": "Here you can find an overview of my projects and publications, together with a snapshot of my academic path.",
+    "sections": {
+      "publications": "Conferences & Publications",
+      "talks": "Talks & Workshops",
+      "projects": "Projects",
+      "topics": "Research topics"
+    }
   },
   "cv": {
     "intro": "Here you can view and download my CV in both Italian and English.",
@@ -24,6 +30,13 @@
   "publications": {
     "searchPlaceholder": "Search title/authors/venue",
     "allYears": "All years"
+  },
+  "talks": {
+    "noItems": "No talks/workshops yet."
+  },
+  "projects": {
+    "noItems": "No projects yet.",
+    "viewOnGitHub": "View on GitHub"
   },
   "privacy": {
     "title": "Privacy",

@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Paper title",
+    "authors": "A. Nardone, ...",
+    "venue": "Conference/Journal",
+    "year": 2025,
+    "pdf": "assets/papers/paper.pdf",
+    "doi": "https://doi.org/....",
+    "code": "https://github.com/..."
+  }
+]

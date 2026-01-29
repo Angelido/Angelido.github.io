@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Project name",
+    "desc": "One-line description",
+    "tags": ["C++", "Algorithms"],
+    "link": "https://github.com/...",
+    "status": "ongoing"
+  }
+]

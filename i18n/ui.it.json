@@ -8,7 +8,13 @@
   },
   "research": {
     "title": "Progetti e pubblicazioni",
-    "intro": "Qui trovi una panoramica dei progetti e delle pubblicazioni, insieme a un estratto del mio percorso accademico."
+    "intro": "Qui trovi una panoramica dei progetti e delle pubblicazioni, insieme a un estratto del mio percorso accademico.",
+    "sections": {
+      "publications": "Conferenze e pubblicazioni",
+      "talks": "Talk e workshop",
+      "projects": "Progetti",
+      "topics": "Research topics"
+    }
   },
   "cv": {
     "intro": "Qui puoi consultare e scaricare il mio CV in italiano e in inglese.",
@@ -24,6 +30,13 @@
   "publications": {
     "searchPlaceholder": "Cerca titolo/autori/venue",
     "allYears": "Tutti gli anni"
+  },
+  "talks": {
+    "noItems": "Nessun talk/workshop al momento."
+  },
+  "projects": {
+    "noItems": "Nessun progetto al momento.",
+    "viewOnGitHub": "Vedi su GitHub"
   },
   "privacy": {
     "title": "Privacy",
@@ -42,7 +55,7 @@
   "footer": {
     "privacy": "Privacy"
   },
-    "topbar": {
+  "topbar": {
     "ariaLabel": "Navigazione principale sito",
     "openMenu": "Apri menu"
   },
