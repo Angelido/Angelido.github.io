@@ -6,14 +6,14 @@
       "text": "Università di Pisa · Informatica"
     },
     {
+      "kicker": "Ufficio",
+      "title": "Stanza 304",
+      "text": "Dipartimento di Informatica · Largo B. Pontecorvo, 3 · Pisa · Italia"
+    },
+    {
       "kicker": "Ambito di ricerca",
       "title": "Compressione Lossless",
       "text": "Testo · Codice sorgente · Compressione basata su LLM"
-    },
-    {
-      "kicker": "Interessi di ricerca",
-      "title": "Interessi e metodologie",
-      "text": "Compressione · NLP · AI per la medicina · Algoritmi e strutture dati"
     }
   ]
 }

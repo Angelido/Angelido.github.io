@@ -6,14 +6,14 @@
       "text": "University of Pisa · Computer Science"
     },
     {
+      "kicker": "Office",
+      "title": "Room 304",
+      "text": "Department of Computer Science · Largo B. Pontecorvo, 3 · Pisa · Italy"
+    },
+    {
       "kicker": "PhD focus",
       "title": "Lossless Text Compression",
       "text": "Text · Source Code · LLM-based compression"
-    },
-    {
-      "kicker": "Research interests",
-      "title": "Interests & methods",
-      "text": "Compression · NLP · AI for Medicine · Algorithms & Data Structures"
     }
   ]
 }
