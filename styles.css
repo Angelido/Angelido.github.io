@@ -1373,3 +1373,24 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
     right:0;
   }
 }
+
+/* =========================================================
+   RESEARCH PAGE – PANELS GRID
+========================================================= */
+.research-grid{
+  display:grid;
+  gap:1.2rem;
+  grid-template-columns: 1fr;
+}
+
+/* Desktop: two columns */
+@media (min-width:1100px){
+  .research-grid{
+    grid-template-columns: 1fr 1fr;
+    align-items:start;
+  }
+  .research-panel--pubs{
+    grid-column: 1 / -1; /* publications full width on top */
+  }
+}
+
