@@ -293,11 +293,11 @@
 
     app.innerHTML = `
       <section class="section">
-        <div class="card">
-          <h1>${pageTitle}</h1>
-          <p>${intro}</p>
-        </div>
+        <h1>${pageTitle}</h1>
+        ${intro ? `<p>${intro}</p>` : ''}
       </section>
+
+
 
       <section class="section research-grid">
 
@@ -305,62 +305,57 @@
         <article class="card research-panel research-panel--pubs">
           <h2>${pubsTitle}</h2>
 
-          <div class="toolbar">
-            <input id="pubQ" class="input" placeholder="${searchPH}" />
-            <select id="pubYear" class="input">
-              <option value="">${allYears}</option>
-              ${years.map((y) => `<option value="${y}">${y}</option>`).join('')}
-            </select>
-          </div>
-
           <div id="pubList" class="list"></div>
         </article>
 
         <!-- Talks -->
         <article class="card research-panel">
           <h2>${talksTitle}</h2>
-          <div class="list" id="talkList">
+          <div id="talkList">
             ${
               talks.length
-                ? talks.map((t) => `
-                  <div class="pub-card">
-                    <h3>${t.title || ''}</h3>
-                    <div class="pub-meta">${[t.where, t.date].filter(Boolean).join(' • ')}</div>
-                    ${t.desc ? `<p style="margin:.4rem 0 0;">${t.desc}</p>` : ''}
-                    ${t.link ? `<div class="row" style="margin-top:.6rem;"><a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">Link</a></div>` : ''}
-                  </div>
-                `).join('')
+                ? `<ul class="research-list">
+                    ${talks.map((t) => `
+                      <li>
+                        <strong>${t.title || ''}</strong>
+                        ${[t.where, t.date].filter(Boolean).length ? ` — ${[t.where, t.date].filter(Boolean).join(' • ')}` : ''}
+                        ${t.link ? ` — <a href="${t.link}" target="_blank" rel="noopener">Link</a>` : ''}
+                        ${t.desc ? `<div class="pub-meta" style="margin-top:.15rem;">${t.desc}</div>` : ''}
+                      </li>
+                    `).join('')}
+                  </ul>`
                 : `<p class="pub-meta">${talksEmpty}</p>`
             }
           </div>
+
         </article>
 
         <!-- Projects -->
         <article class="card research-panel">
           <h2>${projectsTitle}</h2>
-          <div class="list" id="projectList">
+          <div id="projectList">
             ${
               projects.length
-                ? projects.map((p) => `
-                  <div class="pub-card">
-                    <h3>${p.title || ''}</h3>
-                    ${p.desc ? `<div class="pub-meta">${p.desc}</div>` : ''}
-                    ${
-                      Array.isArray(p.tags) && p.tags.length
-                        ? `<div class="tags" style="margin-top:.55rem;">
-                            ${p.tags.map((x) => `<span class="tag">${x}</span>`).join('')}
-                          </div>`
-                        : ''
-                    }
-                    ${
-                      p.link
-                        ? `<div class="row" style="margin-top:.7rem;">
-                            <a class="btn btn-outline" href="${p.link}" target="_blank" rel="noopener">${viewOnGitHub}</a>
-                          </div>`
-                        : ''
-                    }
-                  </div>
-                `).join('')
+                ? `<ul class="research-list">
+                    ${projects.map((p) => `
+                      <li>
+                        <strong>${p.title || ''}</strong>
+                        ${p.desc ? ` — <span class="pub-meta">${p.desc}</span>` : ''}
+                        ${
+                          p.link
+                            ? ` — <a href="${p.link}" target="_blank" rel="noopener">${viewOnGitHub}</a>`
+                            : ''
+                        }
+                        ${
+                          Array.isArray(p.tags) && p.tags.length
+                            ? `<div class="tags" style="margin-top:.35rem;">
+                                ${p.tags.map((x) => `<span class="tag">${x}</span>`).join('')}
+                              </div>`
+                            : ''
+                        }
+                      </li>
+                    `).join('')}
+                  </ul>`
                 : `<p class="pub-meta">${projEmpty}</p>`
             }
           </div>
@@ -379,20 +374,25 @@
 
     // --- Publications render + filter (same logic as your publications page) ---
     const renderPubs = (items) => {
-      $('#pubList').innerHTML = items
-        .map((p) => `
-          <article class="pub-card">
-            <h3>${p.title || ''}</h3>
-            <div class="pub-meta">${p.authors || ''}${p.venue ? ` — ${p.venue}` : ''}${p.year ? ` (${p.year})` : ''}</div>
-            <div class="row">
-              ${p.pdf ? `<a class="btn" href="${p.pdf}" target="_blank" rel="noopener">PDF</a>` : ''}
-              ${p.doi ? `<a class="btn btn-outline" href="${p.doi}" target="_blank" rel="noopener">DOI</a>` : ''}
-              ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">Code</a>` : ''}
-            </div>
-          </article>
-        `)
-        .join('');
+      $('#pubList').innerHTML = items.length
+        ? `<ul class="research-list">
+            ${items.map((p) => `
+              <li>
+                <strong>${p.title || ''}</strong>
+                <div class="pub-meta">
+                  ${p.authors || ''}${p.venue ? ` — ${p.venue}` : ''}${p.year ? ` (${p.year})` : ''}
+                </div>
+                <div class="row" style="margin-top:.45rem;">
+                  ${p.pdf ? `<a class="btn btn-outline" href="${p.pdf}" target="_blank" rel="noopener">PDF</a>` : ''}
+                  ${p.doi ? `<a class="btn btn-outline" href="${p.doi}" target="_blank" rel="noopener">DOI</a>` : ''}
+                  ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">Code</a>` : ''}
+                </div>
+              </li>
+            `).join('')}
+          </ul>`
+        : `<p class="pub-meta"></p>`;
     };
+
 
     const filterPubs = () => {
       const q = ($('#pubQ').value || '').toLowerCase();
@@ -411,9 +411,6 @@
     };
 
     renderPubs(pubs);
-
-    $('#pubQ').addEventListener('input', debounce(filterPubs, 180));
-    $('#pubYear').addEventListener('change', filterPubs);
   }
 
   function renderCV() {
