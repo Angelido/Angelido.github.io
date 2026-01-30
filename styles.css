@@ -1157,9 +1157,55 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   }
 }
 
+/* =========================================================
+    18) RESEARCH PAGE – PANELS GRID
+========================================================= */
+.research-grid{
+  display:grid;
+  gap:1.2rem;
+  grid-template-columns: 1fr;
+}
+
+/* Desktop: two columns */
+@media (min-width:1100px){
+  .research-grid{
+    grid-template-columns: 1fr 1fr;
+    align-items:start;
+  }
+  .research-panel--pubs{
+    grid-column: 1 / -1; /* publications full width on top */
+  }
+}
+
+/* Research – bullet lists (instead of mini-cards) */
+.research-list{
+  margin: .6rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.research-list li{
+  margin: .55rem 0;
+}
+
+.research-list a{
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+}
+.research-list a:hover{
+  text-decoration: underline;
+}
+
+.section > h1{
+  margin-bottom: .4rem;
+}
+
+.section > h1 + p{
+  max-width: none; /* assicura full width */
+}
 
 /* =========================================================
-   18) RESPONSIVE RULES (Media Queries)
+   19) RESPONSIVE RULES (Media Queries)
    ---------------------------------------------------------
    Kept in the SAME relative order as your original blocks,
    but moved together at the end for maintainability.
@@ -1371,26 +1417,6 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
     top:52px;
     left:0;
     right:0;
-  }
-}
-
-/* =========================================================
-   RESEARCH PAGE – PANELS GRID
-========================================================= */
-.research-grid{
-  display:grid;
-  gap:1.2rem;
-  grid-template-columns: 1fr;
-}
-
-/* Desktop: two columns */
-@media (min-width:1100px){
-  .research-grid{
-    grid-template-columns: 1fr 1fr;
-    align-items:start;
-  }
-  .research-panel--pubs{
-    grid-column: 1 / -1; /* publications full width on top */
   }
 }
 

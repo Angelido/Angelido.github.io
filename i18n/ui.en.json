@@ -7,8 +7,8 @@
     "quickInfoLabel": "Quick info"
   },
   "research": {
-    "title": "Projects & Publications",
-    "intro": "Here you can find an overview of my projects and publications, together with a snapshot of my academic path.",
+    "title": "Research",
+    "intro": "Here you can find an overview of my conferences, publications, talks, projects, and research interests.",
     "sections": {
       "publications": "Conferences & Publications",
       "talks": "Talks & Workshops",
