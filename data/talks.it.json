@@ -1,9 +1,28 @@
 [
   {
-    "title": "Talk title",
-    "where": "University / Conference",
-    "date": "2025-10",
-    "desc": "Optional short description",
-    "link": "https://..."
+    "event": "Sequences in London 2026",
+    "type": "Workshop",
+    "role": "Speaker",
+    "institution": "City, University of London (Bayes Business School)",
+    "city": "Londra",
+    "country": "Regno Unito",
+    "date": "5–6 febbraio 2026",
+    "talkTitle": "Lossless Compression of Source Code using Large Language Models",
+    "subtitle": "Revisiting Shannon’s Symbol Ranking in the LLM Setting",
+    "link": "https://sites.google.com/view/sequencesworkshop/home?authuser=0",
+    "poster": null
+  },
+  {
+    "event": "A3Lab Inaugural Workshop: Algorithms, AI & Society",
+    "type": "Workshop",
+    "role": "Speaker",
+    "institution": "Scuola Superiore Sant’Anna",
+    "city": "Pisa",
+    "country": "Italia",
+    "date": "21 gennaio 2026",
+    "talkTitle": "Lossless Compression with LLMs",
+    "subtitle": null,
+    "link": "https://www.santannapisa.it/it/evento/a3lab-inaugural-workshop-algorithms-ai-society",
+    "poster": "assets/A3Lab_poster.pdf"
   }
 ]

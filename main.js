@@ -181,18 +181,6 @@
   /* =========================================================
      UI components
   ========================================================== */
-  function eduCard(x) {
-    return `
-      <article class="card">
-        <div class="badge">${x.type || 'Item'}</div>
-        <h3>${x.title}</h3>
-        <p class="pub-meta">${x.institution || x.company} • ${x.city || ''}</p>
-        <p class="pub-meta">${x.from} — ${x.to || 'in corso'}</p>
-        <p>${x.details || ''}</p>
-      </article>
-    `;
-  }
-
   function socialIcon(item) {
     return `
       <a class="icon-btn icon-btn--circle"
@@ -315,23 +303,56 @@
         <!-- Talks -->
         <article class="card research-panel">
           <h2>${talksTitle}</h2>
+
           <div id="talkList">
             ${
               talks.length
                 ? `<ul class="research-list">
-                    ${talks.map((t) => `
+                  ${talks.map((t) => {
+                    const labels = state.lang === 'it'
+                      ? { event: 'Evento', poster: 'Locandina', talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' }
+                      : { event: 'Event',  poster: 'Poster',    talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' };
+
+                    const locationLine = [t.city, t.country].filter(Boolean).join(', ');
+                    const roleTypeLine = [t.role, t.type].filter(Boolean).join(labels.roleTypeSep);
+
+                    return `
                       <li>
-                        <strong>${t.title || ''}</strong>
-                        ${[t.where, t.date].filter(Boolean).length ? ` — ${[t.where, t.date].filter(Boolean).join(' • ')}` : ''}
-                        ${t.link ? ` — <a href="${t.link}" target="_blank" rel="noopener">Link</a>` : ''}
-                        ${t.desc ? `<div class="pub-meta" style="margin-top:.15rem;">${t.desc}</div>` : ''}
+                        <!-- 1) Workshop name -->
+                        <div><strong>${t.event || ''}</strong></div>
+
+                        <!-- 2) Institution / venue -->
+                        ${t.institution ? `<div class="pub-meta">${t.institution}${t.venue ? ` — ${t.venue}` : ''}</div>` : ''}
+
+                        <!-- 3) City, Country (separato) -->
+                        ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
+
+                        <!-- 4) Date (subito sotto, riga dedicata) -->
+                        ${t.date ? `<div class="pub-meta">${t.date}</div>` : ''}
+
+                        <!-- 5) Role + Type (non più insieme alla data) -->
+                        ${roleTypeLine ? `<div class="pub-meta" style="margin-top:.2rem;">${roleTypeLine}</div>` : ''}
+
+                        <!-- 6) Talk title -->
+                        ${t.talkTitle ? `<div style="margin-top:.45rem;"><strong>${labels.talk}:</strong> ${t.talkTitle}</div>` : ''}
+
+                        <!-- 7) Subtitle con label -->
+                        ${t.subtitle ? `<div class="pub-meta"><strong>${labels.subtitle}:</strong> ${t.subtitle}</div>` : ''}
+
+                        <!-- Links -->
+                        ${(t.link || t.poster) ? `
+                          <div class="row" style="margin-top:.45rem;">
+                            ${t.link ? `<a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">${labels.event}</a>` : ''}
+                            ${t.poster ? `<a class="btn btn-outline" href="${t.poster}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
+                          </div>
+                        ` : ''}
                       </li>
-                    `).join('')}
+                    `;
+                  }).join('')}
                   </ul>`
                 : `<p class="pub-meta">${talksEmpty}</p>`
             }
           </div>
-
         </article>
 
         <!-- Projects -->
