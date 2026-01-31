@@ -1,9 +1,30 @@
 [
   {
-    "title": "Project name",
-    "desc": "One-line description",
-    "tags": ["C++", "Algorithms"],
-    "link": "https://github.com/...",
-    "status": "ongoing"
+    "title": "Data Mining on U.S. Traffic Accidents",
+    "description": "Multivariate analysis on real-world traffic accident data, including feature engineering, clustering (K-means, hierarchical, DBSCAN), fatal event classification, and time-based analysis by city.",
+    "repo": "https://github.com/LoSpiri/DataMining",
+    "topics": ["Data mining", "Clustering", "Classification", "Time-based analysis"],
+    "languages": ["Python", "Scikit-learn"]
+  },
+    {
+    "title": "Parallel and Distributed Implementations",
+    "description": "Parallel and distributed implementations of well-known algorithms, including MergeSort, Softmax, and compression with Miniz.",
+    "repo": "https://github.com/Angelido/SPM",
+    "topics": ["Parallel computing", "Distributed algorithms", "Optimization"],
+    "languages": ["C", "C++", "CMake", "MPI", "FastFlow"]
+  },
+  {
+    "title": "Sentiment Analysis on Amazon Reviews",
+    "description": "Automatic sentiment classification using large language models and topic modeling to identify recurring negative themes, with applications to user experience and brand reputation analysis.",
+    "repo": "https://github.com/Angelido/HLT-Sentiment-Analysis",
+    "topics": ["Sentiment analysis", "LLMs", "Topic modeling", "NLP"],
+    "languages": ["Python"]
+  },
+  {
+    "title": "MiniHack Evolution",
+    "description": "Training evolutionary agents in NetHack environments via OpenAI Gym, using genetic algorithms to learn strategies in a 15×15 gridworld.",
+    "repo": "https://github.com/yumetsuro/minihack-evolution",
+    "topics": ["Evolutionary algorithms", "Genetic algorithms", "Reinforcement learning"],
+    "languages": ["Python", "OpenAI Gym"]
   }
 ]

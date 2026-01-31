@@ -301,7 +301,7 @@
         </article>
 
         <!-- Talks -->
-        <article class="card research-panel">
+        <article class="card research-panel research-panel--talks">
           <h2>${talksTitle}</h2>
 
           <div id="talkList">
@@ -356,30 +356,56 @@
         </article>
 
         <!-- Projects -->
-        <article class="card research-panel">
+        <article class="card research-panel research-panel--projects">
           <h2>${projectsTitle}</h2>
           <div id="projectList">
             ${
               projects.length
                 ? `<ul class="research-list">
-                    ${projects.map((p) => `
-                      <li>
-                        <strong>${p.title || ''}</strong>
-                        ${p.desc ? ` — <span class="pub-meta">${p.desc}</span>` : ''}
-                        ${
-                          p.link
-                            ? ` — <a href="${p.link}" target="_blank" rel="noopener">${viewOnGitHub}</a>`
-                            : ''
-                        }
-                        ${
-                          Array.isArray(p.tags) && p.tags.length
-                            ? `<div class="tags" style="margin-top:.35rem;">
-                                ${p.tags.map((x) => `<span class="tag">${x}</span>`).join('')}
-                              </div>`
-                            : ''
-                        }
-                      </li>
-                    `).join('')}
+                    ${projects.map((p) => {
+                      const labels = state.lang === 'it'
+                        ? { desc: 'Description', repo: 'Code Repository', topics: 'Topics', langs: 'Languages' }
+                        : { desc: 'Description', repo: 'Code Repository', topics: 'Topics', langs: 'Languages' };
+
+                      const topics = Array.isArray(p.topics) ? p.topics : [];
+                      const langs  = Array.isArray(p.languages) ? p.languages : [];
+
+                      return `
+                        <li>
+                          <div><strong>${p.title || ''}</strong></div>
+
+                          ${p.description ? `
+                            <div class="pub-meta" style="margin-top:.25rem;">
+                              <strong>${labels.desc}:</strong> ${p.description}
+                            </div>
+                          ` : ''}
+
+                          ${p.repo ? `
+                            <div class="pub-meta" style="margin-top:.25rem;">
+                              <strong>${labels.repo}:</strong>
+                              <a href="${p.repo}" target="_blank" rel="noopener">GitHub link</a>
+                            </div>
+                          ` : ''}
+                          ${topics.length ? `
+                            <div class="pub-meta" style="margin-top:.35rem;">
+                              <strong>${labels.topics}:</strong>
+                            </div>
+                            <div class="tags" style="margin-top:.25rem;">
+                              ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
+                            </div>
+                          ` : ''}
+
+                          ${langs.length ? `
+                            <div class="pub-meta" style="margin-top:.45rem;">
+                              <strong>${labels.langs}:</strong>
+                            </div>
+                            <div class="tags" style="margin-top:.25rem;">
+                              ${langs.map((t) => `<span class="tag">${t}</span>`).join('')}
+                            </div>
+                          ` : ''}
+                        </li>
+                      `;
+                    }).join('')}
                   </ul>`
                 : `<p class="pub-meta">${projEmpty}</p>`
             }
@@ -387,7 +413,7 @@
         </article>
 
         <!-- Topics -->
-        <article class="card research-panel">
+        <article class="card research-panel research-panel--topics">
           <h2>${topicsTitle}</h2>
           <div class="tags">
             ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
