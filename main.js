@@ -445,9 +445,20 @@
                   ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
 
                   <!-- 7) Description -->
-                  ${p.desc ? `<div class="pub-meta" style="margin-top:.2rem;">${p.desc}</div>` : ''}
+                  ${p.desc ? `
+                    <div class="pub-meta" style="margin-top:.25rem;">
+                      <strong>Description:</strong> ${p.desc}
+                    </div>
+                  ` : ''}
 
-                  <!-- 8) Links -->
+                  <!-- 8) Keywords -->
+                  ${Array.isArray(p.keywords) && p.keywords.length ? `
+                    <div class="pub-meta" style="margin-top:.2rem;">
+                      <strong>Keywords:</strong> ${p.keywords.join(', ')}
+                    </div>
+                  ` : ''}
+
+                  <!-- 9) Links -->
                   ${(p.eventLink || p.arxiv || p.code || p.shortPdf || p.posterPdf) ? `
                     <div class="row" style="margin-top:.45rem;">
                       ${p.eventLink ? `<a class="btn btn-outline" href="${p.eventLink}" target="_blank" rel="noopener">${labels.conference}</a>` : ''}

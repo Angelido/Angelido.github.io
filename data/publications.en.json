@@ -10,11 +10,19 @@
 
     "title": "MIEO: encoding clinical data to enhance cardiovascular event prediction",
     "authors": "Davide Borghini, Davide Marchi, Angelo Nardone, Giordano Scerra, Silvia Giulia Galfrè, Alessandro Pingitore, Giuseppe Prencipe, Corrado Priami, and Alina Sîrbu",
-    "desc": "Poster presentation on using neural models to encode clinical data into meaningful embeddings to improve cardiovascular event prediction.",
+    "desc": "We propose a self-supervised autoencoder approach to embed heterogeneous clinical data into a latent space for cardiovascular event prediction. The learned representations enable a neural classifier to achieve improved balanced accuracy compared to models trained directly on raw clinical data, particularly in low-label settings.",
 
     "arxiv": "https://arxiv.org/abs/2510.11257",
     "code": "https://github.com/davide-marchi/clinical-data-encoding",
     "shortPdf": "assets/cibb2025-short-paper.pdf",
-    "posterPdf": "assets/cibb2025-poster.pdf"
+    "posterPdf": "assets/cibb2025-poster.pdf",
+
+    "keywords": [
+      "clinical data",
+      "cardiovascular disease",
+      "autoencoder",
+      "neural networks",
+      "event prediction"
+    ]
   }
 ]
