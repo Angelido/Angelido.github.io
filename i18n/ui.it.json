@@ -10,10 +10,10 @@
     "title": "Ricerca",
     "intro": "Qui è presentata una panoramica delle mie conferenze, pubblicazioni, interventi, progetti e interessi di ricerca",
     "sections": {
-      "publications": "Conferenze e pubblicazioni",
-      "talks": "Talk e workshop",
-      "projects": "Progetti",
-      "topics": "Research topics"
+      "publications": "Conferenze e Pubblicazioni",
+      "talks": "Talk e Workshop",
+      "projects": "Altri Progetti",
+      "topics": "Research Topics"
     }
   },
     "experiencePage": {
