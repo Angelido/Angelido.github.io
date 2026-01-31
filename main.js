@@ -204,6 +204,16 @@
     `;
   }
 
+  function pageHeaderHTML(title, intro) {
+    return `
+      <section class="section section-head">
+        <h1>${title}</h1>
+        ${intro ? `<p class="page-intro">${intro}</p>` : ``}
+      </section>
+    `;
+  }
+
+
   /* =========================================================
      Views
   ========================================================== */
@@ -292,15 +302,9 @@
       .sort((a, b) => b - a);
 
     app.innerHTML = `
-      <section class="section">
-        <h1>${pageTitle}</h1>
-        ${intro ? `<p>${intro}</p>` : ''}
-      </section>
-
-
+      ${pageHeaderHTML(pageTitle, intro)}
 
       <section class="section research-grid">
-
         <!-- Publications (full width on desktop) -->
         <article class="card research-panel research-panel--pubs">
           <h2>${pubsTitle}</h2>
@@ -429,10 +433,9 @@
     const cvEn = state.data.cv?.en || 'assets/cv-en.pdf';
 
     app.innerHTML = `
-      <section class="section">
-        <h1>${title}</h1>
-        <p>${intro}</p>
+      ${pageHeaderHTML(title, intro)}
 
+      <section class="section">
         <div class="cv-grid">
           <article class="card cv-card">
             <h2>${itLabel}</h2>
@@ -610,18 +613,13 @@
           ` : ""}
       </li>
     `;
+    
+    const intro = state.i18n?.experiencePage?.intro || '';
 
     app.innerHTML = `
-      <section class="section">
-        <header class="page-head">
-          <h1>${pageTitle}</h1>
-          ${
-            state.i18n?.experiencePage?.subtitle
-              ? `<p class="page-subtitle">${state.i18n.experiencePage.subtitle}</p>`
-              : ''
-          }
-        </header>
+      ${pageHeaderHTML(pageTitle, intro)}
 
+      <section class="section">
         <div class="expedu-split">
           <article class="expedu-panel">
             <div class="expedu-panel-head">
