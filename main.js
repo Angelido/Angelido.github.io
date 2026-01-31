@@ -300,60 +300,72 @@
           <div id="pubList" class="list"></div>
         </article>
 
-        <!-- Talks -->
-        <article class="card research-panel research-panel--talks">
-          <h2>${talksTitle}</h2>
+        <!-- Left column: Talks + Topics -->
+        <div class="research-col-left">
 
-          <div id="talkList">
-            ${
-              talks.length
-                ? `<ul class="research-list">
-                  ${talks.map((t) => {
-                    const labels = state.lang === 'it'
-                      ? { event: 'Evento', poster: 'Locandina', talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' }
-                      : { event: 'Event',  poster: 'Poster',    talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' };
+          <!-- Talks -->
+          <article class="card research-panel research-panel--talks">
+            <h2>${talksTitle}</h2>
 
-                    const locationLine = [t.city, t.country].filter(Boolean).join(', ');
-                    const roleTypeLine = [t.role, t.type].filter(Boolean).join(labels.roleTypeSep);
+            <div id="talkList">
+              ${
+                talks.length
+                  ? `<ul class="research-list">
+                    ${talks.map((t) => {
+                      const labels = state.lang === 'it'
+                        ? { event: 'Evento', poster: 'Locandina', talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' }
+                        : { event: 'Event',  poster: 'Poster',    talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' };
 
-                    return `
-                      <li>
-                        <!-- 1) Workshop name -->
-                        <div><strong>${t.event || ''}</strong></div>
+                      const locationLine = [t.city, t.country].filter(Boolean).join(', ');
+                      const roleTypeLine = [t.role, t.type].filter(Boolean).join(labels.roleTypeSep);
 
-                        <!-- 2) Institution / venue -->
-                        ${t.institution ? `<div class="pub-meta">${t.institution}${t.venue ? ` — ${t.venue}` : ''}</div>` : ''}
+                      return `
+                        <li>
+                          <!-- 1) Workshop name -->
+                          <div><strong>${t.event || ''}</strong></div>
 
-                        <!-- 3) City, Country (separato) -->
-                        ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
+                          <!-- 2) Institution / venue -->
+                          ${t.institution ? `<div class="pub-meta">${t.institution}${t.venue ? ` — ${t.venue}` : ''}</div>` : ''}
 
-                        <!-- 4) Date (subito sotto, riga dedicata) -->
-                        ${t.date ? `<div class="pub-meta">${t.date}</div>` : ''}
+                          <!-- 3) City, Country (separato) -->
+                          ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
 
-                        <!-- 5) Role + Type (non più insieme alla data) -->
-                        ${roleTypeLine ? `<div class="pub-meta" style="margin-top:.2rem;">${roleTypeLine}</div>` : ''}
+                          <!-- 4) Date (subito sotto, riga dedicata) -->
+                          ${t.date ? `<div class="pub-meta">${t.date}</div>` : ''}
 
-                        <!-- 6) Talk title -->
-                        ${t.talkTitle ? `<div style="margin-top:.45rem;"><strong>${labels.talk}:</strong> ${t.talkTitle}</div>` : ''}
+                          <!-- 5) Role + Type (non più insieme alla data) -->
+                          ${roleTypeLine ? `<div class="pub-meta" style="margin-top:.2rem;">${roleTypeLine}</div>` : ''}
 
-                        <!-- 7) Subtitle con label -->
-                        ${t.subtitle ? `<div class="pub-meta"><strong>${labels.subtitle}:</strong> ${t.subtitle}</div>` : ''}
+                          <!-- 6) Talk title -->
+                          ${t.talkTitle ? `<div style="margin-top:.45rem;"><strong>${labels.talk}:</strong> ${t.talkTitle}</div>` : ''}
 
-                        <!-- Links -->
-                        ${(t.link || t.poster) ? `
-                          <div class="row" style="margin-top:.45rem;">
-                            ${t.link ? `<a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">${labels.event}</a>` : ''}
-                            ${t.poster ? `<a class="btn btn-outline" href="${t.poster}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
-                          </div>
-                        ` : ''}
-                      </li>
-                    `;
-                  }).join('')}
-                  </ul>`
-                : `<p class="pub-meta">${talksEmpty}</p>`
-            }
-          </div>
-        </article>
+                          <!-- 7) Subtitle con label -->
+                          ${t.subtitle ? `<div class="pub-meta"><strong>${labels.subtitle}:</strong> ${t.subtitle}</div>` : ''}
+
+                          <!-- Links -->
+                          ${(t.link || t.poster) ? `
+                            <div class="row" style="margin-top:.45rem;">
+                              ${t.link ? `<a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">${labels.event}</a>` : ''}
+                              ${t.poster ? `<a class="btn btn-outline" href="${t.poster}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
+                            </div>
+                          ` : ''}
+                        </li>
+                      `;
+                    }).join('')}
+                    </ul>`
+                  : `<p class="pub-meta">${talksEmpty}</p>`
+              }
+            </div>
+          </article>
+
+          <!-- Topics -->
+          <article class="card research-panel research-panel--topics">
+            <h2>${topicsTitle}</h2>
+            <div class="tags">
+              ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          </article>
+        </div>
 
         <!-- Projects -->
         <article class="card research-panel research-panel--projects">
@@ -412,16 +424,43 @@
           </div>
         </article>
 
-        <!-- Topics -->
-        <article class="card research-panel research-panel--topics">
-          <h2>${topicsTitle}</h2>
-          <div class="tags">
-            ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
-          </div>
-        </article>
-
       </section>
     `;
+
+    // --- Mobile/desktop ordering: keep desktop (Talks+Topics left), mobile (Talks → Projects → Topics)
+    const syncResearchOrder = () => {
+      const left = document.querySelector('.research-col-left');
+      const projectsPanel = document.querySelector('.research-panel--projects');
+      const topicsPanel = document.querySelector('.research-panel--topics');
+
+      if (!left || !projectsPanel || !topicsPanel) return;
+
+      const isMobile = window.matchMedia('(max-width:1099px)').matches;
+
+      if (isMobile) {
+        // Move Topics AFTER Projects
+        if (projectsPanel.nextElementSibling !== topicsPanel) {
+          projectsPanel.insertAdjacentElement('afterend', topicsPanel);
+        }
+      } else {
+        // Put Topics back into the left column (under Talks)
+        if (!left.contains(topicsPanel)) {
+          left.appendChild(topicsPanel);
+        }
+      }
+    };
+
+    // Run once now
+    syncResearchOrder();
+
+    // Re-run on resize (debounced) — register only once
+    if (!window.__researchResizeBound) {
+      window.__researchResizeBound = true;
+      window.addEventListener('resize', debounce(() => {
+        // Only run when Research page is mounted
+        if (document.querySelector('.research-grid')) syncResearchOrder();
+      }, 150));
+    }
 
     // --- Publications render + filter (same logic as your publications page) ---
     const renderPubs = (items) => {
