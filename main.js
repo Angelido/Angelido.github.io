@@ -399,25 +399,70 @@
 
     // --- Publications render + filter (same logic as your publications page) ---
     const renderPubs = (items) => {
+      const labels = state.lang === 'it'
+        ? {
+            conference: 'Conferenza',
+            arxiv: 'arXiv',
+            code: 'Code',
+            short: 'Short paper (PDF)',
+            poster: 'Poster (PDF)'
+          }
+        : {
+            conference: 'Conference',
+            arxiv: 'arXiv',
+            code: 'Code',
+            short: 'Short paper (PDF)',
+            poster: 'Poster (PDF)'
+          };
+
       $('#pubList').innerHTML = items.length
         ? `<ul class="research-list">
-            ${items.map((p) => `
-              <li>
-                <strong>${p.title || ''}</strong>
-                <div class="pub-meta">
-                  ${p.authors || ''}${p.venue ? ` — ${p.venue}` : ''}${p.year ? ` (${p.year})` : ''}
-                </div>
-                <div class="row" style="margin-top:.45rem;">
-                  ${p.pdf ? `<a class="btn btn-outline" href="${p.pdf}" target="_blank" rel="noopener">PDF</a>` : ''}
-                  ${p.doi ? `<a class="btn btn-outline" href="${p.doi}" target="_blank" rel="noopener">DOI</a>` : ''}
-                  ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">Code</a>` : ''}
-                </div>
-              </li>
-            `).join('')}
+            ${items.map((p) => {
+              const locationLine = [p.city, p.country].filter(Boolean).join(', ');
+              const dateLine = p.date || '';
+              const typeLine = [p.type, p.eventLink ? (state.lang === 'it' ? 'Conferenza' : 'Conference') : null]
+                .filter(Boolean)
+                .join(' • ');
+
+              return `
+                <li>
+                  <!-- 1) Event -->
+                  ${p.event ? `<div><strong>${p.event}</strong></div>` : ''}
+
+                  <!-- 2) Location -->
+                  ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
+
+                  <!-- 3) Date (riga dedicata, sotto il luogo) -->
+                  ${dateLine ? `<div class="pub-meta">${dateLine}</div>` : ''}
+
+                  <!-- 4) Type • Conference (riga dedicata sotto la data) -->
+                  ${typeLine ? `<div class="pub-meta">${typeLine}</div>` : ''}
+
+                  <!-- 5) Work title -->
+                  ${p.title ? `<div style="margin-top:.45rem;"><strong>Title:</strong> ${p.title}</div>` : ''}
+
+                  <!-- 6) Authors (subito sotto il titolo) -->
+                  ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
+
+                  <!-- 7) Description -->
+                  ${p.desc ? `<div class="pub-meta" style="margin-top:.2rem;">${p.desc}</div>` : ''}
+
+                  <!-- 8) Links -->
+                  ${(p.eventLink || p.arxiv || p.code || p.shortPdf || p.posterPdf) ? `
+                    <div class="row" style="margin-top:.45rem;">
+                      ${p.eventLink ? `<a class="btn btn-outline" href="${p.eventLink}" target="_blank" rel="noopener">${labels.conference}</a>` : ''}
+                      ${p.arxiv ? `<a class="btn btn-outline" href="${p.arxiv}" target="_blank" rel="noopener">${labels.arxiv}</a>` : ''}
+                      ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">${labels.code}</a>` : ''}
+                      ${p.shortPdf ? `<a class="btn btn-outline" href="${p.shortPdf}" target="_blank" rel="noopener">${labels.short}</a>` : ''}
+                      ${p.posterPdf ? `<a class="btn btn-outline" href="${p.posterPdf}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
+                    </div>
+                  ` : ''}
+                </li>
+              `;
+            }).join('')}
           </ul>`
         : `<p class="pub-meta"></p>`;
     };
-
 
     const filterPubs = () => {
       const q = ($('#pubQ').value || '').toLowerCase();

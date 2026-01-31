@@ -1,11 +1,20 @@
 [
   {
-    "title": "Paper title",
-    "authors": "A. Nardone, ...",
-    "venue": "Conference/Journal",
+    "event": "International Conference on Computational Intelligence Methods for Bioinformatics and Biostatistics (CIBB) 2025",
+    "eventLink": "https://www.bioinformatics.polimi.it/CIBB2025/",
+    "type": "Poster presentation",
+    "city": "Milano",
+    "country": "Italia",
+    "date": "10–12 settembre 2025",
     "year": 2025,
-    "pdf": "assets/papers/paper.pdf",
-    "doi": "https://doi.org/....",
-    "code": "https://github.com/..."
+
+    "title": "MIEO: encoding clinical data to enhance cardiovascular event prediction",
+    "authors": "Davide Borghini, Davide Marchi, Angelo Nardone, Giordano Scerra, Silvia Giulia Galfrè, Alessandro Pingitore, Giuseppe Prencipe, Corrado Priami, and Alina Sîrbu",
+    "desc": "Presentazione del lavoro focalizzato sull’uso di modelli neurali per codificare dati clinici in embedding significativi e migliorare la previsione di eventi cardiovascolari.",
+
+    "arxiv": "https://arxiv.org/abs/2510.11257",
+    "code": "https://github.com/davide-marchi/clinical-data-encoding",
+    "shortPdf": "assets/cibb2025-short-paper.pdf",
+    "posterPdf": "assets/cibb2025-poster.pdf"
   }
 ]
