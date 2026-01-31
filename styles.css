@@ -1199,21 +1199,28 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
     grid-template-columns: 1fr 1fr;
     align-items:start;
 
-    /* Layout “intelligente”:
-       - pubs full width
-       - talks left
-       - projects right (si estende su due righe)
-       - topics sotto talks (left) */
     grid-template-areas:
       "pubs pubs"
-      "talks projects"
-      "topics projects";
+      "left projects";
   }
 
   .research-panel--pubs{ grid-area: pubs; }
-  .research-panel--talks{ grid-area: talks; }
+  .research-col-left{ grid-area: left; }
   .research-panel--projects{ grid-area: projects; }
-  .research-panel--topics{ grid-area: topics; }
+
+  /* Stack Talks + Topics vertically in the left column */
+  .research-col-left{
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem; /* same as .research-grid gap */
+  }
+}
+
+/* Mobile: keep original vertical order (Talks → Projects → Topics) */
+@media (max-width:1099px){
+  .research-col-left{
+    display:contents;
+  }
 }
 
 /* Research – bullet lists (instead of mini-cards) */
