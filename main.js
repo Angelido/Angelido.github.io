@@ -632,10 +632,15 @@
 
         <h3>${x.title}</h3>
 
-        <div class="pub-meta">
-          ${(x.company || x.institution || '')}${x.city ? ` • ${x.city}` : ''}
-        </div>
+        <!-- Institution / Company -->
+        ${(x.company || x.institution)
+          ? `<div class="pub-meta">${x.company || x.institution}</div>`
+          : ''}
 
+        <!-- City (riga separata) -->
+        ${x.city
+          ? `<div class="pub-meta">${x.city}</div>`
+          : ''}
 
         <div class="pub-meta">
           ${x.from} — ${x.to || ongoingLabel}
