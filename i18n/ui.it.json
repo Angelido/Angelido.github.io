@@ -8,13 +8,19 @@
   },
   "research": {
     "title": "Ricerca",
-    "intro": "Qui trovi una panoramica delle mie conferenze, pubblicazioni, talk, progetti e principali temi di ricerca.",
+    "intro": "Qui è presentata una panoramica delle mie conferenze, pubblicazioni, interventi, progetti e interessi di ricerca",
     "sections": {
       "publications": "Conferenze e pubblicazioni",
       "talks": "Talk e workshop",
       "projects": "Progetti",
       "topics": "Research topics"
     }
+  },
+    "experiencePage": {
+    "title": "Formazione ed esperienza",
+    "intro": "Qui è presentata una panoramica del mio percorso formativo e delle esperienze professionali.",
+    "educationTitle": "Formazione",
+    "experienceTitle": "Esperienza"
   },
   "cv": {
     "intro": "Qui puoi consultare e scaricare il mio CV in italiano e in inglese.",

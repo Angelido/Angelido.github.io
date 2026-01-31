@@ -16,6 +16,12 @@
       "topics": "Research topics"
     }
   },
+    "experiencePage": {
+    "title": "Education & Experience",
+    "intro": "Here you can find an overview of my academic background and professional experience.",
+    "educationTitle": "Education",
+    "experienceTitle": "Experience"
+  },
   "cv": {
     "intro": "Here you can view and download my CV in both Italian and English.",
     "itLabel": "Italian CV",
