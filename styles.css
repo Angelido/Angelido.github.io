@@ -38,12 +38,14 @@
 
 /* LIGHT THEME – Soft Blue minimal */
 html[data-theme="light"]{
-  --bg: #f5f7fa;
+  --bg:    #f5f8ff;
   --panel: #ffffff;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --brand: #2563eb;
-  --accent: #1d9d74; /* green accent (if needed) */
+
+  --text:  #0b1220;
+  --muted: #3b4a63;
+
+  --brand: #1d4ed8;  /* blue 700: più serio del tuo */
+  --accent:#0f766e;  /* teal 700 */
 }
 
 /* DARK THEME – Minimal Gemini */
@@ -59,6 +61,13 @@ html[data-theme="dark"]{
   --card-border: rgba(255,255,255,.10);
   --card-bg: rgba(35,36,39,.70);
   --card-shadow: 0 18px 46px rgba(0,0,0,.45);
+}
+
+/* ===== Tags: readable in LIGHT mode ===== */
+html[data-theme="light"] .tag{
+  color: #0f3d2e; /* verde scuro */
+  border-color: rgba(5, 150, 105, .35); /* usa l'accent */
+  background: rgba(5, 150, 105, .10);
 }
 
 /* =========================================================
@@ -159,6 +168,54 @@ img{
   background:transparent;
   color:var(--text);
   box-shadow:none;
+}
+
+/* =========================================================
+   LIGHT: Research links behave like "ghost buttons"
+========================================================= */
+
+/* Base state (no visible button chrome) */
+html[data-theme="light"]
+.research-panel:not(.research-panel--projects)
+.btn,
+html[data-theme="light"]
+.research-panel:not(.research-panel--projects)
+.btn-outline{
+  background: transparent;
+  border: 2px solid transparent; /* keep button sizing/area */
+  box-shadow: none;
+  color: var(--brand);
+}
+
+/* Hover state: underline + tiny lift (button feel) */
+html[data-theme="light"]
+.research-panel:not(.research-panel--projects)
+.btn:hover,
+html[data-theme="light"]
+.research-panel:not(.research-panel--projects)
+.btn-outline:hover{
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+
+  transform: translateY(-1px);
+  filter: none;
+}
+
+/* ===== Buttons: make btn-outline actually visible in LIGHT mode ===== */
+html[data-theme="light"] .btn-outline{
+  border: 2px solid var(--brand);
+  color: var(--brand);
+  background: transparent;
+}
+
+html[data-theme="light"] .btn-outline:hover{
+  background: var(--brand);
+  color: #fff;
 }
 
 /* Small pill badge */
@@ -862,6 +919,22 @@ html[data-theme="dark"] .cv-preview{
   background: var(--brand);
   color: #ffffff;
 }
+
+/* =========================================================
+   LIGHT: give Research panels + CV cards a true "panel" look
+========================================================= */
+html[data-theme="light"] .research-panel.card,
+html[data-theme="light"] .cv-card.card{
+  background: var(--panel);
+  border: 1px solid rgba(15, 23, 42, .10);
+  box-shadow: var(--shadow-soft);
+}
+
+/* (opzionale) un pelo più di stacco per i pannelli Research */
+html[data-theme="light"] .research-panel.card{
+  border-color: rgba(15, 23, 42, .12);
+}
+
 
 /* =========================================================
    15) PAGE: HOME (right panels / about)
