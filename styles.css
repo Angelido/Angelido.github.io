@@ -1316,7 +1316,71 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
 }
 
 /* =========================================================
-   19) RESPONSIVE RULES (Media Queries)
+   19) PAGE: ABOUT ME (image floats inside the text)
+========================================================= */
+
+.aboutme{
+  /* Wider text block, still centered with equal left/right margins */
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* Same breathing room on both sides */
+  padding-inline: clamp(14px, 2.4vw, 30px);
+}
+
+/* Float image to the left so text flows around it */
+.aboutme-figure{
+  float: left;
+
+  /* Slightly smaller than before */
+  width: min(240px, 28%);
+
+  margin: .15rem 1.15rem .75rem 0;
+}
+
+.aboutme-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .aboutme-img{
+  border-color: rgba(255,255,255,.14);
+}
+
+.aboutme-text{
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* Clear float */
+.aboutme::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Small screens: keep the image SMALL (not full width) and centered,
+   then text starts under it. */
+@media (max-width: 900px){
+  .aboutme{
+    max-width: 900px; /* keep it roomy */
+  }
+
+  .aboutme-figure{
+    float: none;
+    width: auto;              /* do NOT stretch */
+    max-width: 220px;         /* small image always */
+    margin: 0 auto 1rem auto; /* center */
+  }
+}
+
+/* =========================================================
+   20) RESPONSIVE RULES (Media Queries)
    ---------------------------------------------------------
    Kept in the SAME relative order as your original blocks,
    but moved together at the end for maintainability.

@@ -6,6 +6,10 @@
     "aboutTitle": "About me",
     "quickInfoLabel": "Quick info"
   },
+  "aboutPage": {
+  "title": "About me",
+  "intro": ""
+  },
   "research": {
     "title": "Research",
     "intro": "Here you can find an overview of my conferences, publications, talks, projects, and research interests.",

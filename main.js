@@ -9,6 +9,7 @@
     data: {
       profile: null,
       home: null,
+      about_me: null,
       education: [],
       experience: [],
       publications: [],
@@ -110,9 +111,10 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, home, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
+    const [profile, home, about_me, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/about_me.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/experience.${state.lang}.json`).then((r) => r.json()),
 
@@ -126,7 +128,7 @@
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, home, education, experience, publications, topics, talks, projects, social, cv };
+    state.data = { profile, home, about_me, education, experience, publications, topics, talks, projects, social, cv };
 
   }
 
@@ -135,6 +137,7 @@
   ========================================================== */
   const routes = {
     '/accademico': renderAcademicHome,
+    '/about': renderAbout,
     '/research': renderResearch,
     '/experience': renderExperience,
     '/cv': renderCV,
@@ -261,6 +264,37 @@
       </section>
     `;
   }
+
+  function renderAbout() {
+    const app = $('#app');
+    const { profile, about_me } = state.data;
+
+    const pageTitle = state.i18n?.aboutPage?.title || 'About me';
+    const intro = state.i18n?.aboutPage?.intro || '';
+
+    const aboutText = about_me?.text || '';
+    const paragraphs = splitParagraphs(aboutText);
+    const fullHtml = paragraphs.map((p) => `<p>${renderParagraphHTML(p)}</p>`).join('');
+
+    app.innerHTML = `
+      ${pageHeaderHTML(pageTitle, intro)}
+
+      <section class="section aboutme">
+        <figure class="aboutme-figure">
+          <img
+            class="aboutme-img"
+            src="assets/personal.jpg"
+            alt="${state.lang === 'it' ? 'Foto di' : 'Photo of'} ${profile?.name || ''}"
+          />
+        </figure>
+
+        <div class="aboutme-text">
+          ${fullHtml}
+        </div>
+      </section>
+    `;
+  }
+
 
   function renderResearch() {
     const app = $('#app');

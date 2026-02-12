@@ -6,6 +6,10 @@
     "aboutTitle": "Chi sono",
     "quickInfoLabel": "Info rapide"
   },
+  "aboutPage": {
+  "title": "Chi sono",
+  "intro": ""
+  },
   "research": {
     "title": "Ricerca",
     "intro": "Qui è presentata una panoramica delle mie conferenze, pubblicazioni, interventi, progetti e interessi di ricerca",
