@@ -1104,6 +1104,9 @@
       const isOpen = mobileNav.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       mobileNav.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+
+      // NEW: overlay + body state
+      document.body.classList.toggle('nav-open', isOpen);
     });
 
     // Close mobile menu when a link is clicked
@@ -1112,6 +1115,9 @@
         mobileNav.classList.remove('open');
         mobileNav.setAttribute('aria-hidden', 'true');
         navToggle.setAttribute('aria-expanded', 'false');
+
+        // NEW
+        document.body.classList.remove('nav-open');
       });
     });
 
@@ -1122,14 +1128,34 @@
       mobileNav?.classList.remove('open');
       mobileNav?.setAttribute('aria-hidden', 'true');
       navToggle?.setAttribute('aria-expanded', 'false');
+
+      // NEW
+      document.body.classList.remove('nav-open');
     });
 
     // If resized to desktop, ensure the mobile menu is closed
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 768 && mobileNav && navToggle) {
+      if (window.innerWidth > 950 && mobileNav && navToggle) {
         mobileNav.classList.remove('open');
         mobileNav.setAttribute('aria-hidden', 'true');
         navToggle.setAttribute('aria-expanded', 'false');
+
+        // NEW
+        document.body.classList.remove('nav-open');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('nav-open')) return;
+
+      const clickedInsideDrawer = mobileNav.contains(e.target);
+      const clickedToggle = navToggle.contains(e.target);
+
+      if (!clickedInsideDrawer && !clickedToggle) {
+        mobileNav.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
       }
     });
 
