@@ -8,7 +8,7 @@
   },
   "aboutPage": {
   "title": "About me",
-  "intro": ""
+  "intro": " "
   },
   "postsPage": {
     "title": "Posts",
@@ -28,7 +28,7 @@
       "topics": "Research topics"
     }
   },
-    "experiencePage": {
+  "experiencePage": {
     "title": "Education & Experience",
     "intro": "Here you can find an overview of my academic background and professional experience.",
     "educationTitle": "Education",

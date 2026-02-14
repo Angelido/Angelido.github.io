@@ -5,7 +5,7 @@
 ========================================================= */
 :root{
   --radius:14px;
-  --maxw:1200px;
+  --maxw:1000px;
   --shadow:0 10px 30px rgba(0,0,0,.25);
 
   /* Fallback colors (same as light theme) */
@@ -123,7 +123,10 @@ img{
    ---------------------------------------------------------
    Reusable helpers for layout and grids (desktop-first).
 ========================================================= */
-.container{ width:min(100% - 2.5rem,var(--maxw)); margin-inline:auto; }
+.container{ 
+  width:min(100% - 4rem,var(--maxw)); 
+  margin-inline:auto; 
+}
 .row{ display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
 .space-between{ justify-content:space-between; }
 
@@ -1288,9 +1291,6 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   max-width: min(1100px, 90vw);
   margin-left: auto;
   margin-right: auto;
-
-  /* Same breathing room on both sides */
-  padding-inline: clamp(14px, 2.4vw, 30px);
 }
 
 /* Float image to the left so text flows around it */
@@ -1298,7 +1298,7 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   float: left;
 
   /* Slightly smaller than before */
-  width: min(240px, 28%);
+  width: min(200px, 28%);
 
   margin: .15rem 1.15rem .75rem 0;
 }
@@ -1554,3 +1554,10 @@ html[data-theme="light"] .posts-filter-select{
 html[data-theme="light"] .posts-filter-select option{
   color: var(--text);
 }
+
+@media (max-width:900px){
+  .container{
+    width: min(100% - 2.8rem, var(--maxw));
+  }
+}
+
