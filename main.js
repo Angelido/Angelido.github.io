@@ -989,8 +989,6 @@
     `;
   }
 
-  const renderEducation = renderExperience;
-
   function renderPrivacy() {
     const app = $('#app');
 
