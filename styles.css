@@ -557,29 +557,54 @@ html[data-theme="dark"] .nav-toggle span{
   background:#e5e7eb;
 }
 
-/* Mobile dropdown nav */
+/* Mobile drawer nav (side panel) */
 .mobile-nav{
-  position:fixed;
-  top:60px;
-  left:0;
-  right:0;
-  background:var(--panel);
-  border-bottom:1px solid rgba(15,23,42,.08);
-  padding:.6rem 1.25rem 1rem;
-  display:none;
-  flex-direction:column;
-  gap:.35rem;
-  z-index:40;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
+  width: min(280px, 82vw);
+  padding: 1.0rem 1.0rem 1.2rem;
+
+  background: var(--panel);
+  border-right: 1px solid rgba(15,23,42,.10);
+
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+
+  z-index: 1200;
+
+  /* closed by default */
+  transform: translateX(-105%);
+  transition: transform .22s ease;
 }
+
 html[data-theme="dark"] .mobile-nav{
-  border-bottom-color:rgba(255,255,255,.12);
+  border-right-color: rgba(255,255,255,.12);
+}
+
+.mobile-nav.open{
+  transform: translateX(0);
 }
 
 .mobile-nav .nav-item{
-  width:max-content;
+  width: 100%;
+  padding: .55rem .7rem;
+  border-radius: 12px;
 }
-.mobile-nav.open{
-  display:flex;
+
+/* Overlay when drawer is open */
+body.nav-open::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 1100;
+}
+html[data-theme="dark"] body.nav-open::before{
+  background: rgba(0,0,0,.55);
 }
 
 /* Topbar small buttons (language/theme wrappers) */
@@ -624,6 +649,12 @@ html[data-theme="dark"] .theme-btn .sunmoon{
   outline:2px solid var(--brand);
   outline-offset:2px;
 }
+
+@media (max-width:950px){
+  .primary-nav{ display:none !important; }
+  .nav-toggle{ display:inline-flex !important; }
+}
+
 
 /* =========================================================
    10) LANGUAGE SWITCHER (dropdown)
