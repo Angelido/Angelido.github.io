@@ -10,6 +10,7 @@
       profile: null,
       home: null,
       about_me: null,
+      posts: [],
       education: [],
       experience: [],
       publications: [],
@@ -111,10 +112,11 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, home, about_me, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
+    const [profile, home, about_me, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/about_me.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/posts.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/experience.${state.lang}.json`).then((r) => r.json()),
 
@@ -128,7 +130,7 @@
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, home, about_me, education, experience, publications, topics, talks, projects, social, cv };
+    state.data = { profile, home, about_me, posts, education, experience, publications, topics, talks, projects, social, cv };
 
   }
 
@@ -138,6 +140,7 @@
   const routes = {
     '/accademico': renderAcademicHome,
     '/about': renderAbout,
+    '/posts': renderPosts,
     '/research': renderResearch,
     '/experience': renderExperience,
     '/cv': renderCV,
@@ -152,19 +155,29 @@
 
   function updateActiveNavLinks() {
     const path = parseHash();
+    const navPath = path.startsWith('/posts/') ? '/posts' : path;
+
     $$('.nav-item[data-route]').forEach((link) => {
-      link.classList.toggle('active', path === link.dataset.route);
+      link.classList.toggle('active', navPath === link.dataset.route);
     });
   }
 
   function onRouteChange() {
     const path = parseHash();
+
+    // Dynamic post route: /posts/<id>
+    if (path.startsWith('/posts/') && path.split('/').length >= 3) {
+      const postId = decodeURIComponent(path.split('/')[2] || '');
+      renderPostDetail(postId);
+      updateActiveNavLinks();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     const view = routes[path] || renderNotFound;
 
     view();
     updateActiveNavLinks();
-
-    // Keep the UX consistent: scroll to top on navigation
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -212,55 +225,64 @@
     const { profile } = state.data;
     const app = $('#app');
 
-    const aboutText = profile.about.long || '';
-    const paragraphs = splitParagraphs(aboutText);
-    const fullHtml = paragraphs.map((p) => `<p>${renderParagraphHTML(p)}</p>`).join('');
+    // Latest post (first by date desc)
+    const posts = (state.data.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const latest = posts[0] || null;
+
+    const latestTitle = state.i18n?.home?.latestTitle || (state.lang === 'it' ? 'Ultimi post' : 'Latest posts');
+    const latestLabel = state.i18n?.home?.latestLabel || (state.lang === 'it' ? 'Ultimo post' : 'Latest post');
+
+    const formatPostDate = (iso) => {
+      if (!iso) return '';
+      const d = new Date(iso + 'T00:00:00');
+      return isNaN(d.getTime())
+        ? iso
+        : d.toLocaleDateString(state.lang === 'it' ? 'it-IT' : 'en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+    };
+
+    const dateStr = latest?.date ? formatPostDate(latest.date) : '';
+
+    // Two lines (emoji + text)
+    const line1 = state.lang === 'it'
+      ? `👨🏻‍🎓 ${profile?.role || 'PhD Student'} in Computer Science at ${profile?.university || 'University of Pisa'}`
+      : `👨🏻‍🎓 ${profile?.role || 'PhD Student'} in Computer Science at ${profile?.university || 'University of Pisa'}`;
+
+    const line2 = state.lang === 'it'
+      ? `📌 Room 304, ${profile?.department || 'Department of Computer Science'}`
+      : `📌 Room 304, ${profile?.department || 'Department of Computer Science'}`;
 
     app.innerHTML = `
-      <section class="hero hero-home">
-        <div class="hero-left">
-          <div class="hero-avatar">
-            <img src="assets/personal.jpg" alt="Foto profilo di ${profile.name}" />
+      <section class="home-simple">
+        <div class="home-simple-head">
+          <div class="home-simple-avatar">
+            <img src="assets/personal.jpg" alt="Foto profilo di ${profile?.name || 'Angelo Nardone'}" />
           </div>
 
-          <h1 class="hero-name">${profile.name}</h1>
-          <p class="hero-role">${profile.role}</p>
+          <h1 class="home-simple-name">${profile?.name || 'Angelo Nardone'}</h1>
 
-          <div class="hero-affil">
-            <p class="hero-affil-line">${profile.department}</p>
-            <p class="hero-affil-line">${profile.university}</p>
+          <div class="home-simple-lines">
+            <div class="home-simple-line">${line1}</div>
+            <div class="home-simple-line">${line2}</div>
           </div>
 
-          <div class="social-row">
+          <div class="home-social">
             ${(state.data.social || []).map(socialIcon).join('')}
           </div>
-
         </div>
 
-        <div class="hero-center">
-          <div class="about-card">
-            <h2 class="about-title">${state.i18n?.home?.aboutTitle || ''}</h2>
-            <div class="about-body" id="aboutBody">
-              ${fullHtml}
-            </div>
-          </div>
-        </div>
+        <section class="home-latest">
+          <div class="home-latest-title">${latestTitle}</div>
 
-        <aside class="hero-side" aria-label="${state.i18n?.home?.quickInfoLabel || 'Quick info'}">
-          <div class="side-panel">
-            ${(state.data.home?.cards || [])
-              .map(
-                (c) => `
-                <div class="side-card">
-                  <div class="side-kicker">${c.kicker}</div>
-                  <div class="side-title">${c.title}</div>
-                  <div class="side-text">${c.text}</div>
-                </div>
-              `
-              )
-              .join('')}
-          </div>
-        </aside>
+          ${latest ? `
+            <a class="home-latest-card" href="#/posts/${encodeURIComponent(latest.id)}" aria-label="${latest.title || ''}">
+              <div class="home-latest-kicker">${latestLabel}${dateStr ? ` • ${dateStr}` : ''}</div>
+              ${latest.title ? `<div class="home-latest-posttitle">${latest.title}</div>` : ''}
+              ${latest.abstract ? `<div class="home-latest-abstract">${latest.abstract}</div>` : ''}
+            </a>
+          ` : `
+            <div class="pub-meta">${state.lang === 'it' ? 'Nessun post disponibile.' : 'No posts available.'}</div>
+          `}
+        </section>
       </section>
     `;
   }
@@ -295,6 +317,149 @@
     `;
   }
 
+  function formatPostDate(iso) {
+    // ISO YYYY-MM-DD -> locale
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return isNaN(d.getTime()) ? iso : d.toLocaleDateString(state.lang === 'it' ? 'it-IT' : 'en-GB', {
+      year: 'numeric', month: 'short', day: '2-digit'
+    });
+  }
+
+  function collectAllTags(posts) {
+    const set = new Set();
+    (posts || []).forEach(p => (p.tags || []).forEach(t => set.add(String(t))));
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }
+
+  function renderPosts() {
+    const app = $('#app');
+
+    const pageTitle = state.i18n?.postsPage?.title || 'Posts';
+    const intro = state.i18n?.postsPage?.intro || '';
+    const filterLabel = state.i18n?.postsPage?.filterByTag || (state.lang === 'it' ? 'Filtra per tag' : 'Filter by tag');
+    const allTagsLabel = state.i18n?.postsPage?.allTags || (state.lang === 'it' ? 'Tutti' : 'All');
+    const emptyLabel = state.i18n?.postsPage?.noItems || (state.lang === 'it' ? 'Nessun post trovato.' : 'No posts found.');
+
+    const posts = (state.data.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    const allTags = collectAllTags(posts);
+
+    app.innerHTML = `
+      ${pageHeaderHTML(pageTitle, intro)}
+
+      <section class="section posts-toolbar">
+        <div class="posts-toolbar-inner">
+          <div class="posts-toolbar-spacer"></div>
+
+          <div class="posts-filter">
+            <label class="posts-filter-label" for="tagSel">${filterLabel}</label>
+            <select id="tagSel" class="input posts-filter-select">
+              <option value="">${allTagsLabel}</option>
+              ${allTags.map(t => `<option value="${t}">${t}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="section posts-list" id="postsList"></section>
+    `;
+
+    const listEl = $('#postsList');
+
+    const render = (items) => {
+      listEl.innerHTML = items.length
+        ? items.map((p, idx) => {
+            const dateStr = formatPostDate(p.date);
+            const tags = Array.isArray(p.tags) ? p.tags : [];
+            const hasImg = !!p.image;
+            const side = (p.imageSide === 'left' || p.imageSide === 'right') ? p.imageSide : (idx % 2 === 0 ? 'right' : 'left');
+
+            return `
+              <article class="card post-card post-card--${hasImg ? 'img' : 'noimg'} post-card--${side}">
+                <a class="post-card-link" href="#/posts/${encodeURIComponent(p.id)}" aria-label="${p.title || ''}"></a>
+
+                ${hasImg ? `
+                  <figure class="post-card-figure">
+                    <img class="post-card-img" src="${p.image}" alt="${p.title || ''}">
+                  </figure>
+                ` : ''}
+
+                <div class="post-card-body">
+                  ${p.title ? `<h2 class="post-card-title">${p.title}</h2>` : ''}
+
+                  <div class="post-card-meta">
+                    ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+                  </div>
+
+                  ${p.abstract ? `<p class="post-card-abstract">${p.abstract}</p>` : ''}
+
+                  ${tags.length ? `
+                    <div class="tags post-tags">
+                      ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              </article>
+            `;
+          }).join('')
+        : `<p class="pub-meta">${emptyLabel}</p>`;
+    };
+
+    const applyFilter = () => {
+      const sel = $('#tagSel').value;
+      const filtered = !sel ? posts : posts.filter(p => (p.tags || []).map(String).includes(sel));
+      render(filtered);
+    };
+
+    $('#tagSel').addEventListener('change', applyFilter);
+
+    render(posts);
+  }
+
+  function renderPostDetail(postId) {
+    const app = $('#app');
+
+    const posts = state.data.posts || [];
+    const p = posts.find(x => String(x.id) === String(postId));
+
+    if (!p) {
+      renderNotFound();
+      return;
+    }
+
+    const dateStr = formatPostDate(p.date);
+    const tags = Array.isArray(p.tags) ? p.tags : [];
+
+    const paragraphs = splitParagraphs(p.content || '');
+    const fullHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
+
+    app.innerHTML = `
+      <section class="section post-page">
+        ${p.title ? `<h1 class="post-page-title">${p.title}</h1>` : ''}
+
+        <div class="post-page-meta">
+          ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+        </div>
+
+        ${tags.length ? `
+          <div class="tags post-tags post-page-tags">
+            ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+        ` : ''}
+
+        ${p.image ? `
+          <figure class="post-page-figure">
+            <img class="post-page-img" src="${p.image}" alt="${p.title || ''}">
+          </figure>
+        ` : ''}
+
+        <div class="post-page-body">
+          ${fullHtml}
+        </div>
+      </section>
+    `;
+  }
 
   function renderResearch() {
     const app = $('#app');
@@ -842,7 +1007,7 @@
     const contactText  = state.i18n?.privacy?.contactText  || '';
 
     // keep as a constant (or move to data/config if you want)
-    const emailLabel = 'angelo.nardone17@gmail.com';
+    const emailLabel = 'angelo.nardone@phd.unipi.it';
 
     app.innerHTML = `
       <section class="section">

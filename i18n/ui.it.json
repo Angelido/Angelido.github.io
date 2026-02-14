@@ -10,6 +10,14 @@
   "title": "Chi sono",
   "intro": ""
   },
+  "postsPage": {
+    "title": "Posts",
+    "intro": "Qui condivido i miei pensieri su vari argomenti, inclusi aggiornamenti sulla ricerca, sui miei spostamenti e molto altro.",
+    "filterByTag": "Filtra per tag",
+    "allTags": "Tutti",
+    "noItems": "Nessun post trovato.",
+    "back": "Torna ai posts"
+  },
   "research": {
     "title": "Ricerca",
     "intro": "Qui è presentata una panoramica delle mie conferenze, pubblicazioni, interventi, progetti e interessi di ricerca",

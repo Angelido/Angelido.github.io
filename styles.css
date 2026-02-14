@@ -360,12 +360,12 @@ html[data-theme="dark"] .site-header{
 
 /* --- Footer --- */
 .site-footer{
-  margin-top:2rem;
+  margin-top:1.4rem;
   border-top:1px solid rgba(0,0,0,.04);
-  padding:.9rem 0;
+  padding:.55rem 0;   /* prima .9rem */
   color:var(--muted);
   background:var(--panel);
-  font-size:.9rem;
+  font-size:.82rem;   /* leggermente più piccolo */
 }
 html[data-theme="dark"] .site-footer{
   border-top-color:rgba(255,255,255,.08);
@@ -1126,6 +1126,176 @@ html[data-theme="light"] .research-panel.card{
 }
 
 /* =========================================================
+   PAGE: HOME (Simple single-zone layout) — compact
+========================================================= */
+
+.home-simple{
+  /* More side space + overall cleaner */
+  max-width: min(900px, 86vw);
+  margin: 0 auto;
+
+  /* Smaller vertical footprint */
+  padding: 2.4rem 0 1.6rem;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+
+  /* More separation between top content and latest posts */
+  gap: 2.0rem;
+}
+
+.home-simple-head{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  /* Tighter stack */
+  gap: .8rem;
+}
+
+.home-simple-avatar{
+  width: 200px;
+  height: 200px;
+  border-radius: 999px;
+  overflow:hidden;
+  border: 3px solid rgba(0,0,0,.06);
+  box-shadow: 0 10px 30px rgba(15,23,42,.18);
+}
+
+html[data-theme="dark"] .home-simple-avatar{
+  border-color: rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.7);
+}
+
+.home-simple-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* 1) Smaller name */
+.home-simple-name{
+  margin: 0;
+  font-size: clamp(1.75rem, 2.4vw, 2.15rem);
+  font-weight: 850;
+  letter-spacing: .02em;
+}
+
+/* 2) Two emoji lines */
+.home-simple-lines{
+  margin-top: .1rem;
+  display:flex;
+  flex-direction:column;
+  gap: .35rem;
+}
+
+.home-simple-line{
+  font-size: .98rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: .92;
+}
+
+/* 3) Social row (horizontal) */
+.home-social{
+  margin-top: .35rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap: .65rem;
+}
+
+/* Make icons slightly smaller for a cleaner look */
+.home-social .icon-btn{
+  width: 38px;
+  height: 38px;
+}
+
+.home-social .icon-btn img{
+  width: 18px;
+  height: 18px;
+}
+
+/* Latest post */
+.home-latest{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: .7rem;
+}
+
+.home-latest-title{
+  width:100%;
+  text-align:left;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  font-size: 1.08rem;
+}
+
+.home-latest-card{
+  width:100%;
+  text-decoration:none;
+  color: inherit;
+
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, .10);
+  background: var(--panel);
+  box-shadow: var(--shadow-soft);
+
+  /* a bit smaller */
+  padding: .95rem 1.0rem;
+
+  text-align:left;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.home-latest-card:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+html[data-theme="dark"] .home-latest-card{
+  border-color: rgba(255,255,255,.10);
+  background: rgba(35,36,39,.70);
+  box-shadow: var(--card-shadow);
+}
+
+.home-latest-kicker{
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .32rem;
+}
+
+.home-latest-posttitle{
+  font-size: 1.02rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  margin-bottom: .30rem;
+}
+
+.home-latest-abstract{
+  color: var(--text);
+  opacity: .92;
+  line-height: 1.55;
+}
+
+/* Small screens: keep it airy but compact */
+@media (max-width: 900px){
+  .home-simple{
+    max-width: min(900px, 92vw);
+    padding: 2.1rem 0 1.4rem;
+    gap: 1.7rem;
+  }
+}
+
+/* =========================================================
   17) PAGE: EDUCATION & EXPERIENCE (split modern layout)
 ========================================================= */
 
@@ -1321,7 +1491,7 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
 
 .aboutme{
   /* Wider text block, still centered with equal left/right margins */
-  max-width: 1040px;
+  max-width: min(1100px, 90vw);
   margin-left: auto;
   margin-right: auto;
 
@@ -1380,7 +1550,220 @@ html[data-theme="dark"] .aboutme-img{
 }
 
 /* =========================================================
-   20) RESPONSIVE RULES (Media Queries)
+   20) PAGE: POSTS
+========================================================= */
+
+.posts-toolbar{
+  margin-top: 0;
+}
+
+.posts-toolbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.posts-toolbar-spacer{ flex:1; }
+
+.posts-filter{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  margin-left:auto; /* keep on the right */
+}
+
+.posts-filter-label{
+  font-weight:700;
+  color:var(--muted);
+  font-size:.92rem;
+}
+
+.posts-filter-select{
+  min-width: 180px;
+}
+
+/* List layout: stacked big panels */
+.posts-list{
+  display:grid;
+  gap: 1.2rem;
+}
+
+/* ===== Post preview card (full width, a bit "lower") ===== */
+.post-card{
+  position:relative;
+  overflow:hidden;
+
+  /* Slightly lower / less tall */
+  padding: 1rem;
+
+  cursor:pointer;
+
+  background: var(--panel);
+  border: 1px solid rgba(15, 23, 42, .10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .post-card{
+  background: rgba(35,36,39,.70);
+  border-color: rgba(255,255,255,.10);
+  box-shadow: var(--card-shadow);
+}
+
+/* Ensure click always triggers the overlay */
+.post-card *{
+  pointer-events:none;
+}
+
+/* Entire card clickable: overlay link (must be AFTER the rule above) */
+.post-card a.post-card-link{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:auto;
+}
+
+/* Preview layout: optional image left/right */
+.post-card--img{
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items:center;
+  gap: 1.1rem;
+}
+
+.post-card--img.post-card--right{
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.post-card--img.post-card--right .post-card-figure{ order:2; }
+.post-card--img.post-card--right .post-card-body{ order:1; }
+
+/* Body: keep it centered and readable */
+.post-card-body{
+  max-width: 72ch;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.post-card-title{
+  margin: 0 0 .25rem;
+  letter-spacing: -0.02em;
+}
+
+.post-card-meta{
+  color: var(--muted);
+  font-size: .95rem;
+  margin-bottom: .45rem;
+}
+
+.post-card-abstract{
+  margin: 0 0 .65rem;
+  color: var(--text);
+  opacity: .95;
+  line-height: 1.7;
+}
+
+/* Tags row inside previews */
+.post-tags{
+  margin-top: .15rem;
+}
+
+/* Figure */
+.post-card-figure{
+  margin:0;
+  width:100%;
+  max-width: 300px; /* slightly smaller to reduce height */
+  justify-self:center;
+}
+
+.post-card-img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .post-card-img{
+  border-color: rgba(255,255,255,.14);
+}
+
+/* ===== Opened post: full page (NO panel/card) ===== */
+.post-page{
+  max-width: 85ch;
+  margin-inline: auto;
+}
+
+.post-page-title{
+  margin: 0 0 .35rem;
+  letter-spacing: -0.02em;
+}
+
+.post-page-meta{
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+.post-page-tags{
+  margin-top: .7rem;
+}
+
+.post-page-figure{
+  margin: 1.2rem 0 0;
+}
+
+.post-page-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .post-page-img{
+  border-color: rgba(255,255,255,.14);
+}
+
+.post-page-body{
+  margin-top: 1.2rem;
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.post-page-body p{
+  margin: 0 0 1rem;
+}
+
+/* Responsive: stack image + text nicely */
+@media (max-width: 900px){
+  .post-card--img{
+    grid-template-columns: 1fr;
+  }
+
+  .post-card-figure{
+    max-width: 420px;
+  }
+
+  .posts-filter-select{
+    min-width: 160px;
+  }
+}
+
+html[data-theme="light"] .posts-filter-select{
+  background: var(--panel);
+  border-color: rgba(0,0,0,.12);
+  color: var(--text);
+}
+
+html[data-theme="light"] .posts-filter-select option{
+  color: var(--text);
+}
+
+
+/* =========================================================
+   21) RESPONSIVE RULES (Media Queries)
    ---------------------------------------------------------
    Kept in the SAME relative order as your original blocks,
    but moved together at the end for maintainability.
