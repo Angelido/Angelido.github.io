@@ -244,12 +244,13 @@
 
     // Two lines (emoji + text)
     const line1 = state.lang === 'it'
-      ? `👨🏻‍🎓 ${profile?.role || 'PhD Student'} in Computer Science at ${profile?.university || 'University of Pisa'}`
-      : `👨🏻‍🎓 ${profile?.role || 'PhD Student'} in Computer Science at ${profile?.university || 'University of Pisa'}`;
+      ? `👨🏻‍🎓 Dottorando in Informatica presso ${profile?.university || 'Università di Pisa'}`
+      : `👨🏻‍🎓 PhD Student in Computer Science at ${profile?.university || 'University of Pisa'}`;
 
     const line2 = state.lang === 'it'
-      ? `📌 Room 304, ${profile?.department || 'Department of Computer Science'}`
+      ? `📌 Stanza 304, ${profile?.department || 'Dipartimento di Informatica'}`
       : `📌 Room 304, ${profile?.department || 'Department of Computer Science'}`;
+
 
     app.innerHTML = `
       <section class="home-simple">

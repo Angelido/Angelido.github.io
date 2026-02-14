@@ -2,6 +2,14 @@
   "site": {
     "title": "Angelo Nardone — Sito personale"
   },
+  "nav": {
+    "home": "Home",
+    "about": "Chi sono",
+    "posts": "Post",
+    "research": "Ricerca",
+    "experience": "Formazione & Esperienza",
+    "cv": "CV"
+  },
   "home": {
     "aboutTitle": "Chi sono",
     "quickInfoLabel": "Info rapide"
