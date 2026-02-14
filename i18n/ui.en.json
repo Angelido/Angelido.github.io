@@ -2,6 +2,14 @@
   "site": {
     "title": "Angelo Nardone — Personal website"
   },
+  "nav": {
+    "home": "Home",
+    "about": "About me",
+    "posts": "Posts",
+    "research": "Research",
+    "experience": "Education & Experience",
+    "cv": "CV"
+  },
   "home": {
     "aboutTitle": "About me",
     "quickInfoLabel": "Quick info"
