@@ -1,0 +1,12 @@
+[
+  {
+    "id": "my-first-post",
+    "title": "My first post",
+    "date": "2026-02-14",
+    "abstract": "Short abstract shown in the preview.",
+    "tags": ["notes", "research"],
+    "image": "",
+    "imageSide": "right",
+    "content": "Testo lungo...\n\nPuoi usare **bold** come in About.\n\nAltro paragrafo..."
+  }
+]

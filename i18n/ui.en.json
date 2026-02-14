@@ -10,6 +10,14 @@
   "title": "About me",
   "intro": ""
   },
+  "postsPage": {
+    "title": "Posts",
+    "intro": "Here you can find my thoughts on various topics, including research updates, my work travels, and more.",
+    "filterByTag": "Filter by tag",
+    "allTags": "All",
+    "noItems": "No posts found.",
+    "back": "Back to posts"
+  },
   "research": {
     "title": "Research",
     "intro": "Here you can find an overview of my conferences, publications, talks, projects, and research interests.",
