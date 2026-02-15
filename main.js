@@ -112,9 +112,8 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, home, about_me, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
+    const [profile, about_me, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
-      fetch(`${base}/home.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/about_me.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/posts.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
@@ -130,7 +129,7 @@
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, home, about_me, posts, education, experience, publications, topics, talks, projects, social, cv };
+    state.data = { profile, about_me, posts, education, experience, publications, topics, talks, projects, social, cv };
 
   }
 
@@ -195,9 +194,28 @@
     return text.trim().split(/\n\s*\n/);
   }
 
+  function renderInlineMD(s) {
+    if (!s) return '';
+
+    // 1) Escape minimal to avoid breaking HTML (keeps it simple & safe)
+    let html = String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // 2) **bold**
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // 3) [text](https://url)  (only http/https)
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (m, text, url) => {
+      return `<a href="${url}" target="_blank" rel="noopener" class="inline-link">${text}</a>`;
+    });
+
+    return html;
+  }
+
   function renderParagraphHTML(p) {
-    // Convert **text** -> <strong>text</strong>
-    return p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return renderInlineMD(p);
   }
 
   /* =========================================================
@@ -268,8 +286,8 @@
           <h1 class="home-simple-name">${profile?.name || 'Angelo Nardone'}</h1>
 
           <div class="home-simple-lines">
-            <div class="home-simple-line">${line1}</div>
-            <div class="home-simple-line">${line2}</div>
+            <div class="home-simple-line">${renderInlineMD(line1)}</div>
+            <div class="home-simple-line">${renderInlineMD(line2)}</div>
           </div>
 
           <div class="home-social">
@@ -528,10 +546,15 @@
                       return `
                         <li>
                           <!-- 1) Workshop name -->
-                          <div><strong>${t.event || ''}</strong></div>
+                          <div><strong>${renderInlineMD(t.event || '')}</strong></div>
 
                           <!-- 2) Institution / venue -->
-                          ${t.institution ? `<div class="pub-meta">${t.institution}${t.venue ? ` — ${t.venue}` : ''}</div>` : ''}
+                          ${t.institution ? `
+                            <div class="pub-meta">
+                              ${renderInlineMD(t.institution)}
+                              ${t.venue ? ` — ${renderInlineMD(t.venue)}` : ''}
+                            </div>
+                          ` : ''}
 
                           <!-- 3) City, Country (separato) -->
                           ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
@@ -594,7 +617,7 @@
 
                           ${p.description ? `
                             <div class="pub-meta" style="margin-top:.25rem;">
-                              <strong>${labels.desc}:</strong> ${p.description}
+                                <strong>${labels.desc}:</strong> ${renderInlineMD(p.description)}
                             </div>
                           ` : ''}
 
@@ -947,14 +970,15 @@
         ${x.supervisor ? `
           <div class="edu-line">
             <span class="edu-label">${supervisorLabel}</span>
-            <span class="edu-value">${x.supervisor}</span>
+            <span class="edu-value">${renderInlineMD(x.supervisor)}</span>
+
           </div>
         ` : ""}
 
         ${x.opponent ? `
           <div class="edu-line">
             <span class="edu-label">${opponentLabel}</span>
-            <span class="edu-value">${x.opponent}</span>
+            <span class="edu-value">${renderInlineMD(x.opponent)}</span>
           </div>
           ` : ""}
       
