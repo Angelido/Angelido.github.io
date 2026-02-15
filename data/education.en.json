@@ -29,8 +29,8 @@
       "AI for Health"
     ],
     "thesis": "Lossless Compression of Source Code using Large Language Models",
-    "supervisor": "Prof. Paolo Ferragina",
-    "opponent": "Prof. Giovanni Manzini"
+    "supervisor": "[Prof. Paolo Ferragina](https://www.santannapisa.it/en/paolo-ferragina)",
+    "opponent": "[Prof. Giovanni Manzini](https://pages.di.unipi.it/manzini/)"
   },
   {
     "type": "B.Sc. (L-35)",
@@ -48,6 +48,6 @@
       "Coding Theory"
     ],
     "thesis": "Approximate Near Neighbor Searching: methods for similarity search in time series using the Fréchet distance",
-    "supervisor": "Prof. Roberto Grossi"
+    "supervisor": "[Prof. Roberto Grossi](https://pages.di.unipi.it/grossi/)"
   }
 ]
