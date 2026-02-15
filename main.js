@@ -165,6 +165,12 @@
   function onRouteChange() {
     const path = parseHash();
 
+    // Close language dropdown when navigating
+    const langBtn = $('#langBtn');
+    const langMenu = $('#langMenu');
+    langMenu?.setAttribute('aria-hidden', 'true');
+    langBtn?.setAttribute('aria-expanded', 'false');
+
     // Dynamic post route: /posts/<id>
     if (path.startsWith('/posts/') && path.split('/').length >= 3) {
       const postId = decodeURIComponent(path.split('/')[2] || '');
