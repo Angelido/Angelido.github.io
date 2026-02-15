@@ -209,6 +209,42 @@ html[data-theme="light"]
   filter: none;
 }
 
+/* =========================================================
+   DARK: Research links behave like "ghost buttons" (same as light)
+========================================================= */
+
+/* Base state (no visible button chrome) */
+html[data-theme="dark"]
+.research-panel:not(.research-panel--projects)
+.btn,
+html[data-theme="dark"]
+.research-panel:not(.research-panel--projects)
+.btn-outline{
+  background: transparent;
+  border: 2px solid transparent; /* keep button sizing/area */
+  box-shadow: none;
+  color: var(--brand);
+}
+
+/* Hover state: underline + tiny lift (button feel) */
+html[data-theme="dark"]
+.research-panel:not(.research-panel--projects)
+.btn:hover,
+html[data-theme="dark"]
+.research-panel:not(.research-panel--projects)
+.btn-outline:hover{
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+
+  transform: translateY(-1px);
+  filter: none;
+}
+
 /* ===== Buttons: make btn-outline actually visible in LIGHT mode ===== */
 html[data-theme="light"] .btn-outline{
   border: 2px solid var(--brand);
