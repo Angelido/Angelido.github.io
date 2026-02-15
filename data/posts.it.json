@@ -5,8 +5,8 @@
     "date": "2026-02-14",
     "abstract": "Short abstract shown in the preview.",
     "tags": ["notes", "research"],
-    "image": "",
-    "imageSide": "right",
+    "image": "assets/[2026]_London.jpg",
+    "imageSide": "left",
     "content": "Testo lungo...\n\nPuoi usare **bold** come in About.\n\nAltro paragrafo..."
   }
 ]

@@ -442,22 +442,28 @@
     render(posts);
   }
 
-  function renderPostDetail(postId) {
+  async function renderPostDetail(postId) {
     const app = $('#app');
 
     const posts = state.data.posts || [];
     const p = posts.find(x => String(x.id) === String(postId));
 
-    if (!p) {
-      renderNotFound();
-      return;
-    }
+    if (!p) { renderNotFound(); return; }
 
     const dateStr = formatPostDate(p.date);
     const tags = Array.isArray(p.tags) ? p.tags : [];
 
-    const paragraphs = splitParagraphs(p.content || '');
-    const fullHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
+    let bodyHtml = '';
+
+    if (p.contentPath) {
+      const md = await fetch(p.contentPath).then(r => r.text());
+      const rawHtml = window.marked ? marked.parse(md) : md;
+      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+    } else {
+      // fallback: if you still keep old JSON "content"
+      const paragraphs = splitParagraphs(p.content || '');
+      bodyHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
+    }
 
     app.innerHTML = `
       <section class="section post-page">
@@ -479,8 +485,8 @@
           </figure>
         ` : ''}
 
-        <div class="post-page-body">
-          ${fullHtml}
+        <div class="post-page-body markdown-body">
+          ${bodyHtml}
         </div>
       </section>
     `;

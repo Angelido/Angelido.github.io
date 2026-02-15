@@ -355,6 +355,35 @@ html[data-theme="dark"] .inline-link{
 }
 
 /* =========================================================
+   Markdown content styling (figures, captions, etc.)
+========================================================= */
+
+/* Markdown content styling */
+.markdown-body figure{
+  margin: 1.2rem 0;
+}
+
+.markdown-body figure img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .markdown-body figure img{
+  border-color: rgba(255,255,255,.14);
+}
+
+.markdown-body figcaption{
+  margin-top: .5rem;
+  font-size: .92rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* =========================================================
    8) CONTENT PATTERNS (lists, timeline, publications)
 ========================================================= */
 .list{ display:grid; gap:.9rem; }
@@ -1440,19 +1469,18 @@ html[data-theme="dark"] .aboutme-img{
   gap: 1.2rem;
 }
 
-/* ===== Post preview card (full width, a bit "lower") ===== */
+/* ===== Post preview card (compact) ===== */
 .post-card{
   position:relative;
   overflow:hidden;
-
-  /* Slightly lower / less tall */
-  padding: 1rem;
-
   cursor:pointer;
 
   background: var(--panel);
   border: 1px solid rgba(15, 23, 42, .10);
   box-shadow: var(--shadow-soft);
+
+  /* compact padding (keeps cards low) */
+  padding: .85rem .95rem;
 }
 
 html[data-theme="dark"] .post-card{
@@ -1462,9 +1490,7 @@ html[data-theme="dark"] .post-card{
 }
 
 /* Ensure click always triggers the overlay */
-.post-card *{
-  pointer-events:none;
-}
+.post-card *{ pointer-events:none; }
 
 /* Entire card clickable: overlay link (must be AFTER the rule above) */
 .post-card a.post-card-link{
@@ -1474,25 +1500,39 @@ html[data-theme="dark"] .post-card{
   pointer-events:auto;
 }
 
-/* Preview layout: optional image left/right */
+/* Preview layout (robust + consistent text start):
+   We reserve BOTH sides: left thumb space and right thumb space.
+   So when the image is on the right, the text still starts after the left reserved space. */
 .post-card--img{
-  display:grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  align-items:center;
-  gap: 1.1rem;
+  display: grid;
+  grid-template-columns: 140px 24px 1fr 24px 140px; /* L | gap | TEXT | gap | R */
+  grid-template-areas: "fig gapL body gapR .";
+  align-items: center;
 }
 
+/* Right variant: keep body in the SAME column, move only the image */
 .post-card--img.post-card--right{
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-areas: ". gapL body gapR fig";
 }
 
-.post-card--img.post-card--right .post-card-figure{ order:2; }
-.post-card--img.post-card--right .post-card-body{ order:1; }
+/* Place items by area */
+.post-card--img .post-card-figure{
+  grid-area: fig;
+  margin: 0;
+  justify-self: center;
+}
 
-/* Body: keep it centered and readable */
+.post-card--img .post-card-body{
+  grid-area: body;
+  margin: 0;
+  text-align: left;
+  padding-left: 6px; /* tiny extra shift to the right (also when image is left) */
+}
+
+/* Body (preview): wide + left aligned (prevents tall cards) */
 .post-card-body{
-  max-width: 72ch;
-  margin-inline: auto;
+  max-width: none;
+  margin: 0;
   text-align: left;
 }
 
@@ -1504,14 +1544,38 @@ html[data-theme="dark"] .post-card{
 .post-card-meta{
   color: var(--muted);
   font-size: .95rem;
-  margin-bottom: .45rem;
+  margin-bottom: .35rem;
 }
 
+/* Abstract: NO line-clamp, NO -webkit warnings.
+   We keep cards low using max-height + a soft fade. */
 .post-card-abstract{
-  margin: 0 0 .65rem;
+  --lines: 3;
+  --lh: 1.7;
+
+  margin: 0 0 .55rem;
   color: var(--text);
   opacity: .95;
-  line-height: 1.7;
+
+  line-height: calc(var(--lh) * 1em);
+  max-height: calc(var(--lines) * var(--lh) * 1em);
+  overflow: hidden;
+  position: relative;
+}
+
+.post-card-abstract::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height: calc(var(--lh) * 1em);
+  background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel));
+  pointer-events:none;
+}
+
+html[data-theme="dark"] .post-card-abstract::after{
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(35,36,39,.70));
 }
 
 /* Tags row inside previews */
@@ -1519,17 +1583,15 @@ html[data-theme="dark"] .post-card{
   margin-top: .15rem;
 }
 
-/* Figure */
+/* Figure (thumbnail) */
 .post-card-figure{
-  margin:0;
-  width:100%;
-  max-width: 300px; /* slightly smaller to reduce height */
-  justify-self:center;
+  width: 100%;
+  max-width: 140px; /* same as thumb column */
 }
 
 .post-card-img{
   width:100%;
-  height:auto;
+  height:auto;   /* scale without cropping */
   display:block;
   border-radius: 14px;
   border: 1px solid rgba(0,0,0,.10);
@@ -1587,18 +1649,20 @@ html[data-theme="dark"] .post-page-img{
   margin: 0 0 1rem;
 }
 
-/* Responsive: stack image + text nicely */
+/* Mobile: stack image on top, then text */
 @media (max-width: 900px){
   .post-card--img{
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .post-card--img .post-card-figure,
+  .post-card--img .post-card-body{
+    grid-column: 1;
   }
 
   .post-card-figure{
     max-width: 420px;
-  }
-
-  .posts-filter-select{
-    min-width: 160px;
   }
 }
 
