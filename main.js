@@ -455,15 +455,22 @@
 
     let bodyHtml = '';
 
-    if (p.contentPath) {
-      const md = await fetch(p.contentPath).then(r => r.text());
+    // 1) If JSON provides a markdown file path, load & render it
+    const mdPath = p.contentPath || p.content;
+
+    if (mdPath && /\.md$/i.test(mdPath)) {
+      const md = await fetch(mdPath).then(r => r.text());
       const rawHtml = window.marked ? marked.parse(md) : md;
       bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+      // Add site link styling to markdown links
+      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
     } else {
-      // fallback: if you still keep old JSON "content"
-      const paragraphs = splitParagraphs(p.content || '');
+      // 2) Fallback: old inline text
+      const paragraphs = splitParagraphs(String(p.content || ''));
       bodyHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
     }
+
+    const isMarkdown = !!(mdPath && /\.md$/i.test(mdPath));
 
     app.innerHTML = `
       <section class="section post-page">
@@ -479,7 +486,7 @@
           </div>
         ` : ''}
 
-        ${p.image ? `
+        ${(!isMarkdown && p.image) ? `
           <figure class="post-page-figure">
             <img class="post-page-img" src="${p.image}" alt="${p.title || ''}">
           </figure>

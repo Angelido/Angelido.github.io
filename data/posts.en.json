@@ -1,12 +1,12 @@
 [
   {
-    "id": "my-first-post",
-    "title": "My first post",
-    "date": "2026-02-14",
-    "abstract": "Short abstract shown in the preview.",
-    "tags": ["notes", "research"],
+    "id": "sequences-london-2026",
+    "title": "Sequences in London 2026",
+    "date": "2026-02-10",
+    "abstract": "My first talk abroad, at Sequences in London: new colleagues, new research ideas, and a long-awaited return to one of my favourite cities in Europe...",
+    "tags": ["workshop", "talk", "sequences", "lossless-compression"],
     "image": "assets/[2026]_London.jpg",
     "imageSide": "left",
-    "content": "Testo lungo...\n\nPuoi usare **bold** come in About.\n\nAltro paragrafo..."
+    "content": "posts/Sequences2026.en.md"
   }
 ]
