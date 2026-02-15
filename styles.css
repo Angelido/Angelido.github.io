@@ -334,6 +334,27 @@ html[data-theme="light"] .btn-outline:hover{
 }
 
 /* =========================================================
+   INLINE LINKS — minimal, elegant, academic
+========================================================= */
+
+.inline-link{
+  color: inherit;              /* stesso colore del testo */
+  text-decoration: none;       /* niente underline fissa */
+  border-bottom: 1px solid rgba(0,0,0,.25);
+  padding-bottom: 1px;
+  transition: border-color .15s ease, opacity .15s ease;
+}
+
+/* Dark mode */
+html[data-theme="dark"] .inline-link{
+  border-bottom-color: rgba(255,255,255,.35);
+}
+
+.inline-link:hover{
+  border-bottom-color: currentColor;  /* diventa piena */
+}
+
+/* =========================================================
    8) CONTENT PATTERNS (lists, timeline, publications)
 ========================================================= */
 .list{ display:grid; gap:.9rem; }
