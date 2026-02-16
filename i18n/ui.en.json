@@ -64,16 +64,6 @@
     "noItems": "No projects yet.",
     "viewOnGitHub": "View on GitHub"
   },
-  "privacy": {
-    "title": "Privacy",
-    "intro": "This personal website does not use profiling cookies and does not collect personal data beyond what is strictly necessary for its technical operation.",
-    "dataTitle": "Data collected",
-    "dataText": "The site may log standard technical information (such as anonymized IP addresses, server logs or aggregated traffic statistics) solely for security and maintenance purposes.",
-    "linksTitle": "External links",
-    "linksText": "Links to GitHub and LinkedIn point to external services which apply their own data protection policies. Please refer to their respective privacy policies.",
-    "contactTitle": "Contact",
-    "contactText": "For any questions about privacy, you can contact me via email."
-  },
   "errors": {
     "notFoundTitle": "404",
     "notFoundText": "Page not found."
