@@ -1672,6 +1672,23 @@ html[data-theme="dark"] .post-page-img{
   .post-card-figure{
     max-width: 420px;
   }
+
+  /* MOBILE: hide post preview thumbnails (only in Posts list) */
+  .posts-list .post-card-figure{
+    display: none;
+  }
+
+  /* MOBILE: ensure the card becomes a simple 1-column text card */
+  .posts-list .post-card--img{
+    grid-template-columns: 1fr;
+    grid-template-areas: "body";
+    gap: 0;
+  }
+
+  .posts-list .post-card--img .post-card-body{
+    padding-left: 0; /* remove the tiny right shift used on desktop */
+  }
+
 }
 
 html[data-theme="light"] .posts-filter-select{
