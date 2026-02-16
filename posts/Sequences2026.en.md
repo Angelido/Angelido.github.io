@@ -1,28 +1,28 @@
 ## The Workshop
 
-Last week I had the privilege of attending [*Sequences in London 2026*](https://sites.google.com/view/sequencesworkshop/home), a two-day workshop held on **5–6 February 2026** at the Bayes Business School, City, University of London. The event brought together researchers working on a broad range of topics related to symbolic sequences — from string algorithms and data structures to computational biology, music information retrieval, and combinatorics on words.
+Last week I had the privilege of attending [*Sequences in London 2026*](https://sites.google.com/view/sequencesworkshop/home), a two-day workshop held on **5–6 February 2026** at Bayes Business School, City, University of London. The event brought together researchers working on a wide range of topics related to symbolic sequences — from string algorithms and data structures to computational biology, from information retrieval to compression on graphs.
 
 ## My Talk
 
-At the workshop, I presented my work on **"Lossless Compression of Source Code using LLM"**, exploring how large language models can be leveraged to push the boundaries of lossless compression specifically in the domain of source code. It was a great opportunity to share my research with a specialised audience and to receive direct feedback from experts in the field.
+At the workshop I presented my work titled **"Lossless Compression of Source Code using LLM"**, in which I explored how Large Language Models can be leveraged for lossless compression applied to source code. During the presentation I showed how, thanks to these new pipelines, it is possible to achieve better results in compression compared to standard algorithms, despite the still non-negligible computational cost in terms of execution time.
 
-This was also a milestone for me on a personal level: it was my **first talk given abroad**, and the experience exceeded every expectation I had.
+It was an excellent opportunity to share my research with a specialized audience and receive direct feedback from experts in the field. It was also a personal milestone: it was my **first talk given abroad**!
 
 ## People, Ideas, and Research
 
-What made Sequences in London truly special was not just the talks themselves, but the people. Over the two days, I had the chance to meet a wonderful mix of fellow **PhD students** and **professors**, all working on fascinating problems at the intersection of algorithms, strings, and information theory.
+What made Sequences in London truly special was not just the talks and topics presented, but the people. Over the two days I had the chance to get to know the scientific community working in my research field much better. Among the participants there was a great mix of PhD students and professors, all working on fascinating problems at the intersection of algorithms, strings, and information theory.
 
-Listening to my colleagues' presentations opened my eyes to several research directions I had not previously explored in depth. More importantly, through informal conversations — over coffee, lunch, and after-sessions chats — I gathered a number of **new ideas** directly relevant to my own research. The kind of spontaneous, cross-pollinating exchange that only happens when you put curious researchers in the same room is something I deeply value, and this workshop delivered it in abundance.
+I must say that what struck me most was precisely the human dimension of the workshop: beyond the scientific value, the event was clearly designed also to bring together people who, working in the same field, had the opportunity to meet and form lasting friendships. Despite being one of the *“newcomers”*, it wasn't difficult to integrate and feel welcomed by the group — probably the aspect I appreciated most.
 
 ## London, Ten Years Later
 
-Beyond the research, this trip gave me something else: a chance to **return to London** after nearly ten years away.
+Beyond the research, this trip gave me something else: the opportunity to **return to London** after nearly ten years away. The city is as magnificent as I remembered. London was, and remains, one of my favourite cities in Europe — and beyond — and spending a few days there reminded me exactly why.
 
-The city was as magnificent as I remembered. London remains one of my favourite cities in Europe — and not just in Europe — and spending a few days there reminded me exactly why. The energy, the architecture, the cultural richness all blending seamlessly on every street corner.
+As for the weather... well, it was London. The classic grey skies and persistent drizzle kept me company for most of my stay. But honestly, after the start of 2026 we've had in Pisa — where sunshine has been scarce — I felt almost at home. At least in London there's a good excuse. ☁️🌧️
 
-As for the weather... well, it was London. The classic grey skies and persistent drizzle were faithful companions for most of my stay. But honestly, after the relentlessly rainy start to 2026 we have had back in Pisa, I felt right at home. At least in London there is a good excuse for it. ☁️🌧️
+<figure style="text-align: center;">
+  <img src="/assets/[2026]_London.jpg" alt="View of the Thames at dusk from the Millennium Bridge, with London Bridge in the background." />
+  <figcaption><em>One of the few photos I took during a rare moment without rain. The Thames at night, captured from the Millennium Bridge with Tower Bridge in the background.</em></figcaption>
+</figure>
 
-![View of the Thames at dusk from the Millennium Bridge, with London Bridge visible in the background.](/assets/[2026]_London.jpg)
-*The Thames at dusk, photographed from the Millennium Bridge. London Bridge stands in the background — a view worth every drop of rain.*
-
-All in all, Sequences in London was a genuinely enriching experience — scientifically stimulating, humanly rewarding, and a reminder of how much there is still to discover, both in research and in the world. I look forward to the next edition!
+All in all, Sequences in London was a truly important experience for me — scientifically stimulating and valuable for new connections in the field. I look forward to the next edition!
