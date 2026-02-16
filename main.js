@@ -1033,47 +1033,33 @@
     `;
   }
 
-  function renderPrivacy() {
+  async function renderPrivacy() {
     const app = $('#app');
 
-    const title = state.i18n?.privacy?.title || 'Privacy';
-    const intro = state.i18n?.privacy?.intro || '';
+    // Load markdown (language-specific)
+    const mdPath = `data/privacy.${state.lang}.md`;
 
-    const dataTitle = state.i18n?.privacy?.dataTitle || '';
-    const dataText  = state.i18n?.privacy?.dataText  || '';
+    let bodyHtml = '';
+    try {
+      const md = await fetch(mdPath).then(r => r.text());
+      const rawHtml = window.marked ? marked.parse(md) : md;
+      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
 
-    const linksTitle = state.i18n?.privacy?.linksTitle || '';
-    const linksText  = state.i18n?.privacy?.linksText  || '';
+      // Add site link styling to markdown links
+      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
+    } catch (e) {
+      bodyHtml = `<p class="pub-meta">${state.lang === 'it'
+        ? 'Impossibile caricare la pagina privacy.'
+        : 'Unable to load the privacy page.'}</p>`;
+    }
 
-    const contactTitle = state.i18n?.privacy?.contactTitle || '';
-    const contactText  = state.i18n?.privacy?.contactText  || '';
-
-    // keep as a constant (or move to data/config if you want)
-    const emailLabel = 'angelo.nardone@phd.unipi.it';
-
+    // IMPORTANT: no extra title/intro here — markdown only
     app.innerHTML = `
-      <section class="section">
-        <div class="card">
-          <h1>${title}</h1>
-          <p>${intro}</p>
-
-          <h2 style="margin-top:1.2rem;">${dataTitle}</h2>
-          <p>${dataText}</p>
-
-          <h2 style="margin-top:1.2rem;">${linksTitle}</h2>
-          <p>${linksText}</p>
-
-          <h2 style="margin-top:1.2rem;">${contactTitle}</h2>
-          <p>${contactText}</p>
-
-          <p>
-            <a href="mailto:${emailLabel}" class="btn btn-outline">${emailLabel}</a>
-          </p>
-        </div>
+      <section class="section privacy-page markdown-body">
+        ${bodyHtml}
       </section>
     `;
   }
-
 
   function renderNotFound() {
     const t = state.i18n?.errors?.notFoundTitle || '404';

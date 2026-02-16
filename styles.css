@@ -1707,3 +1707,18 @@ html[data-theme="light"] .posts-filter-select option{
   }
 }
 
+/* =========================================================
+   21) PAGE: PRIVACY
+========================================================= */
+
+/* Privacy page: same feel as an opened post, no panel */
+.privacy-page{
+  max-width: 85ch;
+  margin-inline: auto;
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.privacy-page h1{
+  margin-top: 0;
+}
