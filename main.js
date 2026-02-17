@@ -80,27 +80,12 @@
     document.title = state.i18n?.site?.title || document.title;
   }
 
-
   function syncLangUI() {
-    const langBtn = $('#langBtn');
-    if (langBtn) {
-      const flagSpan = langBtn.querySelector('.flag');
-      const codeSpan = langBtn.querySelector('.lang-code');
-
-      if (state.lang === 'it') {
-        flagSpan.textContent = '🇮🇹';
-        codeSpan.textContent = 'IT';
-      } else {
-        flagSpan.textContent = '🇬🇧';
-        codeSpan.textContent = 'EN';
-      }
-    }
-
-    // Highlight selected language inside dropdown
-    $$('#langMenu .lang-item').forEach((item) => {
-      const isActive = item.dataset.lang === state.lang;
-      item.classList.toggle('active', isActive);
-      item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    // Highlight selected language in the inline switch (EN | IT)
+    $$('.lang-inline').forEach((btn) => {
+      const isActive = btn.dataset.lang === state.lang;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
   }
 
@@ -163,12 +148,6 @@
 
   function onRouteChange() {
     const path = parseHash();
-
-    // Close language dropdown when navigating
-    const langBtn = $('#langBtn');
-    const langMenu = $('#langMenu');
-    langMenu?.setAttribute('aria-hidden', 'true');
-    langBtn?.setAttribute('aria-expanded', 'false');
 
     // Dynamic post route: /posts/<id>
     if (path.startsWith('/posts/') && path.split('/').length >= 3) {
@@ -1092,39 +1071,26 @@
     await loadI18n();
     await loadData();
 
-    // Language dropdown
-    const langBtn = $('#langBtn');
-    const langMenu = $('#langMenu');
-
+    // Language inline switch (EN | IT)
     syncLangUI();
     updateActiveNavLinks();
 
-    langBtn?.addEventListener('click', () => {
-      const open = langMenu.getAttribute('aria-hidden') === 'false';
-      langMenu.setAttribute('aria-hidden', open ? 'true' : 'false');
-      langBtn.setAttribute('aria-expanded', open ? 'false' : 'true');
-    });
-
-    $$('#langMenu .lang-item').forEach((item) => {
-      item.addEventListener('click', async (e) => {
+    $$('.lang-inline').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
         const newLang = e.currentTarget.dataset.lang;
+        if (!newLang || newLang === state.lang) return;
 
-        if (newLang && newLang !== state.lang) {
-          state.lang = newLang;
-          localStorage.setItem('lang', newLang);
+        state.lang = newLang;
+        localStorage.setItem('lang', newLang);
 
-          await loadI18n();
-          await loadData();
+        await loadI18n();
+        await loadData();
 
-          onRouteChange();
-          syncLangUI();
-        }
-
-        // Close dropdown
-        langMenu.setAttribute('aria-hidden', 'true');
-        langBtn.setAttribute('aria-expanded', 'false');
+        onRouteChange();
+        syncLangUI();
       });
     });
+
 
     // Mobile nav (hamburger)
     const navToggle = $('#navToggle');
@@ -1165,7 +1131,7 @@
 
     // If resized to desktop, ensure the mobile menu is closed
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 950 && mobileNav && navToggle) {
+      if (window.innerWidth > 1000 && mobileNav && navToggle) {
         mobileNav.classList.remove('open');
         mobileNav.setAttribute('aria-hidden', 'true');
         navToggle.setAttribute('aria-expanded', 'false');

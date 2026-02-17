@@ -374,21 +374,18 @@ html[data-theme="light"] .btn-outline:hover{
    INLINE LINKS — minimal, elegant, academic
 ========================================================= */
 
+/* External / inline links – clean brand style */
 .inline-link{
-  color: inherit;              /* stesso colore del testo */
-  text-decoration: none;       /* niente underline fissa */
-  border-bottom: 1px solid rgba(0,0,0,.25);
-  padding-bottom: 1px;
-  transition: border-color .15s ease, opacity .15s ease;
-}
-
-/* Dark mode */
-html[data-theme="dark"] .inline-link{
-  border-bottom-color: rgba(255,255,255,.35);
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: none;
+  transition: text-decoration .15s ease, opacity .15s ease;
 }
 
 .inline-link:hover{
-  border-bottom-color: currentColor;  /* diventa piena */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
 /* =========================================================
@@ -634,7 +631,7 @@ html[data-theme="dark"] .brand-link{
 }
 
 .nav-item{
-  font-size:.9rem;
+  font-size:.93rem;
   font-weight:600;
   text-decoration:none;
   color:var(--muted);
@@ -643,12 +640,12 @@ html[data-theme="dark"] .brand-link{
   border:1px solid transparent;
   transition:background .15s ease, color .15s ease, border-color .15s ease;
 }
+
+
 .nav-item:hover{
-  color:var(--text);
-  border-color:rgba(0,0,0,.08);
-}
-html[data-theme="dark"] .nav-item:hover{
-  border-color:rgba(255,255,255,.16);
+  border-color: transparent;   /* remove outline */
+  background: transparent;     /* no pill effect */
+  color: var(--brand);         /* subtle highlight */
 }
 
 /* Active link */
@@ -739,22 +736,39 @@ html[data-theme="dark"] body.nav-open::before{
   background: rgba(0,0,0,.55);
 }
 
-/* Topbar small buttons (language/theme wrappers) */
 .topbar-btn{
   display:inline-flex;
   align-items:center;
-  justify-content:center;
-  padding:.35rem .55rem;
-  background:transparent;
-  border:1px solid rgba(0,0,0,.12);
-  border-radius:10px;
+  gap:.35rem;
+  padding:.35rem .6rem;
+
+  background: transparent;
+  border: none;                      /* no visible border */
+  border-radius: 999px;              /* pill but invisible */
+
   cursor:pointer;
-  color:#4b5563; /* icon color (light) */
+  color: var(--text);
+
+  transition: background .18s ease, transform .15s ease;
 }
-html[data-theme="dark"] .topbar-btn{
-  border-color:rgba(255,255,255,.18);
-  color:#ffffff;
+
+.topbar-btn:hover{
+  background: rgba(0,0,0,.06);
 }
+
+html[data-theme="dark"] .topbar-btn:hover{
+  background: rgba(255,255,255,.08);
+}
+
+.lang-btn .chevron{
+  opacity:.6;
+  transition: transform .18s ease;
+}
+
+.lang-btn[aria-expanded="true"] .chevron{
+  transform: rotate(180deg);
+}
+
 
 /* Theme icon button (only icon) */
 .theme-btn{
@@ -782,7 +796,7 @@ html[data-theme="dark"] .theme-btn .sunmoon{
   outline-offset:2px;
 }
 
-@media (max-width:950px){
+@media (max-width:1000px){
   .primary-nav{ display:none !important; }
   .nav-toggle{ display:inline-flex !important; }
 }
@@ -791,60 +805,54 @@ html[data-theme="dark"] .theme-btn .sunmoon{
 /* =========================================================
    10) LANGUAGE SWITCHER (dropdown)
 ========================================================= */
-.lang-switch{ position:relative; }
 
-.lang-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:.35rem;
-}
-.lang-btn .flag{ font-size:1rem; }
-
-.lang-btn .chevron{
-  font-size:.7rem;
-  opacity:.7;
-  margin-left:.1rem;
+/* Inline language switch: EN | IT */
+.lang-switch-inline{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
 }
 
-.lang-menu{
-  position:absolute;
-  top:115%;
-  right:0;
-  background:var(--panel);
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,.12);
-  padding:.35rem;
-  box-shadow:var(--shadow);
-  display:flex;
-  flex-direction:column;
-  gap:.25rem;
-  min-width:90px;
-  z-index:100;
-}
-html[data-theme="dark"] .lang-menu{
-  border-color:rgba(255,255,255,.18);
+.lang-inline{
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  font-weight: 800;          /* meno pesante */
+  font-size: 1rem;         /* leggermente più piccolo */
+  letter-spacing: .05em;     /* aria editoriale */
+
+  text-transform: lowercase; /* forza minuscolo */
+
+  color: var(--muted);
+  transition: color .15s ease;
 }
 
-.lang-menu[aria-hidden="true"]{ display:none; }
-
-.lang-item{
-  display:flex;
-  align-items:center;
-  gap:.4rem;
-  width:100%;
-  padding:.35rem .6rem;
-  border-radius:8px;
-  background:transparent;
-  border:1px solid transparent;
-  color:var(--text);
-  cursor:pointer;
-  font-size:.9rem;
+.lang-inline:hover{
+  color: var(--brand);
 }
-.lang-item .flag{ font-size:1rem; }
 
-.lang-item.active{
-  border-color:var(--brand);
+.lang-inline.active{
+  color: var(--brand);
+  font-weight: 600;          /* leggermente più forte */
 }
+
+.lang-sep{
+  color: var(--muted);
+  opacity: .35;
+  user-select: none;
+}
+
+.lang-switch-inline{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+
+  margin-right: .6rem;   /* sposta verso sinistra rispetto al sole/luna */
+}
+
+
 
 /* =========================================================
    11) SUN ↔ MOON ICON (SVG mask transitions)
