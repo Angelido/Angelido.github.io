@@ -65,10 +65,9 @@ html[data-theme="light"] .tag {
   border-color: rgba(29, 78, 216, .30);
   background: rgba(29, 78, 216, .08);
 }
-
 html[data-theme="dark"] .tag {
-  color: #c4b5fd;
-  border-color: rgba(196, 181, 253, .40);
+  color: #9dbfb0;
+  border-color: rgba(157, 191, 176, .38);
   background: transparent;
 }
 
