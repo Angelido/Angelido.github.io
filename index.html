@@ -66,31 +66,14 @@
 
       <!-- Right: language + theme -->
       <div class="topbar-right">
-        <!-- Language dropdown -->
-        <div class="lang-switch">
-          <button
-            id="langBtn"
-            class="topbar-btn lang-btn"
-            type="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <span class="flag">🇮🇹</span>
-            <span class="lang-code">IT</span>
-            <span class="chevron">▾</span>
-          </button>
 
-          <div id="langMenu" class="lang-menu" role="menu" aria-hidden="true">
-            <button class="lang-item" type="button" data-lang="it" role="menuitem">
-              <span class="flag">🇮🇹</span>
-              <span class="lang-code">IT</span>
-            </button>
-            <button class="lang-item" type="button" data-lang="en" role="menuitem">
-              <span class="flag">🇬🇧</span>
-              <span class="lang-code">EN</span>
-            </button>
-          </div>
+        <!-- Language inline switch: EN | IT -->
+        <div class="lang-switch-inline" aria-label="Language switch">
+          <button class="lang-inline" type="button" data-lang="en" aria-pressed="false">EN</button>
+          <span class="lang-sep" aria-hidden="true">|</span>
+          <button class="lang-inline" type="button" data-lang="it" aria-pressed="false">IT</button>
         </div>
+
 
         <!-- Theme toggle -->
         <button
