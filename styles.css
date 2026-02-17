@@ -1588,19 +1588,20 @@ html[data-theme="dark"] .post-card-abstract::after{
   margin-top: .15rem;
 }
 
-.post-card-figure img{
-  width: 112%;            /* leggermente più grande */
-  max-width: 160px;       /* limita l’espansione reale */
-  height: auto;
-  display: block;
+/* Post preview thumbnail: fixed height + crop from top */
+.post-card-figure{
+  width: 140px;              /* same width used in grid */
+  height: 110px;             /* fixed height → controls card height */
+  overflow: hidden;          /* hides overflow */
   border-radius: 14px;
-  object-fit: cover;
 }
 
 .post-card-img{
-  width:100%;
-  height:auto;   /* scale without cropping */
-  display:block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* crop instead of stretch */
+  object-position: top;      /* take upper part of the image */
+  display: block;
   border-radius: 14px;
   border: 1px solid rgba(0,0,0,.10);
   box-shadow: var(--shadow-soft);

@@ -1,5 +1,15 @@
 [
   {
+    "id": "hello-world",
+    "title": "Hello, World!",
+    "date": "2026-02-01",
+    "abstract": "Welcome to my personal academic page. Here is some information about the site...",
+    "tags": ["welcome", "intro", "personal"],
+    "image": "assets/personal_cut.jpeg",
+    "imageSide": "left",
+    "content": "posts/hello_world.en.md"
+  },
+  {
     "id": "sequences-london-2026",
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
