@@ -3,7 +3,7 @@
     "id": "hello-world",
     "title": "Hello, World!",
     "date": "2026-02-01",
-    "abstract": "Welcome to my personal academic page. Here is some information about the site...",
+    "abstract": "Welcome to my personal academic page. Here is a brief overview of what you will find here...",
     "tags": ["welcome", "intro", "personal"],
     "image": "assets/personal_cut.jpeg",
     "imageSide": "left",
