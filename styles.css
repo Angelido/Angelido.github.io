@@ -37,37 +37,39 @@
 ========================================================= */
 
 /* LIGHT THEME – Soft Blue minimal */
-html[data-theme="light"]{
-  --bg:    #f5f8ff;
-  --panel: #ffffff;
-
-  --text:  #0b1220;
-  --muted: #3b4a63;
-
-  --brand: #1d4ed8;  /* blue 700: più serio del tuo */
-  --accent:#0f766e;  /* teal 700 */
+html[data-theme="light"] {
+  --bg:    #f2f5fb;
+  --panel: #f8fafc;
+  --text:  #0f1520;
+  --muted: #4a5568;
+  --brand: #1d4ed8;
+  --accent:#0d9488;
 }
 
 /* DARK THEME – Minimal Gemini */
 html[data-theme="dark"]{
-  --bg: #1a1b1e;
+  --bg:    #1a1b1e;
   --panel: #232427;
-  --text: #f5f5f5;
+  --text:  #f5f5f5;
   --muted: #a0a0a5;
-  --brand: #4fc3f7;
-  --accent: #82b1ff;
-
-  /* Card tuning in dark */
+  --brand: #60a5fa;
+  --accent:#a78bfa;
   --card-border: rgba(255,255,255,.10);
-  --card-bg: rgba(35,36,39,.70);
+  --card-bg:     rgba(35,36,39,.70);
   --card-shadow: 0 18px 46px rgba(0,0,0,.45);
 }
 
 /* ===== Tags: readable in LIGHT mode ===== */
-html[data-theme="light"] .tag{
-  color: #0f3d2e; /* verde scuro */
-  border-color: rgba(5, 150, 105, .35); /* usa l'accent */
-  background: rgba(5, 150, 105, .10);
+html[data-theme="light"] .tag {
+  color: #1e3a5f;
+  border-color: rgba(29, 78, 216, .30);
+  background: rgba(29, 78, 216, .08);
+}
+
+html[data-theme="dark"] .tag {
+  color: #c4b5fd;
+  border-color: rgba(196, 181, 253, .40);
+  background: transparent;
 }
 
 /* =========================================================
@@ -81,7 +83,6 @@ html[data-theme="light"] .tag{
 html{
   overflow-y: auto;   /* niente gutter riservato */
 }
-
 
 /* Firefox */
 html{
