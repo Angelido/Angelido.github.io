@@ -71,18 +71,55 @@ html[data-theme="light"] .tag{
 }
 
 /* =========================================================
-   3) SCROLLBAR VISIBILITY
+   3) SCROLLBAR (themed + elegant)
    ---------------------------------------------------------
-   Hide scrollbars but keep scrolling enabled.
+   Use the viewport scrollbar (html) so it spans the full page
+   including fixed topbar area. Keep it subtle and theme-aware.
 ========================================================= */
+
+/* Ensure the scrolling element is the document (full-height scrollbar) */
 html{
-  scrollbar-width:none; /* Firefox */
+  overflow-y: auto;   /* niente gutter riservato */
 }
 
-html::-webkit-scrollbar{
-  width:0;
-  height:0; /* Chrome / Edge / Safari */
+
+/* Firefox */
+html{
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.35) rgba(0,0,0,.06); /* thumb / track */
 }
+html[data-theme="dark"]{
+  scrollbar-color: rgba(255,255,255,.28) rgba(255,255,255,.06);
+}
+
+/* WebKit (Chrome/Edge/Safari) */
+html::-webkit-scrollbar{
+  width: 10px;
+}
+html::-webkit-scrollbar-track{
+  background: rgba(0,0,0,.06);
+}
+html::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.30);
+  border-radius: 999px;
+  border: 3px solid rgba(0,0,0,.06);  /* makes it look “floating” */
+}
+html::-webkit-scrollbar-thumb:hover{
+  background: rgba(0,0,0,.42);
+}
+
+/* Dark theme */
+html[data-theme="dark"]::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.06);
+}
+html[data-theme="dark"]::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.22);
+  border: 3px solid rgba(255,255,255,.06);
+}
+html[data-theme="dark"]::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,.32);
+}
+
 
 /* =========================================================
    4) BASE / RESET
@@ -449,16 +486,17 @@ html[data-theme="dark"] .site-header{
 
 /* --- Footer --- */
 .site-footer{
-  margin-top:1.4rem;
-  border-top:1px solid rgba(0,0,0,.04);
-  padding:.55rem 0;   /* prima .9rem */
-  color:var(--muted);
-  background:var(--panel);
-  font-size:.82rem;   /* leggermente più piccolo */
+  margin-top: 1.4rem;   /* keep spacing from content */
+  border-top: none;     /* NO separator line */
+  padding: .55rem 0;
+  color: var(--muted);
+
+  /* same as page background → “merged” look */
+  background: var(--bg);
+
+  font-size: .82rem;
 }
-html[data-theme="dark"] .site-footer{
-  border-top-color:rgba(255,255,255,.08);
-}
+
 
 .footer-content{
   display:grid;
@@ -525,21 +563,26 @@ html[data-theme="dark"] .footer-icon img.github-icon{
 
 /* --- Topbar (full-width control bar) --- */
 .topbar{
-  position:fixed;
+  position:sticky;
   top:0;
-  left: 0;
-  z-index: 1000;
+  left:0;
+  z-index:1000;
   width:100%;
-  background:var(--panel);
-  border-bottom:1px solid rgba(0,0,0,.08);
+
+  /* same as page background */
+  background: var(--bg);
+
+  /* thin separator line (always visible) */
+  border-bottom: 1px solid rgba(0,0,0,.10);
 }
 html[data-theme="dark"] .topbar{
-  border-bottom-color:rgba(255,255,255,.12);
+  border-bottom-color: rgba(255,255,255,.12);
 }
 
 main{
-  padding-top: var(--topbar-h);
+  padding-top: 0;
 }
+
 
 /* Inner: full-width (no container max-width) */
 .topbar-inner{
@@ -567,11 +610,11 @@ main{
 /* Brand link */
 .brand-link{
   font-size:1.3rem;
-  font-weight:700;
+  font-weight:850;
   letter-spacing:-0.02em;
   text-decoration:none;
   white-space:nowrap;
-  color:var(--brand);
+  color:var(--text);
   font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   transition:opacity .2s ease, transform .2s ease;
 }
@@ -609,14 +652,14 @@ html[data-theme="dark"] .nav-item:hover{
 }
 
 /* Active link */
+/* Active link: text-only highlight (no pill) */
 .nav-item.active{
-  color:#ffffff;
-  background:var(--brand);
-  border-color:transparent;
+  background: transparent;
+  border-color: transparent;
+  color: var(--brand);
+  font-weight: 800;
 }
-html[data-theme="dark"] .nav-item.active{
-  color:#0b1120;
-}
+
 
 /* Hamburger toggle (shown on mobile only) */
 .nav-toggle{
