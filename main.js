@@ -200,7 +200,22 @@
   /* =========================================================
      UI components
   ========================================================== */
-  function socialIcon(item) {
+  function socialIcon(item, opts = {}) {
+    const mono = !!opts.mono;
+
+    // Mono variant: use CSS mask so the icon color becomes "currentColor"
+    if (mono) {
+      return `
+        <a class="icon-btn icon-btn--mono"
+          href="${item.href}"
+          ${item.newTab ? 'target="_blank" rel="noopener"' : ''}
+          aria-label="${item.label}"
+          style="--icon-url: url('assets/${item.icon}')"
+        ></a>
+      `;
+    }
+
+    // Default variant (used elsewhere): keep original colored SVG via <img>
     return `
       <a class="icon-btn icon-btn--circle"
         href="${item.href}"
@@ -270,7 +285,7 @@
           </div>
 
           <div class="home-social">
-            ${(state.data.social || []).map(socialIcon).join('')}
+            ${(state.data.social || []).map((s) => socialIcon(s, { mono: true })).join('')}
           </div>
         </div>
 

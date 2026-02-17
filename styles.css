@@ -536,6 +536,47 @@ html[data-theme="dark"] .footer-icon img.github-icon{
   filter:invert(1);
 }
 
+/* FOOTER: mono icons (mask) – readable in both themes */
+.footer-icon--mono{
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+
+  /* the icon is painted with currentColor */
+  background-color: currentColor;
+
+  /* Light: keep it subtle */
+  color: rgba(11,18,32,.55);
+
+  /* slightly larger glyph */
+  -webkit-mask: var(--icon-url) no-repeat center / 20px 20px;
+  mask: var(--icon-url) no-repeat center / 20px 20px;
+
+  transition: color .15s ease, transform .15s ease, opacity .15s ease;
+  opacity: .95;
+}
+
+/* Dark: boost contrast (muted is too faint otherwise) */
+html[data-theme="dark"] .footer-icon--mono{
+  color: rgba(245,245,245,.72);
+}
+
+.footer-icon--mono:hover{
+  color: var(--brand);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+/* If using the mono (mask) variant, do not show the <img> fallback */
+.footer-icon--mono img{
+  display: none;
+}
+
+/* The old GitHub invert rule must NOT affect mono icons */
+html[data-theme="dark"] .footer-icon--mono img.github-icon{
+  filter: none;
+}
+
 .footer-icon:hover img{
   opacity:1;
   transform:scale(1.05);
@@ -770,25 +811,18 @@ html[data-theme="dark"] .topbar-btn:hover{
 }
 
 
-/* Theme icon button (only icon) */
 .theme-btn{
   border:none;
   background:transparent;
   padding:.25rem;
   cursor:pointer;
-  color:#020617; /* deep “glass black” */
-}
-html[data-theme="dark"] .theme-btn{
-  border:none;
-  color:#f8f5ec; /* warm ivory */
+
+  color: var(--muted);     /* sempre muted */
+  transition: color .15s ease;
 }
 
-/* Subtle glow on the SVG icon */
-.theme-btn .sunmoon{
-  filter:drop-shadow(0 1px 2px rgba(15,23,42,.20));
-}
-html[data-theme="dark"] .theme-btn .sunmoon{
-  filter:drop-shadow(0 0 6px rgba(248,245,236,.35));
+.theme-btn:hover{
+  color: var(--text);     /* brand solo in hover */
 }
 
 .theme-btn:focus-visible{
@@ -1142,15 +1176,33 @@ html[data-theme="dark"] .home-simple-avatar{
   gap: .65rem;
 }
 
-/* Make icons slightly smaller for a cleaner look */
-.home-social .icon-btn{
-  width: 38px;
-  height: 38px;
+/* HOME social icons (monochrome via mask): icon color = muted, bg = page */
+.home-social .icon-btn--mono{
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+
+  /* no button background */
+  border: none;
+  box-shadow: none;
+
+  /* IMPORTANT: paint the icon with currentColor */
+  background-color: currentColor;
+
+  color: var(--muted);
+  opacity: .95;
+
+  /* robust mask syntax */
+  -webkit-mask: var(--icon-url) no-repeat center / 28px 28px;
+  mask: var(--icon-url) no-repeat center / 28px 28px;
+
+  transition: transform .15s ease, color .15s ease, opacity .15s ease;
 }
 
-.home-social .icon-btn img{
-  width: 18px;
-  height: 18px;
+.home-social .icon-btn--mono:hover{
+  color: var(--brand);
+  transform: translateY(-1px);
+  opacity: 1;
 }
 
 /* Latest post */
