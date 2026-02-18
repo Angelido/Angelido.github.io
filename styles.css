@@ -481,82 +481,86 @@ html[data-theme="dark"] .site-header{
   border-bottom-color:rgba(255,255,255,.08);
 }
 
-/* --- Footer --- */
+/* =========================================================
+   FOOTER – single line, centered, aligned
+========================================================= */
+
 .site-footer{
-  margin-top: 1.4rem;   /* keep spacing from content */
-  border-top: none;     /* NO separator line */
-  padding: .55rem 0;
-  color: var(--muted);
-
-  /* same as page background → “merged” look */
+  margin-top: 1.4rem;
+  border-top: none;
+  padding: .65rem 0;
   background: var(--bg);
-
+  color: var(--muted);
   font-size: .82rem;
 }
 
-
 .footer-content{
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  align-items:center;
-  gap:.7rem;
+  display: flex;
+  justify-content: center;
 }
 
-.footer-center{ text-align:center; }
-.footer-center small{
-  color:var(--muted);
-  font-size:.8rem;
+/* ONE ROW */
+.footer-inline{
+  display: inline-flex;
+  align-items: center;           /* same height baseline */
+  justify-content: center;
+  gap: .75rem;                   /* air between blocks */
+  line-height: 1;                /* prevents text sitting lower */
+  white-space: nowrap;           /* keep in ONE line */
 }
 
-/* Social icons in footer */
-.footer-left{
-  display:flex;
-  align-items:center;
-  gap:.5rem;
+/* Icons group */
+.footer-icons{
+  display: inline-flex;
+  align-items: center;           /* aligns icons with text */
+  gap: .55rem;
 }
 
+/* Separator dot */
+.footer-sep{
+  opacity: .40;
+  transform: translateY(-.5px);  /* tiny optical alignment */
+}
+
+/* Copyright text */
+.footer-text{
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Privacy link */
+.footer-link{
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s ease;
+}
+.footer-link:hover{
+  color: var(--brand);
+}
+
+/* Mono icons (mask) */
 .footer-icon{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:26px;
-  height:26px;
-  border-radius:6px;
-  transition:transform .18s ease, opacity .18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.footer-icon img{
-  width:20px;
-  height:20px;
-  opacity:.85;
-}
-
-/* GitHub: white in dark mode */
-html[data-theme="dark"] .footer-icon img.github-icon{
-  filter:invert(1);
-}
-
-/* FOOTER: mono icons (mask) – readable in both themes */
 .footer-icon--mono{
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
 
-  /* the icon is painted with currentColor */
   background-color: currentColor;
-
-  /* Light: keep it subtle */
   color: rgba(11,18,32,.55);
 
-  /* slightly larger glyph */
-  -webkit-mask: var(--icon-url) no-repeat center / 20px 20px;
-  mask: var(--icon-url) no-repeat center / 20px 20px;
+  -webkit-mask: var(--icon-url) no-repeat center / 18px 18px;
+  mask: var(--icon-url) no-repeat center / 18px 18px;
 
   transition: color .15s ease, transform .15s ease, opacity .15s ease;
   opacity: .95;
 }
 
-/* Dark: boost contrast (muted is too faint otherwise) */
 html[data-theme="dark"] .footer-icon--mono{
   color: rgba(245,245,245,.72);
 }
@@ -567,36 +571,8 @@ html[data-theme="dark"] .footer-icon--mono{
   opacity: 1;
 }
 
-/* If using the mono (mask) variant, do not show the <img> fallback */
 .footer-icon--mono img{
   display: none;
-}
-
-/* The old GitHub invert rule must NOT affect mono icons */
-html[data-theme="dark"] .footer-icon--mono img.github-icon{
-  filter: none;
-}
-
-.footer-icon:hover img{
-  opacity:1;
-  transform:scale(1.05);
-}
-
-.footer-right{
-  display:flex;
-  align-items:center;
-  gap:.4rem;
-}
-
-.footer-link{
-  color:var(--muted);
-  text-decoration:none;
-  font-weight:500;
-  transition:color .2s ease;
-  margin-left:1.2rem;
-}
-.footer-link:hover{
-  color:var(--brand);
 }
 
 /* --- Topbar (full-width control bar) --- */
