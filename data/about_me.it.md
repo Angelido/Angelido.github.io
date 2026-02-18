@@ -1,5 +1,5 @@
 
-<img src="assets/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 230px; border-radius: 10px;">
+<img src="assets/img/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 230px; border-radius: 10px;">
 
 Ciao, sono Angelo — dottorando in **Informatica** all'Università di Pisa. Ho conseguito la laurea triennale in **Matematica** all'UniPi, per poi proseguire con la magistrale in **Informatica**, sempre a Pisa, con curriculum in Intelligenza Artificiale. Ho iniziato il dottorato nel novembre 2024, spinto dalla passione per la ricerca e dal fascino per l'insegnamento universitario.
 

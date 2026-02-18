@@ -209,7 +209,7 @@
           href="${item.href}"
           ${item.newTab ? 'target="_blank" rel="noopener"' : ''}
           aria-label="${item.label}"
-          style="--icon-url: url('assets/${item.icon}')"
+          style="--icon-url: url('assets/svg/${item.icon}')"
         ></a>
       `;
     }
@@ -220,7 +220,7 @@
         href="${item.href}"
         ${item.newTab ? 'target="_blank" rel="noopener"' : ''}
         aria-label="${item.label}">
-        <img src="assets/${item.icon}" alt="${item.label}">
+        <img src="assets/svg/${item.icon}" alt="${item.label}">
       </a>
     `;
   }
@@ -273,7 +273,7 @@
       <section class="home-simple">
         <div class="home-simple-head">
           <div class="home-simple-avatar">
-            <img src="assets/personal.jpg" alt="Foto profilo di ${profile?.name || 'Angelo Nardone'}" />
+            <img src="assets/img/personal.jpg" alt="Foto profilo di ${profile?.name || 'Angelo Nardone'}" />
           </div>
 
           <h1 class="home-simple-name">${profile?.name || 'Angelo Nardone'}</h1>
@@ -808,8 +808,8 @@
     const openText = state.i18n?.actions?.openNewTab || 'Open in a new tab';
     const downloadText = state.i18n?.actions?.downloadPdf || 'Download PDF';
 
-    const cvIt = state.data.cv?.it || 'assets/cv-it.pdf';
-    const cvEn = state.data.cv?.en || 'assets/cv-en.pdf';
+    const cvIt = state.data.cv?.it || 'assets/pdf/cv-it.pdf';
+    const cvEn = state.data.cv?.en || 'assets/pdf/cv-en.pdf';
 
     app.innerHTML = `
       ${pageHeaderHTML(title, intro)}

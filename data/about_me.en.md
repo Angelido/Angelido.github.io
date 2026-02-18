@@ -1,4 +1,4 @@
-<img src="assets/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 230px; border-radius: 10px;">
+<img src="assets/img/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 230px; border-radius: 10px;">
 
 Hi, I'm Angelo — a PhD student in **Computer Science** at the University of Pisa. I hold a Bachelor's degree in **Mathematics** from UniPi, followed by a Master's degree in **Computer Science**, also at Pisa, with a specialization in Artificial Intelligence. I started my doctoral journey in November 2024, driven by a passion for research and a growing interest in academic teaching.
 

@@ -14,8 +14,8 @@
 
     "arxiv": "https://arxiv.org/abs/2510.11257",
     "code": "https://github.com/davide-marchi/clinical-data-encoding",
-    "shortPdf": "assets/cibb2025-short-paper.pdf",
-    "posterPdf": "assets/cibb2025-poster.pdf",
+    "shortPdf": "assets/pdf/cibb2025-short-paper.pdf",
+    "posterPdf": "assets/pdf/cibb2025-poster.pdf",
 
     "keywords": [
       "dati clinici",

@@ -21,7 +21,7 @@ Beyond the research, this trip gave me something else: the opportunity to **retu
 As for the weather... well, it was London. The classic grey skies and persistent drizzle kept me company for most of my stay. But honestly, after the start of 2026 we've had in Pisa — where sunshine has been scarce — I felt almost at home. At least in London there's a good excuse. ☁️🌧️
 
 <figure style="text-align: center;">
-  <img src="/assets/[2026]_London.jpg" alt="View of the Thames at dusk from the Millennium Bridge, with London Bridge in the background." />
+  <img src="/assets/img/[2026]_London.jpg" alt="View of the Thames at dusk from the Millennium Bridge, with London Bridge in the background." />
   <figcaption><em>One of the few photos I took during a rare moment without rain. The Thames at night, captured from the Millennium Bridge with Tower Bridge in the background.</em></figcaption>
 </figure>
 
