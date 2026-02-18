@@ -21,7 +21,7 @@ Oltre alla ricerca, questo viaggio mi ha regalato qualcos'altro: l'opportunità 
 Quanto al meteo... beh, era Londra. Il classico cielo grigio e la pioggerella persistente mi hanno tenuto compagnia per quasi tutta la permanenza. Ma onestamente, dopo l'inizio del 2026 che abbiamo vissuto a Pisa — dove di sole se n'è visto ben poco — mi sono sentito quasi a casa. Almeno a Londra c'è una buona scusa. ☁️🌧️
 
 <figure style="text-align: center;">
-  <img src="/assets/[2026]_London.jpg" alt="Vista del Tamigi al crepuscolo dal Millennium Bridge, con il London Bridge sullo sfondo." />
+  <img src="/assets/img/[2026]_London.jpg" alt="Vista del Tamigi al crepuscolo dal Millennium Bridge, con il London Bridge sullo sfondo." />
   <figcaption><em>Una delle poche foto che ho scattato, in uno dei rari momenti senza pioggia. Il Tamigi di sera, fotografato dal Millennium Bridge, con il Tower Bridge sullo sfondo.</em></figcaption>
 </figure>
 

@@ -5,7 +5,7 @@
     "date": "2026-02-01",
     "abstract": "Benvenuti nella mia pagina accademica personale. Ecco una breve panoramica di cosa troverete qui...",
     "tags": ["welcome", "intro", "personal"],
-    "image": "assets/personal_cut.jpeg",
+    "image": "assets/img/personal_cut.jpeg",
     "imageSide": "left",
     "content": "posts/hello_world.it.md"
   },
@@ -15,7 +15,7 @@
     "date": "2026-02-10",
     "abstract": "Il mio primo talk all'estero, a Sequences in London. Nuovi colleghi, nuove idee di ricerca, e il ritorno in una delle mie città preferite...",
     "tags": ["workshop", "talk", "sequences", "lossless-compression"],
-    "image": "assets/[2026]_London.jpg",
+    "image": "assets/img/[2026]_London.jpg",
     "imageSide": "left",
     "content": "posts/Sequences2026.it.md"
   }
