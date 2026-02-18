@@ -1124,8 +1124,8 @@ html[data-theme="light"] .research-panel.card{
 }
 
 .home-simple-avatar{
-  width: 200px;
-  height: 200px;
+  width: 185px;
+  height: 185px;
   border-radius: 999px;
   overflow:hidden;
   border: 3px solid rgba(0,0,0,.06);
