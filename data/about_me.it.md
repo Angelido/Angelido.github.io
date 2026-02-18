@@ -1,5 +1,5 @@
 
-<img src="assets/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 220px; border-radius: 6px;">
+<img src="assets/personal.jpg" alt="Angelo" style="float: right; margin: 0 0 1.2em 2em; width: 230px; border-radius: 10px;">
 
 Ciao, sono Angelo — dottorando in **Informatica** all'Università di Pisa. Ho conseguito la laurea triennale in **Matematica** all'UniPi, per poi proseguire con la magistrale in **Informatica**, sempre a Pisa, con curriculum in Intelligenza Artificiale. Ho iniziato il dottorato nel novembre 2024, spinto dalla passione per la ricerca e dal fascino per l'insegnamento universitario.
 
@@ -11,14 +11,12 @@ Nel mio lavoro esploro tecniche teoriche classiche, ma mi interesso anche a meto
 
 In passato ho lavorato anche su applicazioni di AI in ambito **medico**, un'esperienza che ha ampliato la mia prospettiva su cosa significhi fare ricerca con un impatto concreto.
 
-<div style="clear: both;"></div>
-
 ## Cosa trovi su questo sito
 
-- **Ricerca** — progetti, pubblicazioni, workshop talk e molto altro
-- **Formazione ed esperienze lavorative** — il mio percorso accademico e professionale
-- **CV** — disponibile per chi vuole uno sguardo d'insieme
-- **Posts** — pensieri, spunti ed esperienze dal mondo della ricerca
+- 🔬 **Ricerca** — progetti, pubblicazioni, workshop talk e molto altro
+- 🎓 **Formazione ed esperienze lavorative** — il mio percorso accademico e professionale
+- 📄 **CV** — disponibile per chi vuole uno sguardo d'insieme
+- ✍️ **Posts** — pensieri, spunti ed esperienze dal mondo della ricerca
 
 Se qualcosa ti incuriosisce o vuoi semplicemente scambiare due parole, scrivimi: troverai la mia email e i miei profili social nella pagina dei contatti.
 
