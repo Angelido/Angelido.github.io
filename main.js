@@ -97,9 +97,8 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, about_me, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
+    const [profile, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
-      fetch(`${base}/about_me.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/posts.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/experience.${state.lang}.json`).then((r) => r.json()),
@@ -114,7 +113,7 @@
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, about_me, posts, education, experience, publications, topics, talks, projects, social, cv };
+    state.data = { profile, posts, education, experience, publications, topics, talks, projects, social, cv };
 
   }
 
@@ -306,32 +305,34 @@
     `;
   }
 
-  function renderAbout() {
+  async function renderAbout() {
     const app = $('#app');
-    const { profile, about_me } = state.data;
 
     const pageTitle = state.i18n?.aboutPage?.title || 'About me';
     const intro = state.i18n?.aboutPage?.intro || '';
 
-    const aboutText = about_me?.text || '';
-    const paragraphs = splitParagraphs(aboutText);
-    const fullHtml = paragraphs.map((p) => `<p>${renderParagraphHTML(p)}</p>`).join('');
+    // Load markdown (language-specific)
+    const mdPath = `data/about_me.${state.lang}.md`;
+
+    let bodyHtml = '';
+    try {
+      const md = await fetch(mdPath).then(r => r.text());
+      const rawHtml = window.marked ? marked.parse(md) : md;
+      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+
+      // Add site link styling to markdown links
+      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
+    } catch (e) {
+      bodyHtml = `<p class="pub-meta">${state.lang === 'it'
+        ? 'Impossibile caricare la pagina About me.'
+        : 'Unable to load the About me page.'}</p>`;
+    }
 
     app.innerHTML = `
       ${pageHeaderHTML(pageTitle, intro)}
 
-      <section class="section aboutme">
-        <figure class="aboutme-figure">
-          <img
-            class="aboutme-img"
-            src="assets/personal.jpg"
-            alt="${state.lang === 'it' ? 'Foto di' : 'Photo of'} ${profile?.name || ''}"
-          />
-        </figure>
-
-        <div class="aboutme-text">
-          ${fullHtml}
-        </div>
+      <section class="section aboutme markdown-body">
+        ${bodyHtml}
       </section>
     `;
   }
