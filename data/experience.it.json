@@ -1,11 +1,22 @@
 [
+    {
+    "type": "Tutor Didattico",
+    "title": "Tutor Didattico - Algoritmi",
+    "company": "Università di Pisa, Dipartimento di Informatica",
+    "city": "Pisa, Italia",
+    "from": "2026-02",
+    "to": "2026-06",
+    "topic": "Programmazione e Algoritmica",
+    "description": "Attività di tutorato didattico a supporto del corso di Programmazione e Algoritmica. Il ruolo ha previsto affiancamento agli studenti del primo anno, conduzione di esercitazioni guidate e supporto allo studio individuale e di gruppo in coordinamento con il corpo docente."
+  },
   {
     "type": "Borsa di ricerca",
-    "title": "Research Fellow – Data Compression with LLM",
+    "title": "Borsa di ricerca – Compressione dati",
     "company": "Università di Pisa, Dipartimento di Informatica",
     "city": "Pisa, Italia",
     "from": "2025-07",
     "to": "2025-12",
-    "topic": "Compressione dati tramite Large Language Models (LLM)"
+    "topic": "Compressione dati tramite Large Language Models (LLM)",
+    "description": "Attività di ricerca finalizzata allo sviluppo di nuove tecniche di compressione per dati testuali basate su Large Language Models (LLM), con particolare attenzione alla compressione di codice sorgente e alla valutazione sperimentale delle prestazioni."
   }
 ]

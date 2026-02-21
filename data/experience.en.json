@@ -1,11 +1,22 @@
 [
   {
+    "type": "Teaching Tutor",
+    "title": "Teaching Tutor – Algorithms",
+    "company": "University of Pisa, Department of Computer Science",
+    "city": "Pisa, Italy",
+    "from": "2026-02",
+    "to": "2026-06",
+    "topic": "Programming and Algorithms",
+    "description": "Teaching support activity for the course Programming and Algorithms. The role involved mentoring first-year students, conducting guided exercise sessions, and providing academic support for both individual and group study in coordination with the course instructors."
+  },
+  {
     "type": "Research Fellowship",
-    "title": "Research Fellow – Data Compression with LLMs",
+    "title": "Research Fellow – Data Compression",
     "company": "University of Pisa, Department of Computer Science",
     "city": "Pisa, Italy",
     "from": "2025-07",
     "to": "2025-12",
-    "topic": "Data compression using Large Language Models (LLMs)"
+    "topic": "Data compression using Large Language Models (LLMs)",
+    "description": "Research activity aimed at developing novel compression techniques for textual data based on Large Language Models (LLMs), with particular focus on source code compression and experimental performance evaluation."
   }
 ]

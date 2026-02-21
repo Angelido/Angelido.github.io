@@ -196,6 +196,27 @@
     return renderInlineMD(p);
   }
 
+  function formatMonthYearShort(ym) {
+  if (!ym) return '';
+  const [y, m] = String(ym).split('-').map(Number);
+  if (!y || !m) return ym;
+
+  const d = new Date(y, m - 1, 1);
+  const loc = state.lang === 'it' ? 'it-IT' : 'en-GB';
+
+  // month: 'short' -> IT: "feb", "giu" | EN: "Feb", "Jun"
+  let s = new Intl.DateTimeFormat(loc, { month: 'short', year: 'numeric' }).format(d);
+
+  // Remove trailing dot some locales produce (e.g., "feb." -> "feb")
+  s = s.replace('.', '');
+
+  // Capitalize first letter -> "Feb 2026", "Giu 2026"
+  s = s.charAt(0).toUpperCase() + s.slice(1);
+
+  return s;
+}
+
+
   /* =========================================================
      UI components
   ========================================================== */
@@ -956,7 +977,7 @@
           : ''}
 
         <div class="pub-meta">
-          ${x.from} — ${x.to || ongoingLabel}
+          ${formatMonthYearShort(x.from)} — ${x.to ? formatMonthYearShort(x.to) : ongoingLabel}
           ${x.finalGrade ? ` • <strong>${x.finalGrade}</strong>` : ''}
         </div>
 
@@ -967,6 +988,12 @@
         </div>
       ` : ""}
 
+        ${x.description ? `
+          <div class="edu-description">
+            <span class="edu-label">${state.lang === 'it' ? 'Descrizione:' : 'Description:'}</span>
+            <span class="edu-desc-text">${renderInlineMD(x.description)}</span>
+          </div>
+        ` : ""}
 
         ${x.thesis ? `
           <div class="edu-line">
