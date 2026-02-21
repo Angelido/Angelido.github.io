@@ -1726,15 +1726,11 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   min-width: 180px;
 }
 
-/* List layout: stacked big panels */
-.posts-list{
-  display:grid;
-  gap: 1.2rem;
-}
-
 .posts-list {
   display: grid;
   gap: .85rem;
+  max-width: 900px;
+  margin-inline: auto;
 }
 
 /* ── Card base ── */
@@ -1927,6 +1923,19 @@ html[data-theme="light"] .posts-filter-select option{
   .container{
     width: min(100% - 2.8rem, var(--maxw));
   }
+}
+
+.post-card-kicker::before,
+.home-latest-kicker::before {
+  content: "";
+  display: inline-block;
+  width: .85em;
+  height: .85em;
+  margin-right: .3rem;
+  vertical-align: middle;
+  background-color: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 /* =========================================================
