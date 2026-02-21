@@ -819,46 +819,74 @@
 
   function renderCV() {
     const app = $('#app');
-    const lang = state.lang;
 
-    const title = 'Curriculum Vitae';
-    const intro = state.i18n?.cv?.intro || '';
-    const itLabel = state.i18n?.cv?.itLabel || 'Italian CV';
-    const enLabel = state.i18n?.cv?.enLabel || 'English CV';
+    const title        = state.i18n?.cv?.title         || 'Curriculum Vitae';
+    const intro        = state.i18n?.cv?.intro          || '';
+    const itLabel      = state.i18n?.cv?.itLabel        || (state.lang === 'it' ? 'CV in italiano'  : 'Italian CV');
+    const enLabel      = state.i18n?.cv?.enLabel        || (state.lang === 'it' ? 'CV in inglese'   : 'English CV');
+    const openText     = state.i18n?.actions?.openNewTab  || (state.lang === 'it' ? 'Apri'           : 'Open');
+    const downloadText = state.i18n?.actions?.downloadPdf || (state.lang === 'it' ? 'Scarica PDF'    : 'Download PDF');
+    const lastUpdatedLabel = state.i18n?.cv?.lastUpdatedLabel || (state.lang === 'it' ? 'Ultimo aggiornamento' : 'Last updated');
 
-    const openText = state.i18n?.actions?.openNewTab || 'Open in a new tab';
-    const downloadText = state.i18n?.actions?.downloadPdf || 'Download PDF';
+    const cvIt   = state.data.cv?.it          || 'assets/pdf/cv-it.pdf';
+    const cvEn   = state.data.cv?.en          || 'assets/pdf/cv-en.pdf';
+    const updated = state.data.cv?.lastUpdated || '';
 
-    const cvIt = state.data.cv?.it || 'assets/pdf/cv-it.pdf';
-    const cvEn = state.data.cv?.en || 'assets/pdf/cv-en.pdf';
+    const noteHtml = state.lang === 'it'
+      ? `Il contenuto principale è già nelle sezioni <a class="inline-link" href="#/research">Ricerca</a> e <a class="inline-link" href="#/experience">Formazione &amp; Esperienza</a>.`
+      : `Most of the content is already in <a class="inline-link" href="#/research">Research</a> and <a class="inline-link" href="#/experience">Education &amp; Experience</a>.`;
+
+    // SVG icons inline (no external dependency)
+    const iconExternal = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+    const iconDownload = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+    const iconCalendar = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+    const cvCard = (label, langTag, pdfPath) => `
+      <div class="cv-card">
+        <div class="cv-card-top">
+          <span class="cv-lang-badge">${langTag}</span>
+          <div class="cv-card-doc-icon" aria-hidden="true">
+            <div class="cv-doc-sheet">
+              <div class="cv-doc-line cv-doc-line--title"></div>
+              <div class="cv-doc-line"></div>
+              <div class="cv-doc-line cv-doc-line--short"></div>
+              <div class="cv-doc-line"></div>
+              <div class="cv-doc-line cv-doc-line--short"></div>
+            </div>
+          </div>
+          <div class="cv-card-label">${label}</div>
+          <div class="cv-card-meta">PDF</div>
+        </div>
+        <div class="cv-card-actions">
+          <a class="cv-card-btn cv-card-btn--primary" href="${pdfPath}" target="_blank" rel="noopener">
+            ${iconExternal} ${openText}
+          </a>
+          <a class="cv-card-btn cv-card-btn--outline" href="${pdfPath}" download>
+            ${iconDownload} ${downloadText}
+          </a>
+        </div>
+      </div>
+    `;
 
     app.innerHTML = `
       ${pageHeaderHTML(title, intro)}
 
-      <section class="section">
-        <div class="cv-grid">
-          <article class="card cv-card">
-            <h2>${itLabel}</h2>
-            <div class="cv-buttons">
-              <a class="btn" href="${cvIt}" target="_blank" rel="noopener">${openText}</a>
-              <a class="btn btn-outline" href="${cvIt}" download>${downloadText}</a>
-            </div>
-            <div class="cv-preview">
-              <iframe src="${cvIt}#view=FitH" class="cv-iframe" title="${itLabel}"></iframe>
-            </div>
-          </article>
+      <section class="section cv-gateway-v2">
 
-          <article class="card cv-card">
-            <h2>${enLabel}</h2>
-            <div class="cv-buttons">
-              <a class="btn" href="${cvEn}" target="_blank" rel="noopener">${openText}</a>
-              <a class="btn btn-outline" href="${cvEn}" download>${downloadText}</a>
-            </div>
-            <div class="cv-preview">
-              <iframe src="${cvEn}#view=FitH" class="cv-iframe" title="${enLabel}"></iframe>
-            </div>
-          </article>
+        <div class="cv-cards-row">
+          ${cvCard(enLabel, 'EN', cvEn)}
+          ${cvCard(itLabel, 'IT', cvIt)}
         </div>
+
+        ${updated ? `
+          <div class="cv-updated-v2">
+            ${iconCalendar}
+            <span>${lastUpdatedLabel}: <strong>${updated}</strong></span>
+          </div>
+        ` : ''}
+
+        <p class="cv-note-v2">${noteHtml}</p>
+
       </section>
     `;
   }

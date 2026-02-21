@@ -43,9 +43,11 @@
     "experienceTitle": "Experience"
   },
   "cv": {
+    "title": "Curriculum Vitae",
     "intro": "Here you can view and download my CV in both Italian and English.",
     "itLabel": "Italian CV",
-    "enLabel": "English CV"
+    "enLabel": "English CV",
+    "lastUpdatedLabel": "Last updated"
   },
   "actions": {
     "openNewTab": "Open in a new tab",
