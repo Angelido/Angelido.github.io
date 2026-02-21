@@ -410,28 +410,19 @@
 
     const render = (items) => {
       listEl.innerHTML = items.length
-        ? items.map((p, idx) => {
+        ? items.map((p) => {
             const dateStr = formatPostDate(p.date);
             const tags = Array.isArray(p.tags) ? p.tags : [];
-            const hasImg = !!p.image;
-            const side = (p.imageSide === 'left' || p.imageSide === 'right') ? p.imageSide : (idx % 2 === 0 ? 'right' : 'left');
 
             return `
-              <article class="card post-card post-card--${hasImg ? 'img' : 'noimg'} post-card--${side}">
+              <article class="card post-card post-card--noimg">
                 <a class="post-card-link" href="#/posts/${encodeURIComponent(p.id)}" aria-label="${p.title || ''}"></a>
 
-                ${hasImg ? `
-                  <figure class="post-card-figure">
-                    <img class="post-card-img" src="${p.image}" alt="${p.title || ''}">
-                  </figure>
-                ` : ''}
-
                 <div class="post-card-body">
-                  ${p.title ? `<h2 class="post-card-title">${p.title}</h2>` : ''}
 
-                  <div class="post-card-meta">
-                    ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
-                  </div>
+                  ${dateStr ? `<div class="post-card-kicker">${dateStr}</div>` : ''}
+
+                  ${p.title ? `<h2 class="post-card-title"><span class="post-card-chevron" aria-hidden="true">›</span>${p.title}</h2>` : ''}
 
                   ${p.abstract ? `<p class="post-card-abstract">${p.abstract}</p>` : ''}
 
@@ -440,6 +431,7 @@
                       ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
                     </div>
                   ` : ''}
+
                 </div>
               </article>
             `;

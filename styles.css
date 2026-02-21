@@ -1698,146 +1698,130 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   gap: 1.2rem;
 }
 
-/* ===== Post preview card (compact) ===== */
-.post-card{
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-
-  background: var(--panel);
-  border: 1px solid rgba(15, 23, 42, .10);
-  box-shadow: var(--shadow-soft);
-
-  /* compact padding (keeps cards low) */
-  padding: .85rem .95rem;
-}
-
-html[data-theme="dark"] .post-card{
-  background: rgba(35,36,39,.70);
-  border-color: rgba(255,255,255,.10);
-  box-shadow: var(--card-shadow);
-}
-
-/* Ensure click always triggers the overlay */
-.post-card *{ pointer-events:none; }
-
-/* Entire card clickable: overlay link (must be AFTER the rule above) */
-.post-card a.post-card-link{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  pointer-events:auto;
-}
-
-/* Preview layout (robust + consistent text start):
-   We reserve BOTH sides: left thumb space and right thumb space.
-   So when the image is on the right, the text still starts after the left reserved space. */
-.post-card--img{
+.posts-list {
   display: grid;
-  grid-template-columns: 140px 24px 1fr 24px 140px; /* L | gap | TEXT | gap | R */
-  grid-template-areas: "fig gapL body gapR .";
-  align-items: center;
+  gap: .85rem;
 }
 
-/* Right variant: keep body in the SAME column, move only the image */
-.post-card--img.post-card--right{
-  grid-template-areas: ". gapL body gapR fig";
-}
-
-/* Place items by area */
-.post-card--img .post-card-figure{
-  grid-area: fig;
-  margin: 0;
-  justify-self: center;
-}
-
-.post-card--img .post-card-body{
-  grid-area: body;
-  margin: 0;
-  text-align: left;
-  padding-left: 20px; /* tiny extra shift to the right (also when image is left) */
-}
-
-/* Body (preview): wide + left aligned (prevents tall cards) */
-.post-card-body{
-  max-width: none;
-  margin: 0;
-  text-align: left;
-}
-
-.post-card-title{
-  margin: 0 0 .25rem;
-  letter-spacing: -0.02em;
-}
-
-.post-card-meta{
-  color: var(--muted);
-  font-size: .95rem;
-  margin-bottom: .35rem;
-}
-
-/* Abstract: NO line-clamp, NO -webkit warnings.
-   We keep cards low using max-height + a soft fade. */
-.post-card-abstract{
-  --lines: 3;
-  --lh: 1.7;
-
-  margin: 0 0 .55rem;
-  color: var(--text);
-  opacity: .95;
-
-  line-height: calc(var(--lh) * 1em);
-  max-height: calc(var(--lines) * var(--lh) * 1em);
-  overflow: hidden;
+/* ── Card base ── */
+.post-card {
   position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  padding: 1rem 1.2rem 1rem 1.4rem;
+  border-radius: 14px;
+  background: var(--panel);
+
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-.post-card-abstract::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height: calc(var(--lh) * 1em);
-  background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel));
-  pointer-events:none;
+.post-card:hover {
+  border-color: rgba(15, 23, 42, .09);
+  box-shadow: 0 4px 18px rgba(0,0,0,.10);
 }
 
-/* Posts preview: no fade overlay (it visually washes out the tags) */
-.post-card .post-card-abstract::after{
+html[data-theme="dark"] .post-card {
+  background: var(--card-bg);
+  border-color: rgba(255,255,255,.08);
+  border-left-color: transparent;
+  box-shadow: 0 2px 12px rgba(0,0,0,.28);
+}
+
+html[data-theme="dark"] .post-card:hover {
+  border-color: rgba(255,255,255,.08);
+  box-shadow: 0 4px 22px rgba(0,0,0,.42);
+}
+
+/* ── Overlay link ── */
+.post-card * { pointer-events: none; }
+.post-card a.post-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* ── Body ── */
+.post-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+/* ── Kicker (data) ── */
+.post-card-kicker {
+  font-size: .78rem;
+  font-weight: 650;
+  color: var(--muted);
+  background: rgba(15, 23, 42, .055);
+  display: inline-block;
+  padding: .12rem .5rem;
+  border-radius: 999px;
+  letter-spacing: .01em;
+  width: fit-content;
+}
+
+html[data-theme="dark"] .post-card-kicker {
+  background: rgba(255,255,255,.08);
+}
+
+/* ── Titolo ── */
+.post-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -.022em;
+  line-height: 1.35;
+  color: var(--text);
+  transition: font-size .18s ease, font-weight .18s ease;
+}
+
+.post-card-abstract {
+  margin: 0;
+  font-size: .93rem;
+  line-height: 1.6;
+  opacity: .78;
+  overflow: hidden;
+  max-height: calc(2 * 1.6em);
+}
+
+/* ── Tags ── */
+.post-tags {
+  margin-top: .1rem;
+}
+
+.post-tags .tag {
+  font-size: .78rem;
+  font-weight: 650;
+  padding: .18rem .55rem;
+}
+
+/* ── Nascondi vecchio meta (se rimasto nel DOM) ── */
+.post-card .post-card-meta {
   display: none;
 }
 
-html[data-theme="dark"] .post-card-abstract::after{
-  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(35,36,39,.70));
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .post-card {
+    padding: .85rem 1rem .85rem 1.2rem;
+  }
 }
 
-/* Tags row inside previews */
-.post-tags{
-  margin-top: .15rem;
+.post-card-chevron {
+  display: inline-block;
+  margin-right: .35rem;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 1.1em;
+  opacity: .55;
+  transition: opacity .18s ease, transform .18s ease;
 }
 
-/* Post preview thumbnail: fixed height + crop from top */
-.post-card-figure{
-  width: 140px;              /* same width used in grid */
-  height: 110px;             /* fixed height → controls card height */
-  overflow: hidden;          /* hides overflow */
-  border-radius: 14px;
-}
-
-.post-card-img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;         /* crop instead of stretch */
-  object-position: top;      /* take upper part of the image */
-  display: block;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow: var(--shadow-soft);
-}
-
-html[data-theme="dark"] .post-card-img{
-  border-color: rgba(255,255,255,.14);
+.post-card:hover .post-card-chevron {
+  opacity: .9;
 }
 
 /* ===== Opened post: full page (NO panel/card) ===== */
@@ -1885,40 +1869,6 @@ html[data-theme="dark"] .post-page-img{
 
 .post-page-body p{
   margin: 0 0 1rem;
-}
-
-/* Mobile: stack image on top, then text */
-@media (max-width: 900px){
-  .post-card--img{
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .post-card--img .post-card-figure,
-  .post-card--img .post-card-body{
-    grid-column: 1;
-  }
-
-  .post-card-figure{
-    max-width: 420px;
-  }
-
-  /* MOBILE: hide post preview thumbnails (only in Posts list) */
-  .posts-list .post-card-figure{
-    display: none;
-  }
-
-  /* MOBILE: ensure the card becomes a simple 1-column text card */
-  .posts-list .post-card--img{
-    grid-template-columns: 1fr;
-    grid-template-areas: "body";
-    gap: 0;
-  }
-
-  .posts-list .post-card--img .post-card-body{
-    padding-left: 0; /* remove the tiny right shift used on desktop */
-  }
-
 }
 
 html[data-theme="light"] .posts-filter-select{
