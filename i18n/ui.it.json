@@ -43,9 +43,11 @@
     "experienceTitle": "Esperienza"
   },
   "cv": {
+    "title": "Curriculum Vitae",
     "intro": "Qui puoi consultare e scaricare il mio CV in italiano e in inglese.",
     "itLabel": "CV in italiano",
-    "enLabel": "CV in inglese"
+    "enLabel": "CV in inglese",
+    "lastUpdatedLabel": "Ultimo aggiornamento"
   },
   "actions": {
     "openNewTab": "Apri in una nuova scheda",
