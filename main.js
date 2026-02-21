@@ -259,6 +259,10 @@
   /* =========================================================
      Views
   ========================================================== */
+// =========================================================
+// Sostituisci l'intera funzione renderAcademicHome() in main.js
+// =========================================================
+
   function renderAcademicHome() {
     const { profile } = state.data;
     const app = $('#app');
@@ -267,8 +271,8 @@
     const posts = (state.data.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     const latest = posts[0] || null;
 
-    const latestTitle = state.i18n?.home?.latestTitle || (state.lang === 'it' ? 'Ultimi post' : 'Latest posts');
-    const latestLabel = state.i18n?.home?.latestLabel || (state.lang === 'it' ? 'Ultimo post' : 'Latest post');
+    // Singolare: "Ultimo post" / "Latest post"
+    const latestTitle = state.i18n?.home?.latestTitle || (state.lang === 'it' ? 'Ultimo post' : 'Latest post');
 
     const formatPostDate = (iso) => {
       if (!iso) return '';
@@ -280,7 +284,6 @@
 
     const dateStr = latest?.date ? formatPostDate(latest.date) : '';
 
-    // Two lines (emoji + text)
     const line1 = state.lang === 'it'
       ? `👨🏻‍🎓 Dottorando in Informatica presso ${profile?.university || 'Università di Pisa'}`
       : `👨🏻‍🎓 PhD Student in Computer Science at ${profile?.university || 'University of Pisa'}`;
@@ -288,7 +291,6 @@
     const line2 = state.lang === 'it'
       ? `📌 Stanza 304, ${profile?.department || 'Dipartimento di Informatica'}`
       : `📌 Room 304, ${profile?.department || 'Department of Computer Science'}`;
-
 
     app.innerHTML = `
       <section class="home-simple">
@@ -314,8 +316,8 @@
 
           ${latest ? `
             <a class="home-latest-card" href="#/posts/${encodeURIComponent(latest.id)}" aria-label="${latest.title || ''}">
-              <div class="home-latest-kicker">${latestLabel}${dateStr ? ` • ${dateStr}` : ''}</div>
-              ${latest.title ? `<div class="home-latest-posttitle">${latest.title}</div>` : ''}
+              ${dateStr ? `<div class="home-latest-kicker">${dateStr}</div>` : ''}
+              ${latest.title ? `<div class="home-latest-posttitle"><span class="home-latest-chevron" aria-hidden="true">›</span>${latest.title}</div>` : ''}
               ${latest.abstract ? `<div class="home-latest-abstract">${latest.abstract}</div>` : ''}
             </a>
           ` : `

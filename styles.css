@@ -1385,63 +1385,97 @@ html[data-theme="dark"] .home-simple-avatar{
   font-size: 1.08rem;
 }
 
-.home-latest-card{
-  width:100%;
-  text-decoration:none;
+/* =========================================================
+   HOME — Latest post card aggiornato
+   Sostituisci i blocchi .home-latest-kicker, .home-latest-posttitle,
+   .home-latest-abstract, .home-latest-card nel tuo styles.css
+   con questi (tieni .home-latest e .home-latest-title invariati)
+========================================================= */
+
+.home-latest-card {
+  width: 100%;
+  display: block;
+  text-decoration: none;
   color: inherit;
 
-  border-radius: 16px;
-  border: 1px solid rgba(15, 23, 42, .10);
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, .09);
   background: var(--panel);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
 
-  /* a bit smaller */
-  padding: .95rem 1.0rem;
+  padding: 1rem 1.2rem;
 
-  text-align:left;
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  text-align: left;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-.home-latest-card:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.02);
+.home-latest-card:hover {
+  border-color: rgba(29, 78, 216, .25);
+  box-shadow: 0 4px 18px rgba(0,0,0,.10);
 }
 
-html[data-theme="dark"] .home-latest-card{
-  border-color: rgba(255,255,255,.10);
-  background: rgba(35,36,39,.70);
-  box-shadow: var(--card-shadow);
+html[data-theme="dark"] .home-latest-card {
+  border-color: rgba(255,255,255,.08);
+  background: var(--card-bg);
+  box-shadow: 0 2px 12px rgba(0,0,0,.28);
 }
 
-.home-latest-kicker{
-  font-size: .76rem;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+html[data-theme="dark"] .home-latest-card:hover {
+  border-color: rgba(96, 165, 250, .28);
+  box-shadow: 0 4px 22px rgba(0,0,0,.42);
+}
+
+/* Kicker: pill data, stesso stile dei post card */
+.home-latest-kicker {
+  font-size: .78rem;
+  font-weight: 650;
   color: var(--muted);
-  margin-bottom: .32rem;
+  background: rgba(15, 23, 42, .055);
+  display: inline-block;
+  padding: .12rem .5rem;
+  border-radius: 999px;
+  letter-spacing: .01em;
+  margin-bottom: .3rem;
+  text-transform: none;
 }
 
-.home-latest-posttitle{
-  font-size: 1.02rem;
-  font-weight: 850;
-  letter-spacing: -0.01em;
-  margin-bottom: .30rem;
+html[data-theme="dark"] .home-latest-kicker {
+  background: rgba(255,255,255,.08);
 }
 
-.home-latest-abstract{
+/* Titolo con chevron */
+.home-latest-posttitle {
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -.022em;
+  line-height: 1.35;
+  margin-bottom: .28rem;
   color: var(--text);
-  opacity: .92;
-  line-height: 1.55;
 }
 
-/* Small screens: keep it airy but compact */
-@media (max-width: 900px){
-  .home-simple{
-    max-width: min(900px, 92vw);
-    padding: 2.1rem 0 1.4rem;
-    gap: 1.7rem;
-  }
+.home-latest-chevron {
+  display: inline-block;
+  margin-right: .35rem;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 1.1em;
+  opacity: .55;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.home-latest-card:hover .home-latest-chevron {
+  opacity: .9;
+  transform: translateX(2px);
+}
+
+/* Abstract: max 2 righe */
+.home-latest-abstract {
+  font-size: .93rem;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: .78;
+  overflow: hidden;
+  max-height: calc(2 * 1.6em);
 }
 
 /* =========================================================
@@ -1818,6 +1852,14 @@ html[data-theme="dark"] .post-card-kicker {
   font-size: 1.1em;
   opacity: .55;
   transition: opacity .18s ease, transform .18s ease;
+}
+
+.post-card:hover {
+  border-color: rgba(29, 78, 216, .25);
+}
+
+html[data-theme="dark"] .post-card:hover {
+  border-color: rgba(96, 165, 250, .28);
 }
 
 .post-card:hover .post-card-chevron {
