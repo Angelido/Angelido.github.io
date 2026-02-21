@@ -494,6 +494,10 @@ html[data-theme="dark"] .site-header{
   font-size: .82rem;
 }
 
+#year{
+  margin-right: .45rem;
+}
+
 .footer-content{
   display: flex;
   justify-content: center;
