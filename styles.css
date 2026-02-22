@@ -229,9 +229,10 @@ html[data-theme="light"]
 
 /* Research panels: use flat panel color */
 .research-panel{
-  background: var(--panel);
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: var(--shadow-soft);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
 }
 
 html[data-theme="dark"] .research-panel{
