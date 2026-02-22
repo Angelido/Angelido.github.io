@@ -561,7 +561,9 @@
           .then(r => r.text())
           .then(text => {
             const words = text.trim().split(/\s+/).filter(Boolean).length;
-            return { id: p.id, mins: Math.max(1, Math.round(words / 200)) };
+
+            const baseMinutes = Math.max(1, Math.round(words / 200));
+            return { id: p.id, mins: baseMinutes + 1 };
           })
           .catch(() => ({ id: p.id, mins: 1 }));
       })
