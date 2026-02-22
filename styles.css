@@ -1922,18 +1922,75 @@ html[data-theme="dark"] .pagination-btn {
   margin-inline: auto;
 }
 
-.post-page-title{
-  margin: 0 0 .35rem;
-  letter-spacing: -0.02em;
+/* ── Post detail: header block ─────────────────────────── */
+.post-page-header {
+  margin-bottom: 1.5rem;
 }
 
-.post-page-meta{
+.post-page-title {
+  margin-bottom: 0.75rem;
+}
+
+/* Meta row (data + lettura) */
+.post-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.post-page-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.82rem;
+  color: var(--muted);          /* colore brand elegante */
+  font-variant-numeric: tabular-nums;
+}
+
+.post-page-meta-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
   color: var(--muted);
-  font-size: .95rem;
 }
 
-.post-page-tags{
-  margin-top: .7rem;
+/* Tags sotto la meta */
+.post-page-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0;
+}
+
+/* Divider sotto l'header */
+.post-page-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0 1rem;
+}
+
+/* Footer con link "Torna ai post" */
+.post-page-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.post-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.post-back-link:hover {
+  opacity: 0.7;
 }
 
 .post-page-figure{
