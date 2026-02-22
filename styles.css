@@ -38,25 +38,25 @@
 
 /* LIGHT THEME – Soft Blue minimal */
 html[data-theme="light"] {
---bg:     #f6f4f1;
---panel:  #fdfcfa;
---text:   #1c1410;
---muted: #5a5550;
---brand:  #b5460f;  /* ruggine */
---accent: #c2621a;
+  --bg:     #f6f4f1;
+  --panel:  #fdfcfa;
+  --text:   #1c1410;
+  --muted: #5a5550;
+  --brand:  #b5460f;  /* ruggine */
+  --accent: #c2621a;
 }
 
 /* DARK THEME – Minimal Gemini */
-html[data-theme="dark"]{
-  --bg:    #1e1f23;;
-  --panel: #27282c;
-  --text:  #f5f5f5;
-  --muted: #a0a0a5;
-  --brand: #60a5fa;
-  --accent:#a78bfa;
-  --card-border: rgba(255,255,255,.10);
-  --card-bg:     rgba(35,36,39,.70);
-  --card-shadow: 0 18px 46px rgba(0,0,0,.45);
+html[data-theme="dark"] {
+  --bg:         #26272b;
+  --panel:      #32333a;
+  --text:       #f5f5f5;
+  --muted:      #a0a0a5;
+  --brand:      #60a5fa;
+  --accent:     #4d9ef7;
+  --card-border: rgba(255,255,255,.12);
+  --card-bg:    #32333a;
+  --card-shadow: 0 12px 32px rgba(0,0,0,.35);
 }
 
 /* ===== Tags: readable in LIGHT mode ===== */
@@ -1137,6 +1137,13 @@ html[data-theme="dark"] .cv-doc-line{
   font-weight: 750;
   font-size: 1.02rem;
   letter-spacing: -.01em;
+  transition: color .15s ease;
+}
+
+/* CV: accent on hover/focus for the card title (English/Italian CV) */
+.cv-card:hover .cv-card-label,
+.cv-card:focus-within .cv-card-label{
+  color: var(--accent);
 }
 
 .cv-card-meta{
