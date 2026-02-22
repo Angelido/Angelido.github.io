@@ -316,9 +316,23 @@
 
           ${latest ? `
             <a class="home-latest-card" href="#/posts/${encodeURIComponent(latest.id)}" aria-label="${latest.title || ''}">
-              ${dateStr ? `<div class="home-latest-kicker">${dateStr}</div>` : ''}
-              ${latest.title ? `<div class="home-latest-posttitle"><span class="home-latest-chevron" aria-hidden="true">›</span>${latest.title}</div>` : ''}
+              ${latest.title ? `<div class="home-latest-posttitle">${latest.title}</div>` : ''}
               ${latest.abstract ? `<div class="home-latest-abstract">${latest.abstract}</div>` : ''}
+              ${(latest.tags||[]).length ? `
+                <div class="home-latest-tags">
+                  <span class="home-latest-tags-label">${state.lang === 'it' ? 'Tag:' : 'Tags:'}</span>
+                  ${latest.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+              ` : ''}
+              ${dateStr ? `<div class="home-latest-meta">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="5" y1="1" x2="5" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <line x1="11" y1="1" x2="11" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                ${dateStr}
+              </div>` : ''}
             </a>
           ` : `
             <div class="pub-meta">${state.lang === 'it' ? 'Nessun post disponibile.' : 'No posts available.'}</div>
