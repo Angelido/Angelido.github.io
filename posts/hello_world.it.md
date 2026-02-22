@@ -1,5 +1,3 @@
-# Hello, World! 👋
-
 Benvenuti nella mia pagina personale!
 
 Mi chiamo **Angelo Nardone** e sono un dottorando in Informatica (Computer Science) all'Università di Pisa. Questa è la mia pagina accademica personale — un posto dove raccogliere tutto ciò che riguarda il mio percorso di ricerca, la mia carriera e, sperabilmente, qualche riflessione lungo la strada.

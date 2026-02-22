@@ -588,37 +588,63 @@
     const tags = Array.isArray(p.tags) ? p.tags : [];
 
     let bodyHtml = '';
+    let mdText = '';
 
-    // 1) If JSON provides a markdown file path, load & render it
     const mdPath = p.contentPath || p.content;
 
     if (mdPath && /\.md$/i.test(mdPath)) {
-      const md = await fetch(mdPath).then(r => r.text());
-      const rawHtml = window.marked ? marked.parse(md) : md;
+      mdText = await fetch(mdPath).then(r => r.text());
+      const rawHtml = window.marked ? marked.parse(mdText) : mdText;
       bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
-      // Add site link styling to markdown links
       bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
     } else {
-      // 2) Fallback: old inline text
       const paragraphs = splitParagraphs(String(p.content || ''));
       bodyHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
     }
 
     const isMarkdown = !!(mdPath && /\.md$/i.test(mdPath));
 
+    // Minuti di lettura (stessa logica della lista, nessun fetch aggiuntivo)
+    const words = mdText.trim().split(/\s+/).filter(Boolean).length;
+    const readMins = mdText ? Math.max(1, Math.round(words / 200)) + 1 : 1;
+    const minReadLabel = state.lang === 'it' ? 'min di lettura' : 'min read';
+
     app.innerHTML = `
       <section class="section post-page">
-        ${p.title ? `<h1 class="post-page-title">${p.title}</h1>` : ''}
 
-        <div class="post-page-meta">
-          ${dateStr ? `<span class="post-date">${dateStr}</span>` : ''}
+        <div class="post-page-header">
+          ${p.title ? `<h1 class="post-page-title">${p.title}</h1>` : ''}
+
+          <div class="post-page-meta">
+            ${dateStr ? `
+              <span class="post-page-meta-item">
+                <svg class="post-page-meta-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="5" y1="1" x2="5" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <line x1="11" y1="1" x2="11" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                ${dateStr}
+              </span>
+            ` : ''}
+            <span class="post-page-meta-item">
+              <svg class="post-page-meta-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+                <line x1="8" y1="5" x2="8" y2="8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="8" y1="8.5" x2="10.5" y2="10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              ${readMins} ${minReadLabel}
+            </span>
+          </div>
+
+          ${tags.length ? `
+            <div class="post-page-tags">
+              ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          ` : ''}
         </div>
 
-        ${tags.length ? `
-          <div class="tags post-tags post-page-tags">
-            ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
-          </div>
-        ` : ''}
+        <hr class="post-page-divider" />
 
         ${(!isMarkdown && p.image) ? `
           <figure class="post-page-figure">
@@ -629,6 +655,17 @@
         <div class="post-page-body markdown-body">
           ${bodyHtml}
         </div>
+
+        <div class="post-page-footer">
+          <a href="#/posts" class="post-back-link">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="14" height="14">
+              <line x1="13" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <polyline points="7,4 3,8 7,12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            ${state.lang === 'it' ? 'Torna ai post' : 'Back to posts'}
+          </a>
+        </div>
+
       </section>
     `;
   }

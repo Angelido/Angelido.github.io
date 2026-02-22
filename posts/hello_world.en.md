@@ -1,5 +1,3 @@
-# Hello, World! 👋
-
 Welcome to my personal page!
 
 My name is **Angelo Nardone** and I am a PhD student in Computer Science at the University of Pisa. This is my personal academic page — a place to gather everything related to my research journey, my career, and hopefully some reflections along the way.
