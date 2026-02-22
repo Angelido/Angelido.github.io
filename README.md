@@ -7,19 +7,13 @@ The site is designed as a lightweight, static, single-page application and serve
 🔗 **Live website**:  
 https://angelido.github.io/
 
---
-
 ## 🚀 Deployment
 
 The website is deployed using **GitHub Pages** and automatically updated on every push to the `main` branch.
-
----
 
 ## 📄 License
 
 This project is intended for personal and academic use.  
 Feel free to explore the code for inspiration, but please do not reuse content (texts, CV, publications) without permission.
-
----
 
 © Angelo Nardone
