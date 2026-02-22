@@ -1015,6 +1015,11 @@ html[data-theme="dark"] .icon-btn:hover{
   gap: 2rem;
 }
 
+/* Extra vertical space between intro and CV panels */
+.cv-gateway-v2{
+  padding-top: 2.3rem;   /* puoi aumentare a 1.5rem se vuoi più aria */
+}
+
 /* ── Due card affiancate ── */
 .cv-cards-row{
   display: flex;
@@ -1266,7 +1271,7 @@ html[data-theme="dark"] .cv-chip:hover{
   margin: 0 auto;
 
   /* Smaller vertical footprint */
-  padding: 2.4rem 0 1.6rem;
+  padding: 1.8rem 0 1.4rem;
 
   display:flex;
   flex-direction:column;
@@ -1274,7 +1279,7 @@ html[data-theme="dark"] .cv-chip:hover{
   text-align:center;
 
   /* More separation between top content and latest posts */
-  gap: 2.0rem;
+  gap: 1.7rem;
 }
 
 .home-simple-head{
@@ -1424,11 +1429,11 @@ html[data-theme="dark"] .home-latest-card:hover {
 }
 
 .home-latest-posttitle {
-  font-size: 1.05rem;
-  font-weight: 650;
-  margin: 0 0 .35rem;
+  font-size: 1.18rem;      /* leggermente più grande */
+  font-weight: 700;        /* un filo più deciso */
+  margin: 0 0 .6rem;       /* più spazio sotto */
   color: var(--text);
-  line-height: 1.35;
+  line-height: 1.4;
   transition: color .15s ease;
 }
 
