@@ -378,11 +378,15 @@
   function renderPosts() {
     const app = $('#app');
 
+    const POSTS_PER_PAGE = 5;
+
     const pageTitle = state.i18n?.postsPage?.title || 'Posts';
     const intro = state.i18n?.postsPage?.intro || '';
     const filterLabel = state.i18n?.postsPage?.filterByTag || (state.lang === 'it' ? 'Filtra per tag' : 'Filter by tag');
     const allTagsLabel = state.i18n?.postsPage?.allTags || (state.lang === 'it' ? 'Tutti' : 'All');
     const emptyLabel = state.i18n?.postsPage?.noItems || (state.lang === 'it' ? 'Nessun post trovato.' : 'No posts found.');
+    const minReadLabel = state.lang === 'it' ? 'min di lettura' : 'min read';
+    const tagsLabel = state.lang === 'it' ? 'Tag:' : 'Tags:';
 
     const posts = (state.data.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
@@ -405,51 +409,155 @@
         </div>
       </section>
 
-      <section class="section posts-list" id="postsList"></section>
+      <section class="section posts-flat-list" id="postsList"></section>
+
+      <div class="posts-pagination" id="postsPagination"></div>
     `;
 
     const listEl = $('#postsList');
+    const paginationEl = $('#postsPagination');
 
-    const render = (items) => {
-      listEl.innerHTML = items.length
-        ? items.map((p) => {
+    let currentPage = 1;
+    let currentItems = posts;
+
+    const renderPage = (items, page, readingMinutes = {}) => {
+      const total = items.length;
+      const totalPages = Math.ceil(total / POSTS_PER_PAGE);
+      const start = (page - 1) * POSTS_PER_PAGE;
+      const slice = items.slice(start, start + POSTS_PER_PAGE);
+
+      listEl.innerHTML = total
+        ? slice.map((p, idx) => {
             const dateStr = formatPostDate(p.date);
             const tags = Array.isArray(p.tags) ? p.tags : [];
+            const mins = readingMinutes[p.id] || 1;
+            const isLast = idx === slice.length - 1;
+
+            const href = `#/posts/${encodeURIComponent(p.id)}`;
 
             return `
-              <article class="card post-card post-card--noimg">
-                <a class="post-card-link" href="#/posts/${encodeURIComponent(p.id)}" aria-label="${p.title || ''}"></a>
+              <article class="post-flat-item${isLast ? ' post-flat-item--last' : ''}${p.image ? ' post-flat-item--hasimg' : ''}"
+                       onclick="location.href='${href}'"
+                       role="link"
+                       tabindex="0"
+                       onkeydown="if(event.key==='Enter')location.href='${href}'"
+                       aria-label="${p.title || ''}">
 
-                <div class="post-card-body">
+                <div class="post-flat-inner">
+                  <div class="post-flat-content">
+                    <a class="post-flat-link" href="${href}" tabindex="-1" aria-hidden="true">
+                      ${p.title ? `<h2 class="post-flat-title">${p.title}</h2>` : ''}
+                    </a>
 
-                  ${dateStr ? `<div class="post-card-kicker">${dateStr}</div>` : ''}
+                    ${p.abstract ? `<p class="post-flat-abstract">${p.abstract}</p>` : ''}
 
-                  ${p.title ? `<h2 class="post-card-title"><span class="post-card-chevron" aria-hidden="true">›</span>${p.title}</h2>` : ''}
+                    ${tags.length ? `
+                      <div class="post-flat-tags">
+                        <span class="post-flat-tags-label">${tagsLabel}</span>
+                        ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                      </div>
+                    ` : ''}
 
-                  ${p.abstract ? `<p class="post-card-abstract">${p.abstract}</p>` : ''}
+                    <div class="post-flat-meta">
+                      ${dateStr ? `<span class="post-flat-date">
+                        <svg class="post-flat-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                          <line x1="1" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.4"/>
+                          <line x1="5" y1="1" x2="5" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                          <line x1="11" y1="1" x2="11" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                        ${dateStr}
+                      </span>` : ''}
+                      <span class="post-flat-readtime">
+                        <svg class="post-flat-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+                          <line x1="8" y1="5" x2="8" y2="8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                          <line x1="8" y1="8.5" x2="10.5" y2="10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                        ${mins} ${minReadLabel}
+                      </span>
+                    </div>
+                  </div>
 
-                  ${tags.length ? `
-                    <div class="tags post-tags">
-                      ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                  ${p.image ? `
+                    <div class="post-flat-thumb">
+                      <img src="${p.image}" alt="${p.title || ''}" loading="lazy" />
                     </div>
                   ` : ''}
-
                 </div>
               </article>
             `;
           }).join('')
         : `<p class="pub-meta">${emptyLabel}</p>`;
+
+      // Pagination
+      if (totalPages > 1) {
+        const prevDisabled = page <= 1;
+        const nextDisabled = page >= totalPages;
+
+        // Build page numbers: always show up to 5 pages around current
+        const pageNums = [];
+        for (let i = 1; i <= totalPages; i++) pageNums.push(i);
+
+        paginationEl.innerHTML = `
+          <nav class="pagination" aria-label="Paginazione post">
+            <button class="pagination-btn" data-page="${page - 1}" ${prevDisabled ? 'disabled aria-disabled="true"' : ''} aria-label="Pagina precedente">
+              &lsaquo;
+            </button>
+            ${pageNums.map(n => `
+              <button class="pagination-btn${n === page ? ' pagination-btn--active' : ''}" data-page="${n}" aria-label="Pagina ${n}" ${n === page ? 'aria-current="page"' : ''}>
+                ${n}
+              </button>
+            `).join('')}
+            <button class="pagination-btn" data-page="${page + 1}" ${nextDisabled ? 'disabled aria-disabled="true"' : ''} aria-label="Pagina successiva">
+              &rsaquo;
+            </button>
+          </nav>
+        `;
+
+        $$('.pagination-btn', paginationEl).forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            currentPage = parseInt(btn.dataset.page, 10);
+            renderPage(currentItems, currentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        });
+      } else {
+        paginationEl.innerHTML = '';
+      }
     };
 
     const applyFilter = () => {
       const sel = $('#tagSel').value;
-      const filtered = !sel ? posts : posts.filter(p => (p.tags || []).map(String).includes(sel));
-      render(filtered);
+      currentItems = !sel ? posts : posts.filter(p => (p.tags || []).map(String).includes(sel));
+      currentPage = 1;
+      renderPage(currentItems, currentPage, readingMinutes);
     };
 
     $('#tagSel').addEventListener('change', applyFilter);
 
-    render(posts);
+    // Fetch all markdown files in parallel to compute real reading times
+    const readingMinutes = {};
+    Promise.all(
+      posts.map(p => {
+        const mdPath = p.content || p.contentPath || '';
+        if (!mdPath || !/\.md$/i.test(mdPath)) return Promise.resolve({ id: p.id, mins: 1 });
+        return fetch(mdPath)
+          .then(r => r.text())
+          .then(text => {
+            const words = text.trim().split(/\s+/).filter(Boolean).length;
+            return { id: p.id, mins: Math.max(1, Math.round(words / 200)) };
+          })
+          .catch(() => ({ id: p.id, mins: 1 }));
+      })
+    ).then(results => {
+      results.forEach(r => { readingMinutes[r.id] = r.mins; });
+      renderPage(currentItems, currentPage, readingMinutes);
+    });
+
+    // Initial render with placeholder (1 min) until fetch completes
+    renderPage(posts, currentPage, readingMinutes);
   }
 
   async function renderPostDetail(postId) {

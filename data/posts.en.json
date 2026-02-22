@@ -3,20 +3,18 @@
     "id": "hello-world",
     "title": "Hello, World!",
     "date": "2026-02-01",
-    "abstract": "Welcome to my personal academic page. Here is a brief overview of what you will find here...",
+    "abstract": "Welcome to my personal academic page. Here is a brief overview of what you will find here.",
     "tags": ["welcome", "intro", "personal"],
-    "image": "assets/img/personal_cut.jpeg",
-    "imageSide": "left",
+    "image": "",
     "content": "posts/hello_world.en.md"
   },
   {
     "id": "sequences-london-2026",
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
-    "abstract": "My first talk abroad, at Sequences in London. New colleagues, new research ideas, and a return to one of my favourite cities...",
+    "abstract": "My first talk abroad, at Sequences in London. Research, new connections, and a return to London.",
     "tags": ["workshop", "talk", "sequences", "lossless-compression"],
     "image": "assets/img/[2026]_London.jpg",
-    "imageSide": "left",
     "content": "posts/Sequences2026.en.md"
   }
 ]
