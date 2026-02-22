@@ -121,7 +121,7 @@
      Router (hash-based)
   ========================================================== */
   const routes = {
-    '/accademico': renderAcademicHome,
+    '/home': renderAcademicHome,
     '/about': renderAbout,
     '/posts': renderPosts,
     '/research': renderResearch,
@@ -133,7 +133,7 @@
 
   function parseHash() {
     const h = location.hash.replace(/^#/, '');
-    return h || '/accademico';
+    return h || '/home';
   }
 
   function updateActiveNavLinks() {
