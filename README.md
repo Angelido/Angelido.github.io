@@ -1,19 +1,56 @@
 # Angelo Nardone — Personal Website
 
-This repository contains the source code of my personal website, built with **HTML, CSS, and vanilla JavaScript**.
+> A lightweight, static personal website built with **HTML**, **CSS**, and **vanilla JavaScript** — designed to present my academic profile, research, and writing in one place.
 
-The site is designed as a lightweight, static, single-page application and serves as a central place to present my **academic profile, research interests, publications, posts, and background**.
+<a href="https://angelido.github.io/" target="_blank">🔗 Live website → angelido.github.io</a>
 
-🔗 **Live website**:  
-https://angelido.github.io/
+## 👤 About
+
+This site serves as my digital home base: a single-page application that brings together my **academic profile**, **research interests**, **publications**, **posts**, and personal background.
+
+The design philosophy is *minimalism with purpose* — fast to load, easy to navigate, and focused entirely on content.
+
+## 🛠️ Built With
+
+- **HTML5** — semantic, accessible markup  
+- **CSS3** — custom styling, no frameworks  
+- **Vanilla JavaScript** — lightweight interactivity, zero dependencies  
+
+## 📁 Project Structure
+
+```
+/
+├── index.html              # Main entry point
+├── style.css               # Stylesheet
+├── script.js               # JavaScript logic
+│
+├── data/                   # 📊 JSON files with site content
+│   ├── publications.json   #    Research publications
+│   ├── projects.json       #    Academic projects & interests
+│   └── ...
+│
+├── i18n/                   # 🌐 Internationalization & section labels
+│   ├── ui.en.json             #    English strings (titles, headings, UI)
+│   └── ui.it.json             #    Italian strings (titles, headings, UI)
+│
+├── posts/                  # ✍️ Blog & writing
+│   ├── post-title.md       #    Markdown files, one per post
+│   └── ...
+│
+└── assets/                 # 🖼️ Images, documents, CV, etc.
+```
 
 ## 🚀 Deployment
 
-The website is deployed using **GitHub Pages** and automatically updated on every push to the `main` branch.
+The site is hosted on **GitHub Pages** and automatically re-deployed on every push to `main`.
+
+```
+main branch → GitHub Pages → angelido.github.io
+```
 
 ## 📄 License
 
-This project is intended for personal and academic use.  
-Feel free to explore the code for inspiration, but please do not reuse content (texts, CV, publications) without permission.
+This project is intended for **personal and academic use**.  
+Feel free to explore the code for inspiration, but please do **not** reuse content (texts, CV, publications) without permission.
 
 © Angelo Nardone
