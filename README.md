@@ -2,12 +2,11 @@
 
 > A lightweight, static personal website built with **HTML**, **CSS**, and **vanilla JavaScript** — designed to present my academic profile, research, and writing in one place.
 
-<p align="center">
-  <strong>🌐 Live Website</strong><br>
-  <a href="https://angelido.github.io/" target="_blank" rel="noopener">
-    angelido.github.io ↗
-  </a>
-</p>
+### 🌐 Live Website
+
+<a href="https://angelido.github.io/" target="_blank" rel="noopener">
+  🔗 angelido.github.io
+</a>
 
 ## 👤 About
 
