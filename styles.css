@@ -2067,3 +2067,216 @@ html[data-theme="light"] .posts-filter-select option{
   margin-top: 0;
 }
 
+/* =========================================================
+   22) MARKDOWN ENHANCED: code, math, blockquote, tables
+========================================================= */
+
+/* ── Blockquote ──────────────────────────────────────── */
+.markdown-body blockquote,
+.post-page-body blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 1.4rem 0;
+  padding: 0.5rem 1rem;
+  color: var(--muted);
+  font-style: italic;
+  background: rgba(0,0,0,0.03);
+  border-radius: 0 6px 6px 0;
+}
+
+html[data-theme="dark"] .markdown-body blockquote,
+html[data-theme="dark"] .post-page-body blockquote {
+  background: rgba(255,255,255,0.04);
+}
+
+/* ── Tabelle ─────────────────────────────────────────── */
+.markdown-body table,
+.post-page-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.4rem 0;
+  font-size: 0.92rem;
+}
+
+.markdown-body th,
+.markdown-body td,
+.post-page-body th,
+.post-page-body td {
+  border: 1px solid rgba(0,0,0,0.12);
+  padding: 0.5rem 0.85rem;
+  text-align: left;
+}
+
+html[data-theme="dark"] .markdown-body th,
+html[data-theme="dark"] .markdown-body td,
+html[data-theme="dark"] .post-page-body th,
+html[data-theme="dark"] .post-page-body td {
+  border-color: rgba(255,255,255,0.12);
+}
+
+.markdown-body th,
+.post-page-body th {
+  background: rgba(0,0,0,0.04);
+  font-weight: 600;
+}
+
+html[data-theme="dark"] .markdown-body th,
+html[data-theme="dark"] .post-page-body th {
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── Blocchi di codice (highlight.js) ───────────────── */
+/* ── Code block wrapper ──────────────────────────────── */
+.code-block {
+  margin: 1.4rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.12);
+  font-size: 0.85rem;
+}
+
+html[data-theme="dark"] .code-block {
+  border-color: rgba(255,255,255,0.14);
+}
+
+/* Header: linguaggio + bottone copia */
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.9rem;
+  background: #e8eaed;
+  border-bottom: 1px solid rgba(0,0,0,0.10);
+  min-height: 2.2rem;
+}
+
+html[data-theme="dark"] .code-block-header {
+  background: #2d333b;
+  border-bottom-color: rgba(255,255,255,0.10);
+}
+
+.code-block-lang {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #555;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+html[data-theme="dark"] .code-block-lang {
+  color: #8b949e;
+}
+
+/* Bottone copia */
+.code-block-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.20);
+  border-radius: 5px;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+  color: #555;
+  font-size: 0.75rem;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1;
+}
+
+html[data-theme="dark"] .code-block-copy {
+  border-color: rgba(255,255,255,0.22);
+  color: #8b949e;
+}
+
+.code-block-copy:hover {
+  background: rgba(0,0,0,0.07);
+  color: #111;
+  border-color: rgba(0,0,0,0.35);
+}
+
+html[data-theme="dark"] .code-block-copy:hover {
+  background: rgba(255,255,255,0.08);
+  color: #cdd9e5;
+  border-color: rgba(255,255,255,0.38);
+}
+
+.code-block-copy.copied {
+  color: #1a7f37;
+  border-color: #1a7f37;
+}
+
+html[data-theme="dark"] .code-block-copy.copied {
+  color: #3fb950;
+  border-color: #3fb950;
+}
+
+.copy-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.copy-icon--check       { display: none; }
+.code-block-copy.copied .copy-icon--default { display: none; }
+.code-block-copy.copied .copy-icon--check   { display: block; }
+.code-block-copy.copied .copy-label         { display: none; }
+
+/* <pre> dentro il wrapper: sfondo contrastato rispetto al sito */
+.code-block pre {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  overflow-x: auto;
+  background: #f6f8fa !important;
+}
+
+html[data-theme="dark"] .code-block pre {
+  background: #161b22 !important;
+}
+
+/* Codice inline (backtick singolo) */
+.markdown-body code:not(pre code),
+.post-page-body code:not(pre code) {
+  background: rgba(0,0,0,0.06);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: monospace;
+}
+
+html[data-theme="dark"] .markdown-body code:not(pre code),
+html[data-theme="dark"] .post-page-body code:not(pre code) {
+  background: rgba(255,255,255,0.10);
+}
+
+/* Codice inline (backtick singolo) */
+.markdown-body code:not(pre code),
+.post-page-body code:not(pre code) {
+  background: rgba(0,0,0,0.06);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+html[data-theme="dark"] .markdown-body code:not(pre code),
+html[data-theme="dark"] .post-page-body code:not(pre code) {
+  background: rgba(255,255,255,0.10);
+}
+
+/* ── Headings dentro un post ─────────────────────────── */
+.post-page-body h2,
+.post-page-body h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.post-page-body hr {
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.10);
+  margin: 2rem 0;
+}
+
+html[data-theme="dark"] .post-page-body hr {
+  border-top-color: rgba(255,255,255,0.12);
+}
