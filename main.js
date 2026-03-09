@@ -196,6 +196,78 @@
     return renderInlineMD(p);
   }
 
+  function renderMarkdown(md) {
+    if (window.marked && window.hljs && !window._markedConfigured) {
+      marked.setOptions({
+        highlight: (code, lang) => {
+          // txt e nessun linguaggio: nessuna colorazione
+          if (!lang || lang === 'txt' || lang === 'plaintext' || lang === 'text') {
+            return hljs.highlight(code, { language: 'plaintext' }).value;
+          }
+          if (hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          }
+          return hljs.highlightAuto(code).value;
+        },
+        langPrefix: 'hljs language-'
+      });
+      window._markedConfigured = true;
+    }
+
+    const rawHtml = window.marked ? marked.parse(md) : md;
+    let html = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+    html = html.replace(/<a\s+/g, '<a class="inline-link" ');
+
+    // Avvolgi ogni <pre><code> in .code-block con header + bottone copia
+    html = html.replace(
+      /<pre><code class="([^"]*)">([\s\S]*?)<\/code><\/pre>/g,
+      (match, cls, code) => {
+        const langMatch = cls.match(/language-(\w+)/);
+        const lang = langMatch ? langMatch[1] : '';
+        const isPlain = !lang || lang === 'plaintext' || lang === 'txt' || lang === 'text';
+        const langLabel = isPlain ? '' : lang;
+
+        return `
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-block-lang">${langLabel}</span>
+              <button class="code-block-copy" aria-label="Copia codice" onclick="
+                const pre = this.closest('.code-block').querySelector('code');
+                navigator.clipboard.writeText(pre.innerText).then(() => {
+                  this.classList.add('copied');
+                  setTimeout(() => this.classList.remove('copied'), 2000);
+                });
+              ">
+                <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
+                <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="copy-label">Copy</span>
+              </button>
+            </div>
+            <pre><code class="${cls}">${code}</code></pre>
+          </div>
+        `;
+      }
+    );
+
+    return html;
+  }
+
+  function renderMath(container) {
+    if (!window.renderMathInElement) return;
+    renderMathInElement(container, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$',  right: '$',  display: false }
+      ],
+      throwOnError: false
+    });
+  }
+
   function formatMonthYearShort(ym) {
   if (!ym) return '';
   const [y, m] = String(ym).split('-').map(Number);
@@ -354,11 +426,7 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      const rawHtml = window.marked ? marked.parse(md) : md;
-      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
-
-      // Add site link styling to markdown links
-      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
+      bodyHtml = renderMarkdown(md);
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
         ? 'Impossibile caricare la pagina About me.'
@@ -372,6 +440,7 @@
         ${bodyHtml}
       </section>
     `;
+    renderMath($('.section.aboutme', app));
   }
 
   function formatPostDate(iso) {
@@ -594,9 +663,8 @@
 
     if (mdPath && /\.md$/i.test(mdPath)) {
       mdText = await fetch(mdPath).then(r => r.text());
-      const rawHtml = window.marked ? marked.parse(mdText) : mdText;
-      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
-      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
+      bodyHtml = renderMarkdown(mdText);
+
     } else {
       const paragraphs = splitParagraphs(String(p.content || ''));
       bodyHtml = paragraphs.map((pp) => `<p>${renderParagraphHTML(pp)}</p>`).join('');
@@ -668,6 +736,7 @@
 
       </section>
     `;
+    renderMath($('.post-page-body', app));
   }
 
   function renderResearch() {
@@ -1247,11 +1316,8 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      const rawHtml = window.marked ? marked.parse(md) : md;
-      bodyHtml = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
+      bodyHtml = renderMarkdown(md);
 
-      // Add site link styling to markdown links
-      bodyHtml = bodyHtml.replace(/<a\s+/g, '<a class="inline-link" ');
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
         ? 'Impossibile caricare la pagina privacy.'
@@ -1264,6 +1330,7 @@
         ${bodyHtml}
       </section>
     `;
+    renderMath($('.section.privacy-page', app));
   }
 
   function renderNotFound() {
