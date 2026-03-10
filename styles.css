@@ -2270,6 +2270,14 @@ html[data-theme="dark"] .code-block pre{
   background: #161b22 !important;
 }
 
+.code-block pre code{
+  color: #24292f;
+}
+
+html[data-theme="dark"] .code-block pre code{
+  color: #c9d1d9;
+}
+
 /* Slightly tighter text, more GitHub-like */
 .code-block pre code{
   font-size: .90rem;
@@ -2299,6 +2307,13 @@ html[data-theme="dark"] .post-page-body code:not(pre code){
   margin-bottom: 0.6rem;
 }
 
+.post-page-body h2,
+.post-page-body h3,
+.markdown-body h2,
+.markdown-body h3{
+  scroll-margin-top: 96px;
+}
+
 .post-page-body ol,
 .markdown-body ol{
   padding-left: 1.35rem;
@@ -2322,4 +2337,152 @@ html[data-theme="dark"] .post-page-body code:not(pre code){
 
 html[data-theme="dark"] .post-page-body hr {
   border-top-color: rgba(255,255,255,0.12);
+}
+
+/* =========================================================
+   References / bibliography styling
+========================================================= */
+
+/* Slightly improve ordered lists inside markdown */
+.post-page-body ol,
+.markdown-body ol{
+  padding-left: 1.35rem;
+}
+
+.post-page-body li + li,
+.markdown-body li + li{
+  margin-top: .5rem;
+}
+
+/* Treat the last h2 + ordered list as a bibliography section */
+.post-page-body h2:last-of-type,
+.markdown-body h2:last-of-type{
+  margin-top: 2.5rem;
+  padding-top: .15rem;
+}
+
+.post-page-body h2:last-of-type + ol,
+.markdown-body h2:last-of-type + ol{
+  margin-top: .9rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: refs;
+}
+
+.post-page-body h2:last-of-type + ol > li,
+.markdown-body h2:last-of-type + ol > li{
+  position: relative;
+  counter-increment: refs;
+  padding-left: 2.3rem;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.post-page-body h2:last-of-type + ol > li::before,
+.markdown-body h2:last-of-type + ol > li::before{
+  content: "[" counter(refs) "]";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* Links inside references */
+.post-page-body h2:last-of-type + ol a,
+.markdown-body h2:last-of-type + ol a{
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.post-page-body h2:last-of-type + ol a:hover,
+.markdown-body h2:last-of-type + ol a:hover{
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* =========================================================
+   Post TOC (desktop only, fixed in left free space)
+========================================================= */
+
+.post-shell{
+  position: relative;
+}
+
+.post-toc{
+  display: none;
+}
+
+@media (min-width: 1400px){
+  .post-toc{
+    display: block;
+    position: fixed;
+    top: 120px;
+    left: max(24px, calc((100vw - 85ch) / 2 - 260px));
+    width: 210px;
+
+    max-height: calc(100vh - 160px);
+    overflow: auto;
+
+    padding-right: .4rem;
+  }
+
+  .post-toc-nav{
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+
+.post-toc-link{
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: .28rem 0 .28rem .85rem;
+
+  border: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+
+  color: var(--muted);
+  text-decoration: none;
+  text-align: left;
+  font: inherit;
+  font-size: .9rem;
+  line-height: 1.35;
+  cursor: pointer;
+
+  transition: color .15s ease;
+}
+
+  .post-toc-link--h3{
+    padding-left: 1.55rem;
+    font-size: .84rem;
+  }
+
+  .post-toc-link::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .38rem;
+    bottom: .38rem;
+    width: 2px;
+    border-radius: 999px;
+    background: transparent;
+    transition: background .15s ease;
+  }
+
+  .post-toc-link:hover{
+    color: var(--text);
+  }
+
+  .post-toc-link.active{
+    color: var(--brand);
+    font-weight: 600;
+  }
+
+  .post-toc-link.active::before{
+    background: var(--brand);
+  }
 }
