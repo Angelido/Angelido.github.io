@@ -410,8 +410,33 @@ html[data-theme="light"] .btn-outline:hover{
 ========================================================= */
 
 /* Markdown content styling */
-.markdown-body figure{
-  margin: 1.2rem 0;
+.markdown-body figure,
+.post-page-body figure{
+  margin: 1.8rem 0;
+  text-align: center;
+}
+
+.markdown-body figure img,
+.post-page-body figure img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .markdown-body figure img,
+html[data-theme="dark"] .post-page-body figure img{
+  border-color: rgba(255,255,255,.14);
+}
+
+.markdown-body figcaption,
+.post-page-body figcaption{
+  margin-top: .6rem;
+  font-size: .9rem;
+  color: var(--muted);
+  text-align: center;
 }
 
 .markdown-body figure img{
@@ -2104,7 +2129,8 @@ html[data-theme="dark"] .post-page-img{
 }
 
 .post-page-body p{
-  margin: 0 0 1rem;
+  margin: 0 0 1.05rem;
+  text-wrap: pretty;
 }
 
 /* Remove trailing visual gap at the end of markdown/post content */
@@ -2150,6 +2176,13 @@ html[data-theme="light"] .posts-filter-select option{
 /* =========================================================
    22) MARKDOWN ENHANCED: code, math, blockquote, tables
 ========================================================= */
+
+.post-page-body > p:first-of-type{
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 1.3rem;
+}
 
 /* ── Blockquote ──────────────────────────────────────── */
 .markdown-body blockquote,
@@ -2374,6 +2407,29 @@ html[data-theme="dark"] .post-page-body code:not(pre code){
   scroll-margin-top: 96px;
 }
 
+/* =========================================================
+   Heading anchors
+========================================================= */
+
+.heading-anchor{
+  margin-left: .4rem;
+  opacity: 0;
+  font-size: .8em;
+  text-decoration: none;
+  color: var(--muted);
+  transition: opacity .15s ease;
+}
+
+.post-page-body h2:hover .heading-anchor,
+.post-page-body h3:hover .heading-anchor{
+  opacity: .6;
+}
+
+.heading-anchor:hover{
+  color: var(--brand);
+  opacity: 1;
+}
+
 .post-page-body ol,
 .markdown-body ol{
   padding-left: 1.35rem;
@@ -2397,6 +2453,42 @@ html[data-theme="dark"] .post-page-body code:not(pre code){
 
 html[data-theme="dark"] .post-page-body hr {
   border-top-color: rgba(255,255,255,0.12);
+}
+
+/* =========================================================
+   Markdown Callouts (notes, warnings, ideas)
+========================================================= */
+
+.callout{
+  margin: 1.5rem 0;
+  padding: .9rem 1rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--brand);
+  background: rgba(0,0,0,.03);
+  font-size: .95rem;
+}
+
+html[data-theme="dark"] .callout{
+  background: rgba(255,255,255,.05);
+}
+
+.callout-title{
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+
+/* Variants */
+
+.callout.note{
+  border-left-color: var(--brand);
+}
+
+.callout.warning{
+  border-left-color: #e5533d;
+}
+
+.callout.idea{
+  border-left-color: var(--accent);
 }
 
 /* =========================================================
