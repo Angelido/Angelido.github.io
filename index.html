@@ -209,17 +209,16 @@
   <!-- Markdown parser + sanitization -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js"></script>
-  <!-- Syntax highlighting (Highlight.js) -->
-  <link rel="stylesheet" id="hljs-theme-light"
-    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-  <link rel="stylesheet" id="hljs-theme-dark"
-    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css"
-    disabled />
   <!-- KaTeX for math rendering -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+ <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1.29.2';
+
+    window.shikiCodeToHtml = codeToHtml;
+  </script> 
 
   <!-- Main script -->
   <script src="main.js" defer></script>
