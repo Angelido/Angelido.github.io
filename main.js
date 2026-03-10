@@ -988,7 +988,7 @@
                   ? `<ul class="research-list">
                     ${talks.map((t) => {
                       const labels = state.lang === 'it'
-                        ? { event: 'Evento', poster: 'Locandina', talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' }
+                        ? { event: 'Evento', poster: 'Locandina', talk: 'Talk', subtitle: 'Sottotitolo', roleTypeSep: ' • ' }
                         : { event: 'Event',  poster: 'Poster',    talk: 'Talk', subtitle: 'Subtitle', roleTypeSep: ' • ' };
 
                       const locationLine = [t.city, t.country].filter(Boolean).join(', ');
@@ -1056,7 +1056,7 @@
                 ? `<ul class="research-list">
                     ${projects.map((p) => {
                       const labels = state.lang === 'it'
-                        ? { desc: 'Description', repo: 'Code Repository', topics: 'Topics', langs: 'Languages' }
+                        ? { desc: 'Descrizione', repo: 'Repository', topics: 'Temi', langs: 'Linguaggi' }
                         : { desc: 'Description', repo: 'Code Repository', topics: 'Topics', langs: 'Languages' };
 
                       const topics = Array.isArray(p.topics) ? p.topics : [];
@@ -1184,7 +1184,7 @@
                   ${typeLine ? `<div class="pub-meta">${typeLine}</div>` : ''}
 
                   <!-- 5) Work title -->
-                  ${p.title ? `<div style="margin-top:.45rem;"><strong>Title:</strong> ${p.title}</div>` : ''}
+                  ${p.title ? `<div style="margin-top:.45rem;"><strong>${state.lang === 'it' ? 'Titolo' : 'Title'}:</strong> ${p.title}</div>` : ''}
 
                   <!-- 6) Authors (subito sotto il titolo) -->
                   ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
@@ -1192,7 +1192,7 @@
                   <!-- 7) Description -->
                   ${p.desc ? `
                     <div class="pub-meta" style="margin-top:.25rem;">
-                      <strong>Description:</strong> ${p.desc}
+                      <strong>${state.lang === 'it' ? 'Descrizione' : 'Description'}:</strong> ${p.desc}
                     </div>
                   ` : ''}
 

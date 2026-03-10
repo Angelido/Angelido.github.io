@@ -597,6 +597,51 @@ html[data-theme="dark"] .footer-icon--mono{
   display: none;
 }
 
+@media (max-width: 520px){
+  .site-footer{
+    padding: .5rem 0;
+    font-size: .76rem;
+  }
+
+  .footer-content{
+    justify-content: center;
+  }
+
+  .footer-inline{
+    width: auto;
+    max-width: 100%;
+    gap: .45rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .footer-icons{
+    gap: .4rem;
+  }
+
+  .footer-icon--mono{
+    width: 24px;
+    height: 24px;
+    -webkit-mask-size: 16px 16px;
+    mask-size: 16px 16px;
+  }
+
+  .footer-sep{
+    opacity: .28;
+  }
+
+  .footer-text,
+  .footer-link{
+    font-size: .76rem;
+  }
+
+  #year{
+    margin-right: .25rem;
+  }
+}
+
 /* --- Topbar (full-width control bar) --- */
 .topbar{
   position:sticky;
@@ -1704,6 +1749,21 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   margin-inline: auto;
 }
 
+@media (max-width: 520px){
+  .aboutme.markdown-body figure{
+    max-width: 240px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .aboutme.markdown-body figure img,
+  .aboutme.markdown-body > img{
+    max-width: 240px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
 /* =========================================================
    20) PAGE: POSTS
