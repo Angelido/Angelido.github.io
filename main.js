@@ -363,6 +363,121 @@
   return s;
 }
 
+  function slugifyHeading(text) {
+    return String(text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function setupPostTOC(container) {
+    if (!container) return;
+
+    const toc = container.querySelector('.post-toc');
+    const body = container.querySelector('.post-page-body');
+    if (!toc || !body) return;
+
+    const headings = Array.from(body.querySelectorAll('h2, h3'));
+    if (!headings.length) {
+      toc.remove();
+      return;
+    }
+
+    // Ensure headings have IDs
+    const usedIds = new Set();
+    headings.forEach((h, idx) => {
+      let base = h.id || slugifyHeading(h.textContent) || `section-${idx + 1}`;
+      let id = base;
+      let n = 2;
+      while (usedIds.has(id) || document.getElementById(id)) {
+        id = `${base}-${n++}`;
+      }
+      h.id = id;
+      usedIds.add(id);
+    });
+
+    const tocLabel = state.lang === 'it' ? 'Indice' : 'Index';
+
+    toc.innerHTML = `
+      <nav class="post-toc-nav" aria-label="${tocLabel}">
+        ${headings.map(h => `
+          <button
+            class="post-toc-link post-toc-link--${h.tagName.toLowerCase()}"
+            type="button"
+            data-target="${h.id}"
+          >
+            ${h.textContent}
+          </button>
+        `).join('')}
+      </nav>
+    `;
+
+    const links = Array.from(toc.querySelectorAll('.post-toc-link'));
+
+    let tocClickLock = false;
+
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        const id = link.dataset.target;
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        tocClickLock = true;
+        setActive(id);
+
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        // Compensate the fixed topbar after scrollIntoView
+        setTimeout(() => {
+          window.scrollBy({
+            top: -96,
+            behavior: 'instant'
+          });
+        }, 40);
+
+        // Release observer lock shortly after the jump
+        setTimeout(() => {
+          tocClickLock = false;
+        }, 450);
+      });
+    });
+
+    const setActive = (id) => {
+      links.forEach(link => {
+        link.classList.toggle('active', link.dataset.target === id);
+      });
+    };
+
+    // Smooth-ish active section tracking
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (tocClickLock) return;
+
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (visible.length) {
+          setActive(visible[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-90px 0px -70% 0px',
+        threshold: [0, 0.2, 0.6, 1]
+      }
+    );
+
+    headings.forEach(h => observer.observe(h));
+
+    // Fallback: mark first heading initially
+    setActive(headings[0].id);
+  }
 
   /* =========================================================
      UI components
@@ -746,6 +861,7 @@
     }
 
     const isMarkdown = !!(mdPath && /\.md$/i.test(mdPath));
+    const showTOC = !!p.showToc;
 
     // Minuti di lettura (stessa logica della lista, nessun fetch aggiuntivo)
     const words = mdText.trim().split(/\s+/).filter(Boolean).length;
@@ -753,7 +869,10 @@
     const minReadLabel = state.lang === 'it' ? 'min di lettura' : 'min read';
 
     app.innerHTML = `
-      <section class="section post-page">
+    <section class="section post-shell">
+      ${showTOC ? `<aside class="post-toc" aria-hidden="false"></aside>` : ``}
+
+      <div class="post-page">
 
         <div class="post-page-header">
           ${p.title ? `<h1 class="post-page-title">${p.title}</h1>` : ''}
@@ -809,9 +928,13 @@
           </a>
         </div>
 
-      </section>
+       </div>
+      </section>    
     `;
     renderMath($('.post-page-body', app));
+    if (showTOC) {
+      setupPostTOC(app);
+    }
   }
 
   function renderResearch() {
@@ -1431,8 +1554,9 @@
     }
 
     // Theme toggle button
-    $('#themeToggle')?.addEventListener('click', () => {
+    $('#themeToggle')?.addEventListener('click', async () => {
       setTheme(state.theme === 'dark' ? 'light' : 'dark');
+      onRouteChange();
     });
 
     // Load translations + data
