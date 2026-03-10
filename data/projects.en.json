@@ -1,12 +1,19 @@
 [
   {
-    "title": "Data Mining on U.S. Traffic Accidents",
-    "description": "Multivariate analysis on real-world traffic accident data, including feature engineering, clustering (K-means, hierarchical, DBSCAN), fatal event classification, and time-based analysis by city.",
-    "repo": "https://github.com/LoSpiri/DataMining",
-    "topics": ["Data mining", "Clustering", "Classification", "Time-based analysis"],
-    "languages": ["Python", "Scikit-learn"]
+    "title": "Bentley–McIlroy Compression Algorithm",
+    "description": "A C++17 implementation of the Bentley–McIlroy algorithm for lossless compression based on long repeated substrings.",
+    "repo": "https://github.com/Angelido/bentley_mcilroy",
+    "topics": ["Lossless compression", "Algorithms", "String Algorithms"],
+    "languages": ["C++", "CMake"]
   },
-    {
+  {
+    "title": "MiniHack Evolution",
+    "description": "Training evolutionary agents in NetHack environments via OpenAI Gym, using genetic algorithms to learn strategies in a 15×15 gridworld.",
+    "repo": "https://github.com/yumetsuro/minihack-evolution",
+    "topics": ["Evolutionary algorithms", "Genetic algorithms", "Reinforcement learning"],
+    "languages": ["Python", "OpenAI Gym"]
+  },
+  {
     "title": "Parallel and Distributed Implementations",
     "description": "Parallel and distributed implementations of well-known algorithms, including MergeSort, Softmax, and compression with Miniz.",
     "repo": "https://github.com/Angelido/SPM",
@@ -19,12 +26,5 @@
     "repo": "https://github.com/Angelido/HLT-Sentiment-Analysis",
     "topics": ["Sentiment analysis", "LLMs", "Topic modeling", "NLP"],
     "languages": ["Python"]
-  },
-  {
-    "title": "MiniHack Evolution",
-    "description": "Training evolutionary agents in NetHack environments via OpenAI Gym, using genetic algorithms to learn strategies in a 15×15 gridworld.",
-    "repo": "https://github.com/yumetsuro/minihack-evolution",
-    "topics": ["Evolutionary algorithms", "Genetic algorithms", "Reinforcement learning"],
-    "languages": ["Python", "OpenAI Gym"]
   }
 ]
