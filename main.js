@@ -39,6 +39,45 @@
     };
   }
 
+  async function highlightCodeWithShiki(code, lang) {
+    const shiki = window.shikiCodeToHtml;
+    if (!shiki) {
+      return `<pre><code>${String(code)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')}</code></pre>`;
+    }
+
+    const normalizedLang = !lang || ['txt', 'text', 'plaintext'].includes(lang)
+      ? 'text'
+      : lang;
+
+    const theme = state.theme === 'dark' ? 'github-dark' : 'github-light';
+
+    try {
+      return await shiki(String(code), {
+        lang: normalizedLang,
+        theme
+      });
+    } catch (err) {
+      return await shiki(String(code), {
+        lang: 'text',
+        theme
+      });
+    }
+  }
+
+  async function replaceAsync(str, regex, asyncFn) {
+    const promises = [];
+    str.replace(regex, (...args) => {
+      promises.push(asyncFn(...args));
+      return args[0];
+    });
+
+    const data = await Promise.all(promises);
+    return str.replace(regex, () => data.shift());
+  }
+
   /* =========================================================
      Theme (data-theme on <html>)
   ========================================================== */
@@ -196,23 +235,50 @@
     return renderInlineMD(p);
   }
 
-  function renderMarkdown(md) {
-    if (window.marked && window.hljs && !window._markedConfigured) {
-      marked.setOptions({
-        highlight: (code, lang) => {
-          // txt e nessun linguaggio: nessuna colorazione
-          if (!lang || lang === 'txt' || lang === 'plaintext' || lang === 'text') {
-            return hljs.highlight(code, { language: 'plaintext' }).value;
-          }
-          if (hljs.getLanguage(lang)) {
-            return hljs.highlight(code, { language: lang }).value;
-          }
-          return hljs.highlightAuto(code).value;
-        },
-        langPrefix: 'hljs language-'
-      });
-      window._markedConfigured = true;
-    }
+  async function renderMarkdown(md) {
+  
+    const codeBlocks = [];
+    const fenced = /```([a-zA-Z0-9_+-]*)\n([\s\S]*?)```/g;
+
+    md = await replaceAsync(md, fenced, async (_, lang, code) => {
+      const cleanLang = (lang || 'txt').trim().toLowerCase();
+      const shikiHtml = await highlightCodeWithShiki(code, cleanLang);
+
+      const wrapped = `
+  <div class="code-block">
+    <span class="code-block-lang-badge">${cleanLang || 'txt'}</span>
+
+    <button
+      class="code-block-copy"
+      type="button"
+      aria-label="Copy code"
+      onclick="
+        const codeEl = this.closest('.code-block').querySelector('code');
+        navigator.clipboard.writeText(codeEl.innerText).then(() => {
+          this.classList.add('copied');
+          setTimeout(() => this.classList.remove('copied'), 1800);
+        });
+      "
+    >
+      <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
+
+      <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <span class="copy-label">Copy</span>
+    </button>
+
+    ${shikiHtml}
+  </div>`.trim();
+
+      const token = `@@CODEBLOCK_${codeBlocks.length}@@`;
+      codeBlocks.push(wrapped);
+      return token;
+    });
 
     const rawHtml = window.marked ? marked.parse(md) : md;
     let html = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
@@ -222,37 +288,46 @@
     html = html.replace(
       /<pre><code class="([^"]*)">([\s\S]*?)<\/code><\/pre>/g,
       (match, cls, code) => {
-        const langMatch = cls.match(/language-(\w+)/);
-        const lang = langMatch ? langMatch[1] : '';
-        const isPlain = !lang || lang === 'plaintext' || lang === 'txt' || lang === 'text';
-        const langLabel = isPlain ? '' : lang;
+        const langMatch = cls.match(/language-([a-zA-Z0-9_+-]+)/);
+        const lang = langMatch ? langMatch[1] : 'txt';
 
         return `
           <div class="code-block">
-            <div class="code-block-header">
-              <span class="code-block-lang">${langLabel}</span>
-              <button class="code-block-copy" aria-label="Copia codice" onclick="
-                const pre = this.closest('.code-block').querySelector('code');
-                navigator.clipboard.writeText(pre.innerText).then(() => {
+            <span class="code-block-lang-badge">${lang}</span>
+
+            <button
+              class="code-block-copy"
+              type="button"
+              aria-label="Copy code"
+              onclick="
+                const codeEl = this.closest('.code-block').querySelector('code');
+                navigator.clipboard.writeText(codeEl.innerText).then(() => {
                   this.classList.add('copied');
-                  setTimeout(() => this.classList.remove('copied'), 2000);
+                  setTimeout(() => this.classList.remove('copied'), 1800);
                 });
-              ">
-                <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-                  <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
-                </svg>
-                <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="copy-label">Copy</span>
-              </button>
-            </div>
+              "
+            >
+              <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
+              </svg>
+
+              <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+              <span class="copy-label">Copy</span>
+            </button>
+
             <pre><code class="${cls}">${code}</code></pre>
           </div>
         `;
       }
     );
+
+    codeBlocks.forEach((block, i) => {
+      html = html.replace(`@@CODEBLOCK_${i}@@`, block);
+    });
 
     return html;
   }
@@ -426,7 +501,7 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      bodyHtml = renderMarkdown(md);
+      bodyHtml = await renderMarkdown(md);
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
         ? 'Impossibile caricare la pagina About me.'
@@ -663,7 +738,7 @@
 
     if (mdPath && /\.md$/i.test(mdPath)) {
       mdText = await fetch(mdPath).then(r => r.text());
-      bodyHtml = renderMarkdown(mdText);
+      bodyHtml = await renderMarkdown(mdText);
 
     } else {
       const paragraphs = splitParagraphs(String(p.content || ''));
@@ -1316,7 +1391,7 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      bodyHtml = renderMarkdown(md);
+      bodyHtml = await renderMarkdown(md);
 
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
