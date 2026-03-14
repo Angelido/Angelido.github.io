@@ -235,8 +235,7 @@
     return renderInlineMD(p);
   }
 
-  async function renderMarkdown(md) {
-  
+  async function renderMarkdownFragment(md) {
     const codeBlocks = [];
     const fenced = /```([a-zA-Z0-9_+-]*)\n([\s\S]*?)```/g;
 
@@ -284,7 +283,6 @@
     let html = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
     html = html.replace(/<a\s+/g, '<a class="inline-link" ');
 
-    // Avvolgi ogni <pre><code> in .code-block con header + bottone copia
     html = html.replace(
       /<pre><code class="([^"]*)">([\s\S]*?)<\/code><\/pre>/g,
       (match, cls, code) => {
@@ -292,41 +290,71 @@
         const lang = langMatch ? langMatch[1] : 'txt';
 
         return `
-          <div class="code-block">
-            <span class="code-block-lang-badge">${lang}</span>
+  <div class="code-block">
+    <span class="code-block-lang-badge">${lang}</span>
 
-            <button
-              class="code-block-copy"
-              type="button"
-              aria-label="Copy code"
-              onclick="
-                const codeEl = this.closest('.code-block').querySelector('code');
-                navigator.clipboard.writeText(codeEl.innerText).then(() => {
-                  this.classList.add('copied');
-                  setTimeout(() => this.classList.remove('copied'), 1800);
-                });
-              "
-            >
-              <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-                <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
-              </svg>
+    <button
+      class="code-block-copy"
+      type="button"
+      aria-label="Copy code"
+      onclick="
+        const codeEl = this.closest('.code-block').querySelector('code');
+        navigator.clipboard.writeText(codeEl.innerText).then(() => {
+          this.classList.add('copied');
+          setTimeout(() => this.classList.remove('copied'), 1800);
+        });
+      "
+    >
+      <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
 
-              <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+      <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
 
-              <span class="copy-label">Copy</span>
-            </button>
+      <span class="copy-label">Copy</span>
+    </button>
 
-            <pre><code class="${cls}">${code}</code></pre>
-          </div>
+    <pre><code class="${cls}">${code}</code></pre>
+  </div>
         `;
       }
     );
 
     codeBlocks.forEach((block, i) => {
       html = html.replace(`@@CODEBLOCK_${i}@@`, block);
+    });
+
+    return html;
+  }
+
+  async function renderMarkdown(md) {
+    const exampleBlocks = [];
+
+    md = await replaceAsync(md, /:::example\s*\n([\s\S]*?)\n:::/g, async (_, content) => {
+      const title = state.lang === 'it' ? 'Esempio' : 'Example';
+      const innerHtml = await renderMarkdownFragment(content.trim());
+
+      const wrapped = `
+  <div class="example-box">
+    <div class="example-box-title">${title}</div>
+    <div class="example-box-body">
+      ${innerHtml}
+    </div>
+  </div>
+      `.trim();
+
+      const token = `@@EXAMPLEBLOCK_${exampleBlocks.length}@@`;
+      exampleBlocks.push(wrapped);
+      return token;
+    });
+
+    let html = await renderMarkdownFragment(md);
+
+    exampleBlocks.forEach((block, i) => {
+      html = html.replace(`@@EXAMPLEBLOCK_${i}@@`, block);
     });
 
     return html;

@@ -2461,6 +2461,31 @@ html[data-theme="dark"] .post-page-body hr {
 }
 
 /* =========================================================
+   Equation tags / numbers (KaTeX)
+========================================================= */
+
+.katex-display .tag{
+  background: transparent !important;
+  color: var(--text) !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 1em !important;
+}
+
+.katex-display .tag *{
+  background: transparent !important;
+  color: var(--text) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.katex-display{
+  color: var(--text);
+}
+
+/* =========================================================
    Markdown Callouts (notes, warnings, ideas)
 ========================================================= */
 
@@ -2494,6 +2519,78 @@ html[data-theme="dark"] .callout{
 
 .callout.idea{
   border-left-color: var(--accent);
+}
+
+/* =========================================================
+   Example boxes
+========================================================= */
+
+.example-box{
+  margin: 1.5rem 0;
+  border: 1px solid rgba(0,0,0,.10);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  background: rgba(0,0,0,.025);
+  overflow: hidden;
+}
+
+html[data-theme="dark"] .example-box{
+  border-color: rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+}
+
+.example-box-title{
+  padding: .7rem 1rem;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(0,0,0,.04);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+html[data-theme="dark"] .example-box-title{
+  background: rgba(255,255,255,.05);
+  border-bottom-color: rgba(255,255,255,.08);
+}
+
+.example-box-body{
+  padding: .95rem 1rem 1rem;
+}
+
+.example-box-body .katex-display{
+  display: block !important;
+  margin: 1rem auto !important;
+}
+
+.example-box-body .katex-display > .katex{
+  display: block !important;
+  text-align: center !important;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.example-box-body p:has(> .katex-display){
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.example-box-body p:has(> .katex-display) .katex-display{
+  margin: 0 !important;
+}
+
+.example-box-body .katex-display .tag{
+  background: transparent !important;
+  color: var(--text) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.example-box-body > *:first-child{
+  margin-top: 0;
+}
+
+.example-box-body > *:last-child{
+  margin-bottom: 0;
 }
 
 /* =========================================================
