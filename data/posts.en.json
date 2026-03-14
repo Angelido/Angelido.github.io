@@ -4,17 +4,29 @@
     "title": "Hello, World! 👋",
     "date": "2026-02-01",
     "abstract": "Welcome to my personal academic page. Here is a brief overview of what you will find here.",
-    "tags": ["welcome", "intro", "personal"],
+    "tags": ["welcome"],
     "image": "",
-    "content": "posts/hello_world.en.md"
+    "content": "posts/hello_world.en.md",
+    "showToc": false
   },
   {
     "id": "sequences-london-2026",
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
     "abstract": "My first talk abroad, at Sequences in London. Research, new connections, and a return to London.",
-    "tags": ["workshop", "talk", "sequences", "lossless-compression"],
+    "tags": ["talk", "conference", "lossless-compression"],
     "image": "assets/img/[2026]_London.jpg",
-    "content": "posts/Sequences2026.en.md"
+    "content": "posts/Sequences2026.en.md",
+    "showToc": false
+  },
+  {
+    "id": "bentley_mcilroy",
+    "title": "The Bentley–McIlroy Compression Algorithm",
+    "date": "2026-03-08",
+    "abstract": "A brief overview of the Bentley–McIlroy algorithm for lossless compression based on long repeated substrings.",
+    "tags": ["lossless-compression", "algorithm", "github"],
+    "image": "",
+    "content": "posts/bentley_mcilroy.en.md",
+    "showToc": true
   }
 ]
