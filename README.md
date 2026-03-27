@@ -52,9 +52,8 @@ The site is hosted on **GitHub Pages** and automatically re-deployed on every pu
 main branch → GitHub Pages → angelido.github.io
 ```
 
-## 📄 License
+## License
 
-This project is intended for **personal and academic use**.  
-Feel free to explore the code for inspiration, but please do **not** reuse content (texts, CV, publications) without permission.
+The source code is licensed under the MIT License.
 
-© Angelo Nardone
+All personal content (including CV, texts, and publications) is © Angelo Nardone and may not be reused without permission.
