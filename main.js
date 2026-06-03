@@ -40,6 +40,9 @@
   }
 
   async function highlightCodeWithShiki(code, lang) {
+    if (!window.shikiCodeToHtml && window._shikiReady) {
+      await window._shikiReady;
+    }
     const shiki = window.shikiCodeToHtml;
     if (!shiki) {
       return `<pre><code>${String(code)

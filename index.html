@@ -17,9 +17,18 @@
        Icons / social preview
   ========================== -->
   <link rel="icon" href="assets/svg/favicon.ico" />
+  <link rel="canonical" href="https://angelido.github.io/" />
+
   <meta property="og:title" content="Angelo Nardone — Sito personale" />
   <meta property="og:description" content="Profilo accademico, pubblicazioni e interessi personali." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://angelido.github.io/" />
+  <meta property="og:image" content="https://angelido.github.io/assets/img/personal_cut.jpeg" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Angelo Nardone — Sito personale" />
+  <meta name="twitter:description" content="Profilo accademico, pubblicazioni e interessi personali." />
+  <meta name="twitter:image" content="https://angelido.github.io/assets/img/personal_cut.jpeg" />
 
   <!-- =========================
        Styles
@@ -218,10 +227,11 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
  <script type="module">
-    import { codeToHtml } from 'https://esm.sh/shiki@1.29.2';
-
-    window.shikiCodeToHtml = codeToHtml;
-  </script> 
+    window._shikiReady = (async () => {
+      const { codeToHtml } = await import('https://esm.sh/shiki@1.29.2');
+      window.shikiCodeToHtml = codeToHtml;
+    })();
+  </script>
 
   <!-- Main script -->
   <script src="main.js" defer></script>
