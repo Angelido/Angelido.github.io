@@ -47,17 +47,17 @@ html[data-theme="light"] {
   --card-border: rgba(0,0,0,.06);
 }
 
-/* DARK THEME – Minimal Gemini */
+/* DARK THEME – Warm charcoal */
 html[data-theme="dark"] {
-  --bg:         #26272b;
-  --panel:      #32333a;
-  --text:       #f5f5f5;
-  --muted:      #a0a0a5;
-  --brand:      #60a5fa;
-  --accent:     #4d9ef7;
-  --card-border: rgba(255,255,255,.12);
-  --card-bg:    #32333a;
-  --card-shadow: 0 12px 32px rgba(0,0,0,.35);
+  --bg:          #1b1a18;
+  --panel:       #252320;
+  --text:        #f0ebe5;
+  --muted:       #9e9890;
+  --brand:       #c9733a;
+  --accent:      #bb6530;
+  --card-border: rgba(255,255,255,.09);
+  --card-bg:     #252320;
+  --card-shadow: 0 12px 32px rgba(0,0,0,.45);
 }
 
 /* ===== Tags: readable in LIGHT mode ===== */
@@ -95,7 +95,7 @@ html{
   scrollbar-color: rgba(0,0,0,.35) rgba(0,0,0,.06); /* thumb / track */
 }
 html[data-theme="dark"]{
-  scrollbar-color: rgba(255,255,255,.28) rgba(255,255,255,.06);
+  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.05);
 }
 
 /* WebKit (Chrome/Edge/Safari) */
@@ -119,8 +119,8 @@ html[data-theme="dark"]::-webkit-scrollbar-track{
   background: rgba(255,255,255,.06);
 }
 html[data-theme="dark"]::-webkit-scrollbar-thumb{
-  background: rgba(255,255,255,.22);
-  border: 3px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.20);
+  border: 3px solid rgba(255,255,255,.05);
 }
 html[data-theme="dark"]::-webkit-scrollbar-thumb:hover{
   background: rgba(255,255,255,.32);
