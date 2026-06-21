@@ -1675,8 +1675,7 @@ html[data-theme="dark"] .home-latest-card:hover {
 }
 
 .expedu-panel-head h2{
-  margin: 0 0 1rem;
-  letter-spacing: .08em;
+  margin: 0;
 }
 
 .expedu-count{
