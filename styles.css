@@ -1658,12 +1658,12 @@ html[data-theme="dark"] .home-latest-card:hover {
 }
 
 .expedu-panel{
-  border-radius: calc(var(--radius) + 4px);
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(10px);
-  padding: 1.1rem 1.1rem .9rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
 }
 
 .expedu-panel-head{
