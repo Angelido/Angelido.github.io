@@ -244,17 +244,13 @@ html[data-theme="light"]
   padding: 0;
 }
 
-html[data-theme="dark"] .research-panel{
-  border-color: transparent;
-}
-
 /* Section divider headings — typographic anchors replacing card titles */
 .research-panel h2,
 .expedu-panel-head h2 {
   display: flex;
   align-items: center;
   gap: .6rem;
-  margin: 0 0 1rem;
+  margin: 0;
   font-size: .8rem;
   font-weight: 600;
   letter-spacing: .08em;
@@ -262,12 +258,21 @@ html[data-theme="dark"] .research-panel{
   color: var(--muted);
 }
 
+.research-panel h2 {
+  margin: 0 0 1rem;
+}
+
 .research-panel h2::after,
 .expedu-panel-head h2::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--card-border);
+  background: rgba(0,0,0,.12);
+}
+
+html[data-theme="dark"] .research-panel h2::after,
+html[data-theme="dark"] .expedu-panel-head h2::after {
+  background: rgba(255,255,255,.18);
 }
 
 /* Hover state: underline + tiny lift (button feel) */
@@ -1674,10 +1679,6 @@ html[data-theme="dark"] .home-latest-card:hover {
   margin-bottom: .7rem;
 }
 
-.expedu-panel-head h2{
-  margin: 0;
-}
-
 .expedu-count{
   font-size: .85rem;
   font-weight: 700;
@@ -1685,6 +1686,13 @@ html[data-theme="dark"] .home-latest-card:hover {
   border: 1px solid var(--card-border);
   padding: .2rem .55rem;
   border-radius: 999px;
+}
+
+html[data-theme="light"] .expedu-count {
+  border-color: rgba(0,0,0,.14);
+}
+html[data-theme="dark"] .expedu-count {
+  border-color: rgba(255,255,255,.20);
 }
 
 .expedu-timeline{
@@ -1800,7 +1808,7 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
   text-align: center;
   color: var(--muted);
   opacity: .45;
-  margin: .8rem 0 0;
+  margin: .6rem 0 0;
   font-size: .8rem;
   letter-spacing: .2em;
 }
