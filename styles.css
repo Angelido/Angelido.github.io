@@ -248,6 +248,28 @@ html[data-theme="dark"] .research-panel{
   border-color: transparent;
 }
 
+/* Section divider headings — typographic anchors replacing card titles */
+.research-panel h2,
+.expedu-panel-head h2 {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 0 0 1rem;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.research-panel h2::after,
+.expedu-panel-head h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--card-border);
+}
+
 /* Hover state: underline + tiny lift (button feel) */
 html[data-theme="light"]
 .research-panel:not(.research-panel--projects)
@@ -1653,8 +1675,8 @@ html[data-theme="dark"] .home-latest-card:hover {
 }
 
 .expedu-panel-head h2{
-  margin: 0;
-  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+  letter-spacing: .08em;
 }
 
 .expedu-count{
@@ -1771,6 +1793,17 @@ html[data-theme="dark"] .expedu-timeline .tl-dot{
 
 .research-list li{
   margin: .55rem 0;
+}
+
+.research-list li:not(:last-child)::after {
+  content: '· · ·';
+  display: block;
+  text-align: center;
+  color: var(--muted);
+  opacity: .45;
+  margin: .8rem 0 0;
+  font-size: .8rem;
+  letter-spacing: .2em;
 }
 
 .research-list a{
