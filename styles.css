@@ -234,15 +234,6 @@ html[data-theme="light"]
   color: var(--brand);
 }
 
-/* Research panels: editorial — no card chrome */
-.research-panel{
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  backdrop-filter: none;
-  padding: 0;
-}
 
 /* Section divider headings — typographic anchors replacing card titles */
 .research-panel h2,
@@ -360,6 +351,16 @@ html[data-theme="light"] .btn-outline:hover{
   border-radius:var(--radius);
   padding:1rem;
   box-shadow:var(--shadow);
+}
+
+/* Research panels: editorial — no card chrome */
+.research-panel{
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
 }
 
 /* Text input */
