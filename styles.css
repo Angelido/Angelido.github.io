@@ -1697,6 +1697,11 @@ html[data-theme="dark"] .expedu-count {
   line-height: 1.6;
 }
 
+.expedu-timeline .tl-year:empty {
+  border: none;
+  padding: 0;
+}
+
 html[data-theme="dark"] .expedu-timeline .tl-year {
   border-color: rgba(255,255,255,.20);
 }
