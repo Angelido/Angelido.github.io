@@ -1381,7 +1381,7 @@
       const fromYear = String(x.from || '').slice(0, 4);
       const toYear   = x.to ? String(x.to).slice(0, 4) : ongoingLabel;
       const yearDisplay = fromYear
-        ? (fromYear === toYear ? fromYear : `${fromYear}<br>–<br>${toYear}`)
+        ? (fromYear === toYear ? fromYear : `${fromYear}–${toYear}`)
         : '';
 
       return `

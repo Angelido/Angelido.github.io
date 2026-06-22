@@ -231,6 +231,7 @@ img{
   flex: 1;
 }
 
+.expedu-panel-head h2::before,
 .expedu-panel-head h2::after {
   content: '';
   flex: 1;
@@ -238,6 +239,7 @@ img{
   background: rgba(0,0,0,.12);
 }
 
+html[data-theme="dark"] .expedu-panel-head h2::before,
 html[data-theme="dark"] .expedu-panel-head h2::after {
   background: rgba(255,255,255,.18);
 }
@@ -1659,7 +1661,7 @@ html[data-theme="dark"] .expedu-count {
 
 .expedu-timeline .tl-item{
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: auto 1fr;
   gap: 0 1rem;
   padding-left: 0;
   border-radius: 12px;
@@ -1668,11 +1670,19 @@ html[data-theme="dark"] .expedu-count {
 }
 
 .expedu-timeline .tl-year {
-  font-size: .78rem;
+  font-size: .72rem;
+  font-weight: 500;
   color: var(--muted);
-  padding-top: .18rem;
-  line-height: 1.4;
+  border: 1px solid rgba(0,0,0,.14);
+  border-radius: 999px;
+  padding: .12rem .45rem;
+  align-self: start;
   white-space: nowrap;
+  line-height: 1.6;
+}
+
+html[data-theme="dark"] .expedu-timeline .tl-year {
+  border-color: rgba(255,255,255,.20);
 }
 
 .expedu-timeline .tl-item:hover{
