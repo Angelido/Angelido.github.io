@@ -1377,71 +1377,76 @@
     const supervisorLabel = state.lang === 'it' ? 'Supervisore:' : 'Supervisor:';
     const opponentLabel = state.lang === 'it' ? 'Controrelatore:' : 'Opponent:';
 
-    const itemRow = (x) => `
+    const itemRow = (x) => {
+      const fromYear = String(x.from || '').slice(0, 4);
+      const toYear   = x.to ? String(x.to).slice(0, 4) : ongoingLabel;
+      const yearDisplay = fromYear
+        ? (fromYear === toYear ? fromYear : `${fromYear}<br>–<br>${toYear}`)
+        : '';
+
+      return `
       <li class="tl-item">
-        <span class="tl-dot" aria-hidden="true"></span>
+        <div class="tl-year">${yearDisplay}</div>
+        <div class="tl-body">
+          <h3>${x.title}</h3>
 
-        <h3>${x.title}</h3>
+          ${(x.company || x.institution)
+            ? `<div class="pub-meta">${x.company || x.institution}</div>`
+            : ''}
 
-        <!-- Institution / Company -->
-        ${(x.company || x.institution)
-          ? `<div class="pub-meta">${x.company || x.institution}</div>`
-          : ''}
+          ${x.city
+            ? `<div class="pub-meta">${x.city}</div>`
+            : ''}
 
-        <!-- City (riga separata) -->
-        ${x.city
-          ? `<div class="pub-meta">${x.city}</div>`
-          : ''}
+          ${x.finalGrade
+            ? `<div class="pub-meta"><strong>${x.finalGrade}</strong></div>`
+            : ''}
 
-        <div class="pub-meta">
-          ${formatMonthYearShort(x.from)} — ${x.to ? formatMonthYearShort(x.to) : ongoingLabel}
-          ${x.finalGrade ? ` • <strong>${x.finalGrade}</strong>` : ''}
-        </div>
-
-        ${x.topic ? `
-        <div class="edu-line">
-          <span class="edu-label">${state.lang === 'it' ? 'Tema:' : 'Topic:'}</span>
-          <span class="edu-value"><em>${x.topic}</em></span>
-        </div>
-      ` : ""}
-
-        ${x.description ? `
-          <div class="edu-description">
-            <span class="edu-label">${state.lang === 'it' ? 'Descrizione:' : 'Description:'}</span>
-            <span class="edu-desc-text">${renderInlineMD(x.description)}</span>
-          </div>
-        ` : ""}
-
-        ${x.thesis ? `
+          ${x.topic ? `
           <div class="edu-line">
-            <span class="edu-label">${thesisLabel}</span>
-            <span class="edu-value"><em>${x.thesis}</em></span>
+            <span class="edu-label">${state.lang === 'it' ? 'Tema:' : 'Topic:'}</span>
+            <span class="edu-value"><em>${x.topic}</em></span>
           </div>
-        ` : ""}
+          ` : ''}
 
-        ${x.supervisor ? `
-          <div class="edu-line">
-            <span class="edu-label">${supervisorLabel}</span>
-            <span class="edu-value">${renderInlineMD(x.supervisor)}</span>
+          ${x.description ? `
+            <div class="edu-description">
+              <span class="edu-label">${state.lang === 'it' ? 'Descrizione:' : 'Description:'}</span>
+              <span class="edu-desc-text">${renderInlineMD(x.description)}</span>
+            </div>
+          ` : ''}
 
-          </div>
-        ` : ""}
+          ${x.thesis ? `
+            <div class="edu-line">
+              <span class="edu-label">${thesisLabel}</span>
+              <span class="edu-value"><em>${x.thesis}</em></span>
+            </div>
+          ` : ''}
 
-        ${x.opponent ? `
-          <div class="edu-line">
-            <span class="edu-label">${opponentLabel}</span>
-            <span class="edu-value">${renderInlineMD(x.opponent)}</span>
-          </div>
-          ` : ""}
-      
+          ${x.supervisor ? `
+            <div class="edu-line">
+              <span class="edu-label">${supervisorLabel}</span>
+              <span class="edu-value">${renderInlineMD(x.supervisor)}</span>
+            </div>
+          ` : ''}
+
+          ${x.opponent ? `
+            <div class="edu-line">
+              <span class="edu-label">${opponentLabel}</span>
+              <span class="edu-value">${renderInlineMD(x.opponent)}</span>
+            </div>
+          ` : ''}
+
           ${x.specialization?.length ? `
             <div class="edu-spec">
               <span class="edu-label">${specLabel}</span>
-              <span class="edu-spec-text"><em>${x.specialization.join(" · ")}</em></span>
+              <span class="edu-spec-text"><em>${x.specialization.join(' · ')}</em></span>
             </div>
-          ` : ""}
+          ` : ''}
+        </div>
       </li>
     `;
+    };
     
     const intro = state.i18n?.experiencePage?.intro || '';
 
