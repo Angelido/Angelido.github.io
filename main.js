@@ -254,13 +254,6 @@
       class="code-block-copy"
       type="button"
       aria-label="Copy code"
-      onclick="
-        const codeEl = this.closest('.code-block').querySelector('code');
-        navigator.clipboard.writeText(codeEl.innerText).then(() => {
-          this.classList.add('copied');
-          setTimeout(() => this.classList.remove('copied'), 1800);
-        });
-      "
     >
       <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
@@ -300,13 +293,6 @@
       class="code-block-copy"
       type="button"
       aria-label="Copy code"
-      onclick="
-        const codeEl = this.closest('.code-block').querySelector('code');
-        navigator.clipboard.writeText(codeEl.innerText).then(() => {
-          this.classList.add('copied');
-          setTimeout(() => this.classList.remove('copied'), 1800);
-        });
-      "
     >
       <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
@@ -552,10 +538,6 @@
   /* =========================================================
      Views
   ========================================================== */
-// =========================================================
-// Sostituisci l'intera funzione renderAcademicHome() in main.js
-// =========================================================
-
   function renderAcademicHome() {
     const { profile } = state.data;
     const app = $('#app');
@@ -741,10 +723,8 @@
 
             return `
               <article class="post-flat-item${isLast ? ' post-flat-item--last' : ''}${p.image ? ' post-flat-item--hasimg' : ''}"
-                       onclick="location.href='${href}'"
                        role="link"
                        tabindex="0"
-                       onkeydown="if(event.key==='Enter')location.href='${href}'"
                        aria-label="${p.title || ''}">
 
                 <div class="post-flat-inner">
@@ -998,20 +978,14 @@
     app.innerHTML = `
       ${pageHeaderHTML(pageTitle, intro)}
 
-      <section class="section research-grid">
-        <!-- Publications (full width on desktop) -->
-        <article class="card research-panel research-panel--pubs">
-          <h2>${pubsTitle}</h2>
-
+      <section class="section">
+        <details class="research-section research-section--pubs" open>
+          <summary>${pubsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
           <div id="pubList" class="list"></div>
-        </article>
+        </details>
 
-        <!-- Left column: Talks + Topics -->
-        <div class="research-col-left">
-
-          <!-- Talks -->
-          <article class="card research-panel research-panel--talks">
-            <h2>${talksTitle}</h2>
+        <details class="research-section research-section--talks">
+          <summary>${talksTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
 
             <div id="talkList">
               ${
@@ -1045,17 +1019,17 @@
                           ${t.date ? `<div class="pub-meta">${t.date}</div>` : ''}
 
                           <!-- 5) Role + Type (non più insieme alla data) -->
-                          ${roleTypeLine ? `<div class="pub-meta" style="margin-top:.2rem;">${roleTypeLine}</div>` : ''}
+                          ${roleTypeLine ? `<div class="pub-meta mt-xs">${roleTypeLine}</div>` : ''}
 
                           <!-- 6) Talk title -->
-                          ${t.talkTitle ? `<div style="margin-top:.45rem;"><strong>${labels.talk}:</strong> ${t.talkTitle}</div>` : ''}
+                          ${t.talkTitle ? `<div class="mt-lg"><strong>${labels.talk}:</strong> ${t.talkTitle}</div>` : ''}
 
                           <!-- 7) Subtitle con label -->
                           ${t.subtitle ? `<div class="pub-meta"><strong>${labels.subtitle}:</strong> ${t.subtitle}</div>` : ''}
 
                           <!-- Links -->
                           ${(t.link || t.poster) ? `
-                            <div class="row" style="margin-top:.45rem;">
+                            <div class="row mt-lg">
                               ${t.link ? `<a class="btn btn-outline" href="${t.link}" target="_blank" rel="noopener">${labels.event}</a>` : ''}
                               ${t.poster ? `<a class="btn btn-outline" href="${t.poster}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
                             </div>
@@ -1067,20 +1041,17 @@
                   : `<p class="pub-meta">${talksEmpty}</p>`
               }
             </div>
-          </article>
+        </details>
 
-          <!-- Topics -->
-          <article class="card research-panel research-panel--topics">
-            <h2>${topicsTitle}</h2>
+        <details class="research-section research-section--topics">
+          <summary>${topicsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
             <div class="tags">
               ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
             </div>
-          </article>
-        </div>
+        </details>
 
-        <!-- Projects -->
-        <article class="card research-panel research-panel--projects">
-          <h2>${projectsTitle}</h2>
+        <details class="research-section research-section--projects">
+          <summary>${projectsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
           <div id="projectList">
             ${
               projects.length
@@ -1098,31 +1069,31 @@
                           <div><strong>${p.title || ''}</strong></div>
 
                           ${p.description ? `
-                            <div class="pub-meta" style="margin-top:.25rem;">
+                            <div class="pub-meta mt-sm">
                                 <strong>${labels.desc}:</strong> ${renderInlineMD(p.description)}
                             </div>
                           ` : ''}
 
                           ${p.repo ? `
-                            <div class="pub-meta" style="margin-top:.25rem;">
+                            <div class="pub-meta mt-sm">
                               <strong>${labels.repo}:</strong>
                               <a href="${p.repo}" target="_blank" rel="noopener">GitHub link</a>
                             </div>
                           ` : ''}
                           ${topics.length ? `
-                            <div class="pub-meta" style="margin-top:.35rem;">
+                            <div class="pub-meta mt-md">
                               <strong>${labels.topics}:</strong>
                             </div>
-                            <div class="tags" style="margin-top:.25rem;">
+                            <div class="tags mt-sm">
                               ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
                             </div>
                           ` : ''}
 
                           ${langs.length ? `
-                            <div class="pub-meta" style="margin-top:.45rem;">
+                            <div class="pub-meta mt-lg">
                               <strong>${labels.langs}:</strong>
                             </div>
-                            <div class="tags" style="margin-top:.25rem;">
+                            <div class="tags mt-sm">
                               ${langs.map((t) => `<span class="tag">${t}</span>`).join('')}
                             </div>
                           ` : ''}
@@ -1133,47 +1104,12 @@
                 : `<p class="pub-meta">${projEmpty}</p>`
             }
           </div>
-        </article>
+        </details>
 
       </section>
     `;
 
-    // --- Mobile/desktop ordering: keep desktop (Talks+Topics left), mobile (Talks → Projects → Topics)
-    const syncResearchOrder = () => {
-      const left = document.querySelector('.research-col-left');
-      const projectsPanel = document.querySelector('.research-panel--projects');
-      const topicsPanel = document.querySelector('.research-panel--topics');
-
-      if (!left || !projectsPanel || !topicsPanel) return;
-
-      const isMobile = window.matchMedia('(max-width:1099px)').matches;
-
-      if (isMobile) {
-        // Move Topics AFTER Projects
-        if (projectsPanel.nextElementSibling !== topicsPanel) {
-          projectsPanel.insertAdjacentElement('afterend', topicsPanel);
-        }
-      } else {
-        // Put Topics back into the left column (under Talks)
-        if (!left.contains(topicsPanel)) {
-          left.appendChild(topicsPanel);
-        }
-      }
-    };
-
-    // Run once now
-    syncResearchOrder();
-
-    // Re-run on resize (debounced) — register only once
-    if (!window.__researchResizeBound) {
-      window.__researchResizeBound = true;
-      window.addEventListener('resize', debounce(() => {
-        // Only run when Research page is mounted
-        if (document.querySelector('.research-grid')) syncResearchOrder();
-      }, 150));
-    }
-
-    // --- Publications render + filter (same logic as your publications page) ---
+    // --- Publications render + filter ---
     const renderPubs = (items) => {
       const labels = state.lang === 'it'
         ? {
@@ -1215,28 +1151,28 @@
                   ${typeLine ? `<div class="pub-meta">${typeLine}</div>` : ''}
 
                   <!-- 5) Work title -->
-                  ${p.title ? `<div style="margin-top:.45rem;"><strong>${state.lang === 'it' ? 'Titolo' : 'Title'}:</strong> ${p.title}</div>` : ''}
+                  ${p.title ? `<div class="mt-lg"><strong>${state.lang === 'it' ? 'Titolo' : 'Title'}:</strong> ${p.title}</div>` : ''}
 
                   <!-- 6) Authors (subito sotto il titolo) -->
                   ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
 
                   <!-- 7) Description -->
                   ${p.desc ? `
-                    <div class="pub-meta" style="margin-top:.25rem;">
+                    <div class="pub-meta mt-sm">
                       <strong>${state.lang === 'it' ? 'Descrizione' : 'Description'}:</strong> ${p.desc}
                     </div>
                   ` : ''}
 
                   <!-- 8) Keywords -->
                   ${Array.isArray(p.keywords) && p.keywords.length ? `
-                    <div class="pub-meta" style="margin-top:.2rem;">
+                    <div class="pub-meta mt-xs">
                       <strong>Keywords:</strong> ${p.keywords.join(', ')}
                     </div>
                   ` : ''}
 
                   <!-- 9) Links -->
                   ${(p.eventLink || p.arxiv || p.code || p.shortPdf || p.posterPdf) ? `
-                    <div class="row" style="margin-top:.45rem;">
+                    <div class="row mt-lg">
                       ${p.eventLink ? `<a class="btn btn-outline" href="${p.eventLink}" target="_blank" rel="noopener">${labels.conference}</a>` : ''}
                       ${p.arxiv ? `<a class="btn btn-outline" href="${p.arxiv}" target="_blank" rel="noopener">${labels.arxiv}</a>` : ''}
                       ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">${labels.code}</a>` : ''}
@@ -1590,9 +1526,8 @@
       onRouteChange();
     });
 
-    // Load translations + data
-    await loadI18n();
-    await loadData();
+    // Load translations + data in parallel
+    await Promise.all([loadI18n(), loadData()]);
 
     // Language inline switch (EN | IT)
     syncLangUI();
@@ -1676,6 +1611,33 @@
         navToggle.setAttribute('aria-expanded', 'false');
         document.body.classList.remove('nav-open');
       }
+    });
+
+    // Copy-to-clipboard for code blocks (event delegation, CSP-safe)
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.code-block-copy');
+      if (!btn) return;
+      const codeEl = btn.closest('.code-block')?.querySelector('code');
+      if (!codeEl) return;
+      navigator.clipboard.writeText(codeEl.innerText).then(() => {
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1800);
+      });
+    });
+
+    // Post card click/keyboard (event delegation, CSP-safe)
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.post-flat-item[role="link"]');
+      if (!card || e.target.closest('a')) return;
+      const link = card.querySelector('.post-flat-link');
+      if (link) location.href = link.getAttribute('href');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const card = e.target.closest('.post-flat-item[role="link"]');
+      if (!card) return;
+      const link = card.querySelector('.post-flat-link');
+      if (link) location.href = link.getAttribute('href');
     });
 
     // Initial render
