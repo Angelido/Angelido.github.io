@@ -303,20 +303,36 @@ details.research-section > summary::after {
   flex: 1;
   height: 1px;
   background: rgba(0,0,0,.12);
+  order: 1;
 }
 
 html[data-theme="dark"] details.research-section > summary::after {
   background: rgba(255,255,255,.18);
 }
 
+details.research-section > summary .section-count {
+  order: 2;
+  font-size: .75rem;
+  color: var(--muted);
+  opacity: .7;
+}
+
 details.research-section > summary .section-toggle {
+  order: 3;
   font-size: .85rem;
   flex-shrink: 0;
   color: var(--muted);
 }
 
-details.research-section > summary .section-toggle::before { content: '+'; }
-details[open].research-section > summary .section-toggle::before { content: '−'; }
+details.research-section > summary .section-toggle::before {
+  content: '›';
+  display: inline-block;
+  transition: transform .2s ease;
+}
+
+details[open].research-section > summary .section-toggle::before {
+  transform: rotate(90deg);
+}
 
 /* Text input */
 .input{
