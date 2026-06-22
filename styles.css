@@ -228,6 +228,7 @@ img{
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--muted);
+  flex: 1;
 }
 
 .expedu-panel-head h2::after {
