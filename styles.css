@@ -1627,8 +1627,6 @@ html[data-theme="dark"] .home-latest-card:hover {
 
 .expedu-panel-head{
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
   gap: .75rem;
   margin-bottom: .7rem;
 }
@@ -1669,7 +1667,7 @@ html[data-theme="dark"] .expedu-count {
   padding-bottom: .35rem;
 }
 
-.tl-year {
+.expedu-timeline .tl-year {
   font-size: .78rem;
   color: var(--muted);
   padding-top: .18rem;
