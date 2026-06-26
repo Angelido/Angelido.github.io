@@ -1454,23 +1454,25 @@
 
       <section class="section">
         <div class="expedu-split">
-          <article class="expedu-panel">
-            <div class="expedu-panel-head">
+          <details class="expedu-panel">
+            <summary class="expedu-panel-head">
               <h2>${eduTitle}</h2>
-            </div>
+              <span class="section-toggle" aria-hidden="true"></span>
+            </summary>
             <ol class="timeline expedu-timeline">
               ${eduItems.map(itemRow).join('')}
             </ol>
-          </article>
+          </details>
 
-          <article class="expedu-panel">
-            <div class="expedu-panel-head">
+          <details class="expedu-panel">
+            <summary class="expedu-panel-head">
               <h2>${expTitle}</h2>
-            </div>
+              <span class="section-toggle" aria-hidden="true"></span>
+            </summary>
             <ol class="timeline expedu-timeline">
               ${expItems.map(itemRow).join('')}
             </ol>
-          </article>
+          </details>
         </div>
       </section>
     `;

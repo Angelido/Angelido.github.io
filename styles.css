@@ -231,7 +231,6 @@ img{
   flex: 1;
 }
 
-.expedu-panel-head h2::before,
 .expedu-panel-head h2::after {
   content: '';
   flex: 1;
@@ -239,9 +238,35 @@ img{
   background: rgba(0,0,0,.12);
 }
 
-html[data-theme="dark"] .expedu-panel-head h2::before,
 html[data-theme="dark"] .expedu-panel-head h2::after {
   background: rgba(255,255,255,.18);
+}
+
+/* Expedu accordion */
+details.expedu-panel > summary { list-style: none; }
+details.expedu-panel > summary::-webkit-details-marker { display: none; }
+
+details.expedu-panel > summary.expedu-panel-head {
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+}
+
+details.expedu-panel > summary .section-toggle {
+  order: -1;
+  font-size: .85rem;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+details.expedu-panel > summary .section-toggle::before {
+  content: '›';
+  display: inline-block;
+  transition: transform .2s ease;
+}
+
+details[open].expedu-panel > summary .section-toggle::before {
+  transform: rotate(90deg);
 }
 
 /* ===== Buttons: make btn-outline actually visible in LIGHT mode ===== */
