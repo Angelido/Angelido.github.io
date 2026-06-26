@@ -38,13 +38,14 @@
 
 /* LIGHT THEME – Academic */
 html[data-theme="light"] {
-  --bg:     #f2ebe3;
-  --panel:  #ffffff;
-  --text:   #1c1410;
-  --muted:  #6b6560;
-  --brand:  #8b2c0a;
-  --accent: #9e3510;
+  --bg:          #f5f0ea;
+  --panel:       #fdf8f3;
+  --text:        #1c1410;
+  --muted:       #6b6560;
+  --brand:       #a03d18;
+  --accent:      #a03d18;
   --card-border: rgba(0,0,0,.06);
+  --card-bg:     rgba(253,248,243,.85);
 }
 
 /* DARK THEME – Warm charcoal */
