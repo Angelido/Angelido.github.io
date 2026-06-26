@@ -65,7 +65,7 @@ html[data-theme="dark"] {
 html[data-theme="light"] .tag {
   color: #25655a;
   border-color: rgba(37, 101, 90, .38);
-  background: rgba(37, 101, 90, .10);
+  background: transparent;
 }
 html[data-theme="dark"] .tag {
   color: #9dbfb0;
