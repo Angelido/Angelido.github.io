@@ -980,12 +980,12 @@
 
       <section class="section">
         <details class="research-section research-section--pubs" open>
-          <summary>${pubsTitle} <span class="section-count" aria-hidden="true">${pubs.length}</span><span class="section-toggle" aria-hidden="true"></span></summary>
+          <summary>${pubsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
           <div id="pubList" class="list"></div>
         </details>
 
         <details class="research-section research-section--talks">
-          <summary>${talksTitle} <span class="section-count" aria-hidden="true">${talks.length}</span><span class="section-toggle" aria-hidden="true"></span></summary>
+          <summary>${talksTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
 
             <div id="talkList">
               ${
@@ -1051,7 +1051,7 @@
         </details>
 
         <details class="research-section research-section--projects">
-          <summary>${projectsTitle} <span class="section-count" aria-hidden="true">${projects.length}</span><span class="section-toggle" aria-hidden="true"></span></summary>
+          <summary>${projectsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
           <div id="projectList">
             ${
               projects.length

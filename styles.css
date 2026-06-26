@@ -289,7 +289,7 @@ details.research-section > summary {
   align-items: center;
   gap: .6rem;
   margin: 0 0 1rem;
-  font-size: .8rem;
+  font-size: .9rem;
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -310,15 +310,8 @@ html[data-theme="dark"] details.research-section > summary::after {
   background: rgba(255,255,255,.18);
 }
 
-details.research-section > summary .section-count {
-  order: 2;
-  font-size: .75rem;
-  color: var(--muted);
-  opacity: .7;
-}
-
 details.research-section > summary .section-toggle {
-  order: 3;
+  order: -1;
   font-size: .85rem;
   flex-shrink: 0;
   color: var(--muted);
