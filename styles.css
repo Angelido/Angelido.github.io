@@ -38,14 +38,14 @@
 
 /* LIGHT THEME – Academic */
 html[data-theme="light"] {
-  --bg:          #f0e9e0;
-  --panel:       #faf4ed;
+  --bg:          #f4f3f1;
+  --panel:       #faf9f8;
   --text:        #1c1410;
   --muted:       #6b6560;
   --brand:       #b85020;
   --accent:      #8a3810;
   --card-border: rgba(0,0,0,.06);
-  --card-bg:     rgba(250,244,237,.88);
+  --card-bg:     rgba(250,249,248,.88);
 }
 
 /* DARK THEME – Warm charcoal */
@@ -63,9 +63,9 @@ html[data-theme="dark"] {
 
 /* ===== Tags: readable in LIGHT mode ===== */
 html[data-theme="light"] .tag {
-  color: #6b220a;
-  border-color: rgba(139, 44, 10, .28);
-  background: rgba(139, 44, 10, .07);
+  color: #2e7065;
+  border-color: rgba(46, 112, 101, .30);
+  background: rgba(46, 112, 101, .07);
 }
 html[data-theme="dark"] .tag {
   color: #9dbfb0;
