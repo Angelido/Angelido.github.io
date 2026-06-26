@@ -327,6 +327,56 @@ details[open].research-section > summary .section-toggle::before {
   transform: rotate(90deg);
 }
 
+/* Research layout — sidebar */
+.research-sidebar {
+  margin-top: 2.2rem;
+}
+
+.research-sidebar-head {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 0 0 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.research-sidebar-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0,0,0,.12);
+}
+
+html[data-theme="dark"] .research-sidebar-head::after {
+  background: rgba(255,255,255,.18);
+}
+
+@media (min-width: 1400px) {
+  .research-layout {
+    --rsb-w: 160px;
+    display: grid;
+    grid-template-columns: var(--rsb-w) 1fr var(--rsb-w);
+    gap: 0 1.5rem;
+    margin-inline: calc(-1 * (var(--rsb-w) + 1.5rem));
+    align-items: start;
+  }
+
+  .research-main {
+    grid-column: 2;
+  }
+
+  .research-sidebar {
+    grid-column: 3;
+    margin-top: 0;
+    position: sticky;
+    top: 5rem;
+  }
+}
+
 /* Text input */
 .input{
   padding:.6rem .8rem;
