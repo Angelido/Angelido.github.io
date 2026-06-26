@@ -1648,7 +1648,7 @@ html[data-theme="dark"] .home-latest-card:hover {
 
 .expedu-split{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.2rem;
   align-items: start;
 }
