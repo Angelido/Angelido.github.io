@@ -42,8 +42,8 @@ html[data-theme="light"] {
   --panel:       #faf4ed;
   --text:        #1c1410;
   --muted:       #6b6560;
-  --brand:       #a03d18;
-  --accent:      #a03d18;
+  --brand:       #b85020;
+  --accent:      #8a3810;
   --card-border: rgba(0,0,0,.06);
   --card-bg:     rgba(250,244,237,.88);
 }
