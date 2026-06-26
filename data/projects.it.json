@@ -7,6 +7,13 @@
     "languages": ["C++", "CMake"]
   },
   {
+    "title": "Beamer Template Unipi",
+    "description": "Un template in Beamer (LaTeX) per fare presentazioni, customizzato per l'Università di Pisa (non ufficiale!).",
+    "repo": "https://github.com/Angelido/beamer-template-unipi",
+    "topics": ["LaTeX", "Beamer", "Presentazioni", "Template"],
+    "languages": ["LaTeX"]
+  },
+  {
     "title": "MiniHack Evolution",
     "description": "Addestramento di agenti evolutivi in ambienti NetHack tramite OpenAI Gym, utilizzando algoritmi genetici per apprendere strategie in un gridworld 15×15.",
     "repo": "https://github.com/yumetsuro/minihack-evolution",

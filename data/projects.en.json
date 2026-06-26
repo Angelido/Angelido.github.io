@@ -6,6 +6,13 @@
     "topics": ["Lossless compression", "Algorithms", "String Algorithms"],
     "languages": ["C++", "CMake"]
   },
+    {
+    "title": "Beamer Template Unipi",
+    "description": "A Beamer (LaTeX) template for creating presentations, customized for the University of Pisa (unofficial!).",
+    "repo": "https://github.com/Angelido/beamer-template-unipi",
+    "topics": ["LaTeX", "Beamer", "Presentations", "Template"],
+    "languages": ["LaTeX"]
+  },
   {
     "title": "MiniHack Evolution",
     "description": "Training evolutionary agents in NetHack environments via OpenAI Gym, using genetic algorithms to learn strategies in a 15×15 gridworld.",
