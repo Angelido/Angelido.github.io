@@ -979,9 +979,7 @@
       ${pageHeaderHTML(pageTitle, intro)}
 
       <section class="section">
-        <div class="research-layout">
-          <div class="research-main">
-            <details class="research-section research-section--pubs" open>
+        <details class="research-section research-section--pubs" open>
           <summary>${pubsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
           <div id="pubList" class="list"></div>
         </details>
@@ -1100,14 +1098,13 @@
             }
           </div>
         </details>
+
+        <details class="research-section research-section--topics" open>
+          <summary>${topicsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
+          <div class="tags">
+            ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
           </div>
-          <aside class="research-sidebar">
-            <div class="research-sidebar-head">${topicsTitle}</div>
-            <div class="tags">
-              ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
-            </div>
-          </aside>
-        </div>
+        </details>
       </section>
     `;
 
