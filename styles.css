@@ -38,7 +38,7 @@
 
 /* LIGHT THEME – Academic */
 html[data-theme="light"] {
-  --bg:     #f8f8f7;
+  --bg:     #f2ebe3;
   --panel:  #ffffff;
   --text:   #1c1410;
   --muted:  #6b6560;
@@ -269,9 +269,7 @@ details[open].expedu-panel > summary .section-toggle::before {
   transform: rotate(90deg);
 }
 
-/* ===== Buttons: make btn-outline actually visible in LIGHT mode ===== */
 html[data-theme="light"] .btn-outline{
-  border: 2px solid var(--brand);
   color: var(--brand);
   background: transparent;
 }
