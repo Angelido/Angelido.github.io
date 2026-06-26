@@ -41,6 +41,9 @@ The design philosophy is *minimalism with purpose* — fast to load, easy to nav
 │   ├── post-title.md       #    Markdown files, one per post
 │   └── ...
 │
+├── robots.txt              # 🤖 Crawler directives
+├── sitemap.xml             # 🗺️ Sitemap for search engine indexing
+│
 └── assets/                 # 🖼️ Images, documents, CV, etc.
 ```
 
