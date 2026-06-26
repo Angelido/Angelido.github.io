@@ -63,9 +63,9 @@ html[data-theme="dark"] {
 
 /* ===== Tags: readable in LIGHT mode ===== */
 html[data-theme="light"] .tag {
-  color: #2e7065;
-  border-color: rgba(46, 112, 101, .30);
-  background: rgba(46, 112, 101, .07);
+  color: #25655a;
+  border-color: rgba(37, 101, 90, .38);
+  background: rgba(37, 101, 90, .10);
 }
 html[data-theme="dark"] .tag {
   color: #9dbfb0;
