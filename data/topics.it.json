@@ -1,7 +1,8 @@
 [
-  "Lossless data compression",
-  "Source code compression",
+  "Lossless compression",
+  "Text compression",
+  "Algorithms on strings",
+  "Data structures",
   "Large Language Models (LLMs)",
-  "Diffusion Language Models",
-  "AI methods for healthcare applications"
+  "AI for medicine"
 ]
