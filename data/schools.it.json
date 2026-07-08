@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Lipari School on Computational Complex and Social Systems",
+    "subtitle": "Agentic AI: algorithms, tools and platforms",
+    "type": "Summer School",
+    "year": 2026,
+    "dates": "June 28 – July 4, 2026",
+    "location": "Lipari, Italy",
+    "url": "https://complex26.liparischool.it/",
+    "description": "Scuola estiva internazionale che esplora il ciclo di vita completo dei sistemi autonomi: addestramento di LLM, embedding, architetture di database vettoriali, retrieval-augmented generation (RAG) e orchestrazione multi-agente.",
+    "directors": [
+      { "name": "Paolo Ferragina", "url": "" },
+      { "name": "Alfredo Ferro",   "url": "" }
+    ],
+    "speakers": [
+      { "name": "Antonio Gullì",      "url": "" },
+      { "name": "Fabrizio Silvestri", "url": "" },
+      { "name": "Roberto Esposito",   "url": "" }
+    ],
+    "guests": [
+      { "name": "Jennifer Pybus", "url": "" },
+      { "name": "Mark Cotè",      "url": "" }
+    ],
+    "topics": ["Agentic AI", "LLMs", "RAG", "Vector Databases", "Multi-agent Systems"]
+  }
+]

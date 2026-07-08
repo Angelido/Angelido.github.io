@@ -32,6 +32,7 @@
     "sections": {
       "publications": "Conferenze e Pubblicazioni",
       "talks": "Talk e Workshop",
+      "schools": "Scuole",
       "projects": "Altri Progetti",
       "topics": "Research Topics"
     }
@@ -65,6 +66,12 @@
   "projects": {
     "noItems": "Nessun progetto al momento.",
     "viewOnGitHub": "Vedi su GitHub"
+  },
+  "schools": {
+    "noItems": "Nessuna scuola al momento.",
+    "directors": "Direttori",
+    "speakers": "Speaker Principali",
+    "guests": "Ospiti"
   },
   "errors": {
     "notFoundTitle": "404",
