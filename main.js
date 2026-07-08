@@ -1075,13 +1075,11 @@
 
                           ${s.subtitle ? `<div class="pub-meta"><em>${s.subtitle}</em></div>` : ''}
 
-                          ${s.type ? `<div class="pub-meta">${s.type}</div>` : ''}
+                          ${s.location ? `<div class="pub-meta">${s.location}</div>` : ''}
 
-                          ${(s.location || s.dates) ? `
-                            <div class="pub-meta">
-                              ${[s.location, s.dates].filter(Boolean).join(' · ')}
-                            </div>
-                          ` : ''}
+                          ${s.dates ? `<div class="pub-meta">${s.dates}</div>` : ''}
+
+                          ${(s.role || s.type) ? `<div class="pub-meta mt-xs">${[s.role, s.type].filter(Boolean).join(' · ')}</div>` : ''}
 
                           ${s.description ? `<div class="pub-meta mt-sm">${s.description}</div>` : ''}
 
