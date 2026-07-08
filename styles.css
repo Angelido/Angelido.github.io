@@ -218,6 +218,14 @@ img{
   box-shadow:none;
 }
 
+.btn-outline:hover{
+  text-decoration:underline;
+  transform:scale(1.03);
+  filter:none;
+  box-shadow:none;
+  background:transparent;
+}
+
 /* Section divider heading — typographic anchor for expedu page */
 .expedu-panel-head h2 {
   display: flex;
@@ -276,8 +284,8 @@ html[data-theme="light"] .btn-outline{
 }
 
 html[data-theme="light"] .btn-outline:hover{
-  background: var(--brand);
-  color: #fff;
+  background: transparent;
+  color: var(--brand);
 }
 
 /* Small pill badge */
