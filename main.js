@@ -16,7 +16,8 @@
       publications: [],
       topics: [],
       social: [],
-      cv: null
+      cv: null,
+      schools: []
     }
   };
 
@@ -139,7 +140,7 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, posts, education, experience, publications, topics, talks, projects, social, cv] = await Promise.all([
+    const [profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/posts.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
@@ -150,12 +151,13 @@
       fetch(`${base}/topics.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/talks.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/projects.${state.lang}.json`).then((r) => r.json()),
+      fetch(`${base}/schools.${state.lang}.json`).then((r) => r.json()),
 
       fetch(`${base}/social.json`).then((r) => r.json()),
       fetch(`${base}/cv.json`).then((r) => r.json())
     ]);
 
-    state.data = { profile, posts, education, experience, publications, topics, talks, projects, social, cv };
+    state.data = { profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv };
 
   }
 
@@ -955,6 +957,7 @@
     const topics = state.data.topics || [];
     const talks = state.data.talks || [];
     const projects = state.data.projects || [];
+    const schools = state.data.schools || [];
 
     const pageTitle = state.i18n?.research?.title || 'Research';
     const intro = state.i18n?.research?.intro || '';
@@ -964,6 +967,7 @@
     const talksTitle = sec.talks || 'Talks';
     const projectsTitle = sec.projects || 'Projects';
     const topicsTitle = sec.topics || 'Research topics';
+    const schoolsTitle = sec.schools || 'Schools';
 
     const searchPH = state.i18n?.publications?.searchPlaceholder || '';
     const allYears = state.i18n?.publications?.allYears || '';
@@ -971,6 +975,18 @@
     const talksEmpty = state.i18n?.talks?.noItems || '';
     const projEmpty = state.i18n?.projects?.noItems || '';
     const viewOnGitHub = state.i18n?.projects?.viewOnGitHub || 'View';
+    const schoolsEmpty = state.i18n?.schools?.noItems || '';
+    const schoolLabels = state.lang === 'it'
+      ? { directors: 'Direttori', speakers: 'Speaker Principali', guests: 'Ospiti', page: 'Pagina scuola' }
+      : { directors: 'Directors', speakers: 'Main Speakers',      guests: 'Guests',  page: 'School page' };
+
+    const personLink = (p) =>
+      p.url ? `<a href="${p.url}" target="_blank" rel="noopener">${p.name}</a>` : p.name;
+
+    const peopleRow = (label, arr) =>
+      arr && arr.length
+        ? `<div class="pub-meta mt-sm"><strong>${label}:</strong> ${arr.map(personLink).join(' · ')}</div>`
+        : '';
 
     const years = Array.from(new Set(pubs.map((p) => p.year).filter(Boolean)))
       .sort((a, b) => b - a);
@@ -1041,6 +1057,56 @@
                   : `<p class="pub-meta">${talksEmpty}</p>`
               }
             </div>
+        </details>
+
+        <details class="research-section research-section--schools">
+          <summary>${schoolsTitle} <span class="section-toggle" aria-hidden="true"></span></summary>
+          <div id="schoolList">
+            ${
+              schools.length
+                ? `<ul class="research-list">
+                    ${schools.map((s) => {
+                      const schoolTopics = Array.isArray(s.topics) ? s.topics : [];
+                      return `
+                        <li>
+                          <div>
+                            <strong>${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>` : s.name}</strong>
+                          </div>
+
+                          ${s.subtitle ? `<div class="pub-meta">${s.subtitle}</div>` : ''}
+
+                          ${s.type ? `<div class="pub-meta">${s.type}</div>` : ''}
+
+                          ${(s.location || s.dates) ? `
+                            <div class="pub-meta">
+                              ${[s.location, s.dates].filter(Boolean).join(' · ')}
+                            </div>
+                          ` : ''}
+
+                          ${s.description ? `<div class="pub-meta mt-sm">${s.description}</div>` : ''}
+
+                          ${peopleRow(schoolLabels.directors, s.directors)}
+                          ${peopleRow(schoolLabels.speakers,  s.speakers)}
+                          ${peopleRow(schoolLabels.guests,    s.guests)}
+
+                          ${schoolTopics.length ? `
+                            <div class="tags mt-sm">
+                              ${schoolTopics.map((t) => `<span class="tag">${t}</span>`).join('')}
+                            </div>
+                          ` : ''}
+
+                          ${s.url ? `
+                            <div class="row mt-lg">
+                              <a class="btn btn-outline" href="${s.url}" target="_blank" rel="noopener">${schoolLabels.page}</a>
+                            </div>
+                          ` : ''}
+                        </li>
+                      `;
+                    }).join('')}
+                  </ul>`
+                : `<p class="pub-meta">${schoolsEmpty}</p>`
+            }
+          </div>
         </details>
 
         <details class="research-section research-section--projects">
