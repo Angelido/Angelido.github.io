@@ -1081,7 +1081,11 @@
 
                           ${(s.role || s.type) ? `<div class="pub-meta mt-xs">${[s.role, s.type].filter(Boolean).join(' · ')}</div>` : ''}
 
-                          ${s.description ? `<div class="pub-meta mt-sm">${s.description}</div>` : ''}
+                          ${s.description ? `
+                            <div class="pub-meta mt-sm">
+                              <strong>${state.lang === 'it' ? 'Descrizione' : 'Description'}:</strong> ${s.description}
+                            </div>
+                          ` : ''}
 
                           ${peopleRow(schoolLabels.directors, s.directors)}
                           ${peopleRow(schoolLabels.speakers,  s.speakers)}
@@ -1232,7 +1236,10 @@
                   <!-- 8) Keywords -->
                   ${Array.isArray(p.keywords) && p.keywords.length ? `
                     <div class="pub-meta mt-xs">
-                      <strong>Keywords:</strong> ${p.keywords.join(', ')}
+                      <strong>Keywords:</strong>
+                    </div>
+                    <div class="tags mt-sm">
+                      ${p.keywords.map((k) => `<span class="tag">${k}</span>`).join('')}
                     </div>
                   ` : ''}
 
