@@ -10,17 +10,17 @@
     "url": "https://complex26.liparischool.it/",
     "description": "Scuola estiva internazionale che esplora il ciclo di vita completo dei sistemi autonomi: addestramento di LLM, embedding, architetture di database vettoriali, retrieval-augmented generation (RAG) e orchestrazione multi-agente.",
     "directors": [
-      { "name": "Paolo Ferragina", "url": "" },
-      { "name": "Alfredo Ferro",   "url": "" }
+      { "name": "Paolo Ferragina", "url": "https://www.santannapisa.it/en/paolo-ferragina" },
+      { "name": "Alfredo Ferro",   "url": "https://www.medclin.unict.it/docenti/alfredo.ferro" }
     ],
     "speakers": [
-      { "name": "Antonio Gullì",      "url": "" },
-      { "name": "Fabrizio Silvestri", "url": "" },
-      { "name": "Roberto Esposito",   "url": "" }
+      { "name": "Antonio Gullì",      "url": "https://complex26.liparischool.it/profile-of-antonio-gulli" },
+      { "name": "Fabrizio Silvestri", "url": "https://fabsilvestri.github.io/#home" },
+      { "name": "Roberto Esposito",   "url": "https://complex26.liparischool.it/profile-of-roberto-esposito" }
     ],
     "guests": [
-      { "name": "Jennifer Pybus", "url": "" },
-      { "name": "Mark Cotè",      "url": "" }
+      { "name": "Jennifer Pybus", "url": "https://profiles.laps.yorku.ca/profiles/jpybus/" },
+      { "name": "Mark Cotè",      "url": "https://www.kcl.ac.uk/people/mark-cote" }
     ],
     "topics": ["Agentic AI", "LLMs", "RAG", "Vector Databases", "Multi-agent Systems"]
   }
