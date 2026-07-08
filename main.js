@@ -1070,10 +1070,10 @@
                       return `
                         <li>
                           <div>
-                            <strong>${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>` : s.name}</strong>
+                            <strong>${s.name}</strong>
                           </div>
 
-                          ${s.subtitle ? `<div class="pub-meta">${s.subtitle}</div>` : ''}
+                          ${s.subtitle ? `<div class="pub-meta"><em>${s.subtitle}</em></div>` : ''}
 
                           ${s.type ? `<div class="pub-meta">${s.type}</div>` : ''}
 
@@ -1090,6 +1090,9 @@
                           ${peopleRow(schoolLabels.guests,    s.guests)}
 
                           ${schoolTopics.length ? `
+                            <div class="pub-meta mt-md">
+                              <strong>${state.lang === 'it' ? 'Temi' : 'Topics'}:</strong>
+                            </div>
                             <div class="tags mt-sm">
                               ${schoolTopics.map((t) => `<span class="tag">${t}</span>`).join('')}
                             </div>
