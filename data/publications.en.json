@@ -13,7 +13,7 @@
     "date": "October 6–9, 2026",
     "year": 2026,
     "abstract": "We introduce LLM-based compressors with novel symbol-ranking variants bounding predictions to the top-T ranks. Our approach outperforms prior LLM-based compressors in compression ratio (up to 37%) and throughput (40% faster) across 30 LLMs, including code-specialized and quantized models.",
-    "topics": ["Data Compression", "Large Language Models", "Source Code Analysis", "Information Theory", "Algorithms"],
+    "topics": ["Lossless Compression", "Source Code Compression", "Large Language Models", "Symbol Ranking", "Algorithms"],
     "links": [
       { "label": "PDF",   "url": "assets/pdf/aixia2026-paper-v1.pdf" },
       { "label": "arXiv", "url": "https://arxiv.org/abs/2607.24192" }

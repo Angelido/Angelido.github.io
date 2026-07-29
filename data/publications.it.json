@@ -12,8 +12,8 @@
     "country": "Italia",
     "date": "6–9 ottobre 2026",
     "year": 2026,
-    "abstract": "Introduciamo compressori basati su LLM con nuove varianti di symbol ranking che limitano le previsioni ai top-T rank. L'approccio supera i compressori LLM precedenti in rapporto di compressione (fino al 37%) e throughput (40% più veloce) su 30 LLM, inclusi modelli specializzati per il codice e quantizzati.",
-    "topics": ["Data Compression", "Large Language Models", "Source Code Analysis", "Information Theory", "Algorithms"],
+    "abstract": "We introduce LLM-based compressors with novel symbol-ranking variants bounding predictions to the top-T ranks. Our approach outperforms prior LLM-based compressors in compression ratio (up to 37%) and throughput (40% faster) across 30 LLMs, including code-specialized and quantized models.",
+    "topics": ["Lossless Compression", "Source Code Compression", "Large Language Models", "Symbol Ranking", "Algorithms"],
     "links": [
       { "label": "PDF",   "url": "assets/pdf/aixia2026-paper-v1.pdf" },
       { "label": "arXiv", "url": "https://arxiv.org/abs/2607.24192" }
@@ -31,7 +31,7 @@
     "country": "Italia",
     "date": "10–12 settembre 2025",
     "year": 2025,
-    "abstract": "Un approccio basato su autoencoder auto-supervisionato per rappresentare dati clinici eterogenei in uno spazio latente, che consente una migliore previsione di eventi cardiovascolari — in particolare con pochi dati etichettati — rispetto ai modelli addestrati sui dati grezzi.",
+    "abstract": "A self-supervised autoencoder approach for embedding heterogeneous clinical data into a latent space, enabling improved cardiovascular event prediction — particularly in low-label settings — compared to models trained on raw clinical data.",
     "topics": ["AI for Medicine", "Deep Learning", "Representation Learning", "Health Informatics", "Predictive Modeling"],
     "links": [
       { "label": "arXiv",       "url": "https://arxiv.org/abs/2510.11257" },

@@ -1189,7 +1189,7 @@
         ? `<ul class="research-list">
             ${items.map((p) => {
               const venueLine = [
-                p.venueShort || p.venue,
+                p.venueShort,
                 p.type,
                 [p.city, p.country].filter(Boolean).join(', '),
                 p.date
@@ -1204,6 +1204,7 @@
                   <div><strong>${p.title}</strong></div>
                   ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
                   ${venueLine ? `<div class="pub-meta mt-xs">${venueLine}</div>` : ''}
+                  ${p.venue ? `<div class="pub-meta pub-meta--venue">${p.venue}</div>` : ''}
                   ${publisherStatus ? `<div class="pub-meta">${publisherStatus}</div>` : ''}
 
                   ${p.abstract ? `
