@@ -1180,6 +1180,8 @@
     `;
 
     // --- Publications render + filter ---
+    const escHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
     const renderPubs = (items) => {
       const isIt = state.lang === 'it';
       const topicsLabel = isIt ? 'Temi' : 'Topics';
@@ -1189,6 +1191,7 @@
             ${items.map((p) => {
               const venueFull = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
               const locationDate = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
+              const badge  = [p.badge, p.year].filter(Boolean).join(' · ');
               const topics = Array.isArray(p.topics) ? p.topics : [];
               const links  = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
 
@@ -1200,7 +1203,7 @@
                         <div><strong>${p.title}</strong></div>
                         ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
                         ${venueFull ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
-                        ${p.badge  ? `<div class="pub-meta">${p.badge}</div>` : ''}
+                        ${badge     ? `<div class="pub-meta">${badge}</div>` : ''}
                       </div>
                       <span class="pub-toggle" aria-hidden="true"></span>
                     </summary>
@@ -1221,13 +1224,23 @@
                         </div>
                       ` : ''}
 
-                      ${links.length ? `
-                        <div class="row mt-lg">
-                          ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
+                      ${p.bibtex ? `
+                        <div class="bibtex-wrap mt-lg">
+                          <div class="bibtex-wrap-header">
+                            <span>BibTeX</span>
+                            <button class="bibtex-copy-btn">Copy</button>
+                          </div>
+                          <pre class="bibtex-pre"><code>${escHtml(p.bibtex)}</code></pre>
                         </div>
                       ` : ''}
                     </div>
                   </details>
+
+                  ${links.length ? `
+                    <div class="row mt-sm">
+                      ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
+                    </div>
+                  ` : ''}
                 </li>
               `;
             }).join('')}
@@ -1251,6 +1264,18 @@
 
       renderPubs(res);
     };
+
+    // BibTeX copy — delegated so it survives innerHTML replacements on filter
+    $('#pubList').addEventListener('click', (e) => {
+      const btn = e.target.closest('.bibtex-copy-btn');
+      if (!btn) return;
+      const code = btn.closest('.bibtex-wrap')?.querySelector('code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent.trim()).then(() => {
+        btn.textContent = '✓ Copied';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      }).catch(() => {});
+    });
 
     renderPubs(pubs);
   }

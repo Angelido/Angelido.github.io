@@ -18,7 +18,8 @@
     "links": [
       { "label": "PDF",   "url": "assets/pdf/aixia2026-paper-v1.pdf" },
       { "label": "arXiv", "url": "https://arxiv.org/abs/2607.24192" }
-    ]
+    ],
+    "bibtex": "@misc{nardone2026llmbasedsourcecodecompression,\n  title        = {LLM-based Source Code Compression via Thresholded Symbol Ranking},\n  author       = {Angelo Nardone and Paolo Ferragina},\n  year         = {2026},\n  eprint       = {2607.24192},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.IT},\n  url          = {https://arxiv.org/abs/2607.24192}\n}"
   },
   {
     "title": "MIEO: encoding clinical data to enhance cardiovascular event prediction",
@@ -40,6 +41,7 @@
       { "label": "Short Paper", "url": "assets/pdf/cibb2025-short-paper.pdf" },
       { "label": "Poster",      "url": "assets/pdf/cibb2025-poster.pdf" },
       { "label": "Code",        "url": "https://github.com/davide-marchi/clinical-data-encoding" }
-    ]
+    ],
+    "bibtex": "@article{borghini2025mieo,\n  title   = {MIEO: encoding clinical data to enhance cardiovascular event prediction},\n  author  = {Borghini, Davide and Marchi, Davide and Nardone, Angelo and Scerra, Giordano\n             and Galfrè, Silvia Giulia and Pingitore, Alessandro and Prencipe, Giuseppe\n             and Priami, Corrado and Sîrbu, Alina},\n  journal = {arXiv preprint arXiv:2510.11257},\n  year    = {2025}\n}"
   }
 ]

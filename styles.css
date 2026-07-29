@@ -526,6 +526,67 @@ html[data-theme="dark"] .markdown-body figure img{
 .pub-meta{ color:var(--muted); font-size:.98rem; }
 .pub-meta--venue{ font-size:.88rem; font-style:italic; }
 
+/* BibTeX code block */
+.bibtex-wrap {
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 6px;
+  overflow: hidden;
+}
+html[data-theme="dark"] .bibtex-wrap {
+  border-color: rgba(255,255,255,.10);
+}
+.bibtex-wrap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .3rem .75rem;
+  background: rgba(0,0,0,.03);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+html[data-theme="dark"] .bibtex-wrap-header {
+  background: rgba(255,255,255,.04);
+  border-bottom-color: rgba(255,255,255,.08);
+}
+.bibtex-copy-btn {
+  background: none;
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 4px;
+  padding: .1rem .45rem;
+  font-size: .72rem;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: inherit;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background .15s, color .15s, border-color .15s;
+}
+html[data-theme="dark"] .bibtex-copy-btn {
+  border-color: rgba(255,255,255,.18);
+}
+.bibtex-copy-btn:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+.bibtex-pre {
+  margin: 0;
+  padding: .6rem .75rem;
+  font-size: .76rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  background: transparent;
+}
+.bibtex-pre code {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text);
+}
+
 /* Per-publication expand/collapse */
 .pub-details > summary { list-style: none; cursor: pointer; user-select: none; display: flex; align-items: flex-start; gap: .5rem; }
 .pub-details > summary::-webkit-details-marker { display: none; }
@@ -1760,11 +1821,13 @@ html[data-theme="light"] .expedu-timeline .tl-item:hover{
 /* Research – bullet lists (instead of mini-cards) */
 .research-list{
   margin: .6rem 0 0;
-  padding-left: 1.1rem;
+  padding-left: 0;
+  list-style: none;
 }
 
 .research-list li{
   margin: .55rem 0;
+  list-style: none;
 }
 
 .research-list li:not(:last-child) {
