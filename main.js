@@ -1182,49 +1182,52 @@
     // --- Publications render + filter ---
     const renderPubs = (items) => {
       const isIt = state.lang === 'it';
-      const abstractLabel = 'Abstract';
-      const topicsLabel   = isIt ? 'Temi' : 'Topics';
+      const topicsLabel = isIt ? 'Temi' : 'Topics';
 
       $('#pubList').innerHTML = items.length
         ? `<ul class="research-list">
             ${items.map((p) => {
-              const venueLine = [
-                p.venueShort,
-                p.type,
-                [p.city, p.country].filter(Boolean).join(', '),
-                p.date
-              ].filter(Boolean).join(' · ');
-
-              const publisherStatus = [p.publisher, p.status].filter(Boolean).join(' · ');
+              const venueFull = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
+              const locationDate = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
               const topics = Array.isArray(p.topics) ? p.topics : [];
               const links  = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
 
               return `
                 <li>
-                  <div><strong>${p.title}</strong></div>
-                  ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
-                  ${venueLine ? `<div class="pub-meta mt-xs">${venueLine}</div>` : ''}
-                  ${p.venue ? `<div class="pub-meta pub-meta--venue">${p.venue}</div>` : ''}
-                  ${publisherStatus ? `<div class="pub-meta">${publisherStatus}</div>` : ''}
+                  <details class="pub-details">
+                    <summary>
+                      <div class="pub-summary-body">
+                        <div><strong>${p.title}</strong></div>
+                        ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
+                        ${venueFull ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
+                        ${p.badge  ? `<div class="pub-meta">${p.badge}</div>` : ''}
+                      </div>
+                      <span class="pub-toggle" aria-hidden="true"></span>
+                    </summary>
+                    <div class="pub-expanded">
+                      ${locationDate ? `<div class="pub-meta mt-xs">${locationDate}</div>` : ''}
+                      ${p.publisher ? `<div class="pub-meta">${p.publisher}</div>` : ''}
 
-                  ${p.abstract ? `
-                    <div class="pub-meta mt-sm">
-                      <strong>${abstractLabel}:</strong> ${p.abstract}
-                    </div>
-                  ` : ''}
+                      ${p.abstract ? `
+                        <div class="pub-meta mt-sm">
+                          <strong>Abstract:</strong> ${p.abstract}
+                        </div>
+                      ` : ''}
 
-                  ${topics.length ? `
-                    <div class="pub-meta mt-md"><strong>${topicsLabel}:</strong></div>
-                    <div class="tags mt-sm">
-                      ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
-                    </div>
-                  ` : ''}
+                      ${topics.length ? `
+                        <div class="pub-meta mt-md"><strong>${topicsLabel}:</strong></div>
+                        <div class="tags mt-sm">
+                          ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                      ` : ''}
 
-                  ${links.length ? `
-                    <div class="row mt-lg">
-                      ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
+                      ${links.length ? `
+                        <div class="row mt-lg">
+                          ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
+                        </div>
+                      ` : ''}
                     </div>
-                  ` : ''}
+                  </details>
                 </li>
               `;
             }).join('')}

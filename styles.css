@@ -526,6 +526,15 @@ html[data-theme="dark"] .markdown-body figure img{
 .pub-meta{ color:var(--muted); font-size:.98rem; }
 .pub-meta--venue{ font-size:.88rem; font-style:italic; }
 
+/* Per-publication expand/collapse */
+.pub-details > summary { list-style: none; cursor: pointer; user-select: none; display: flex; align-items: flex-start; gap: .5rem; }
+.pub-details > summary::-webkit-details-marker { display: none; }
+.pub-summary-body { flex: 1; }
+.pub-toggle { flex-shrink: 0; color: var(--muted); margin-top: .2rem; font-size: .9rem; }
+.pub-toggle::before { content: '›'; display: inline-block; transition: transform .2s ease; }
+.pub-details[open] > summary .pub-toggle::before { transform: rotate(90deg); }
+.pub-expanded { margin-top: .5rem; padding-top: .2rem; }
+
 .toolbar{
   display:flex;
   flex-wrap:wrap;
@@ -1759,8 +1768,11 @@ html[data-theme="light"] .expedu-timeline .tl-item:hover{
 }
 
 .research-list li:not(:last-child) {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0,0,0,.10);
   padding-bottom: 1.1rem;
+}
+html[data-theme="dark"] .research-list li:not(:last-child) {
+  border-bottom-color: rgba(255,255,255,.10);
 }
 
 .research-list a{
