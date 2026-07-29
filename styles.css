@@ -321,20 +321,32 @@ details.research-section > summary {
   align-items: center;
   gap: .6rem;
   margin: 0 0 1rem;
-  padding: .4rem 0;
-  border-bottom: 2px solid var(--brand);
+  padding: .35rem 0 .35rem .75rem;
+  border-left: 3px solid var(--brand);
   font-size: .9rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--muted);
   cursor: pointer;
   user-select: none;
   background: none;
 }
 
+details.research-section > summary::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0,0,0,.12);
+  order: 1;
+}
+
+html[data-theme="dark"] details.research-section > summary::after {
+  background: rgba(255,255,255,.18);
+}
+
 details.research-section > summary .section-toggle {
-  order: -1;
+  order: 2;
   font-size: .85rem;
   flex-shrink: 0;
   color: var(--muted);
