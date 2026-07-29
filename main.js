@@ -1191,7 +1191,7 @@
             ${items.map((p) => {
               const venueFull = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
               const locationDate = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
-              const badge  = [p.badge, p.year].filter(Boolean).join(' · ');
+              const badge  = [p.year, p.badge].filter(Boolean).join(' · ');
               const topics = Array.isArray(p.topics) ? p.topics : [];
               const links  = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
 

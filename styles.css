@@ -321,6 +321,8 @@ details.research-section > summary {
   align-items: center;
   gap: .6rem;
   margin: 0 0 1rem;
+  padding: .42rem .7rem;
+  border-radius: 7px;
   font-size: .9rem;
   font-weight: 600;
   letter-spacing: .08em;
@@ -328,18 +330,23 @@ details.research-section > summary {
   color: var(--muted);
   cursor: pointer;
   user-select: none;
+  background: rgba(0,0,0,.04);
+}
+
+html[data-theme="dark"] details.research-section > summary {
+  background: rgba(255,255,255,.07);
 }
 
 details.research-section > summary::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: rgba(0,0,0,.12);
+  background: rgba(0,0,0,.10);
   order: 1;
 }
 
 html[data-theme="dark"] details.research-section > summary::after {
-  background: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.12);
 }
 
 details.research-section > summary .section-toggle {
@@ -1778,11 +1785,11 @@ html[data-theme="light"] .expedu-timeline .tl-item:hover{
 }
 
 .research-list li:not(:last-child) {
-  border-bottom: 1px solid rgba(0,0,0,.06);
+  border-bottom: 1px solid rgba(0,0,0,.10);
   padding-bottom: 1.1rem;
 }
 html[data-theme="dark"] .research-list li:not(:last-child) {
-  border-bottom-color: rgba(255,255,255,.06);
+  border-bottom-color: rgba(255,255,255,.10);
 }
 
 .research-list a{
