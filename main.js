@@ -1217,20 +1217,30 @@
                         </div>
                       ` : ''}
 
-                      ${topics.length ? `
-                        <div class="pub-meta mt-md"><strong>${topicsLabel}:</strong></div>
-                        <div class="tags mt-sm">
-                          ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
-                        </div>
+                      ${p.bibtex ? `
+                        <details class="bibtex-details mt-lg">
+                          <summary class="pub-meta"><strong>BibTeX</strong> <span class="bibtex-caret" aria-hidden="true"></span></summary>
+                          <div class="code-block bibtex-code-block">
+                            <span class="code-block-lang-badge">bibtex</span>
+                            <button class="code-block-copy" type="button" aria-label="Copy BibTeX">
+                              <svg class="copy-icon copy-icon--default" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <rect x="4" y="4" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                                <path d="M3 10.5H2.5A1.5 1.5 0 0 1 1 9V2.5A1.5 1.5 0 0 1 2.5 1H9A1.5 1.5 0 0 1 10.5 2.5V3" stroke="currentColor" stroke-width="1.4"/>
+                              </svg>
+                              <svg class="copy-icon copy-icon--check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                              <span class="copy-label">Copy</span>
+                            </button>
+                            <pre><code>${escHtml(p.bibtex)}</code></pre>
+                          </div>
+                        </details>
                       ` : ''}
 
-                      ${p.bibtex ? `
-                        <div class="bibtex-wrap mt-lg">
-                          <div class="bibtex-wrap-header">
-                            <span>BibTeX</span>
-                            <button class="bibtex-copy-btn">Copy</button>
-                          </div>
-                          <pre class="bibtex-pre"><code>${escHtml(p.bibtex)}</code></pre>
+                      ${topics.length ? `
+                        <div class="pub-meta mt-lg"><strong>${topicsLabel}:</strong></div>
+                        <div class="tags mt-sm">
+                          ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
                         </div>
                       ` : ''}
                     </div>
@@ -1264,18 +1274,6 @@
 
       renderPubs(res);
     };
-
-    // BibTeX copy — delegated so it survives innerHTML replacements on filter
-    $('#pubList').addEventListener('click', (e) => {
-      const btn = e.target.closest('.bibtex-copy-btn');
-      if (!btn) return;
-      const code = btn.closest('.bibtex-wrap')?.querySelector('code');
-      if (!code) return;
-      navigator.clipboard.writeText(code.textContent.trim()).then(() => {
-        btn.textContent = '✓ Copied';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-      }).catch(() => {});
-    });
 
     renderPubs(pubs);
   }
