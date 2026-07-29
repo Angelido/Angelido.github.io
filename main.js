@@ -1181,76 +1181,47 @@
 
     // --- Publications render + filter ---
     const renderPubs = (items) => {
-      const labels = state.lang === 'it'
-        ? {
-            conference: 'Conferenza',
-            arxiv: 'arXiv',
-            code: 'Code',
-            short: 'Short paper (PDF)',
-            poster: 'Poster (PDF)'
-          }
-        : {
-            conference: 'Conference',
-            arxiv: 'arXiv',
-            code: 'Code',
-            short: 'Short paper (PDF)',
-            poster: 'Poster (PDF)'
-          };
+      const isIt = state.lang === 'it';
+      const abstractLabel = 'Abstract';
+      const topicsLabel   = isIt ? 'Temi' : 'Topics';
 
       $('#pubList').innerHTML = items.length
         ? `<ul class="research-list">
             ${items.map((p) => {
-              const locationLine = [p.city, p.country].filter(Boolean).join(', ');
-              const dateLine = p.date || '';
-              const typeLine = [p.type, p.eventLink ? (state.lang === 'it' ? 'Conferenza' : 'Conference') : null]
-                .filter(Boolean)
-                .join(' • ');
+              const venueLine = [
+                p.venueShort || p.venue,
+                p.type,
+                [p.city, p.country].filter(Boolean).join(', '),
+                p.date
+              ].filter(Boolean).join(' · ');
+
+              const publisherStatus = [p.publisher, p.status].filter(Boolean).join(' · ');
+              const topics = Array.isArray(p.topics) ? p.topics : [];
+              const links  = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
 
               return `
                 <li>
-                  <!-- 1) Event -->
-                  ${p.event ? `<div><strong>${p.event}</strong></div>` : ''}
-
-                  <!-- 2) Location -->
-                  ${locationLine ? `<div class="pub-meta">${locationLine}</div>` : ''}
-
-                  <!-- 3) Date (riga dedicata, sotto il luogo) -->
-                  ${dateLine ? `<div class="pub-meta">${dateLine}</div>` : ''}
-
-                  <!-- 4) Type • Conference (riga dedicata sotto la data) -->
-                  ${typeLine ? `<div class="pub-meta">${typeLine}</div>` : ''}
-
-                  <!-- 5) Work title -->
-                  ${p.title ? `<div class="mt-lg"><strong>${state.lang === 'it' ? 'Titolo' : 'Title'}:</strong> ${p.title}</div>` : ''}
-
-                  <!-- 6) Authors (subito sotto il titolo) -->
+                  <div><strong>${p.title}</strong></div>
                   ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
+                  ${venueLine ? `<div class="pub-meta mt-xs">${venueLine}</div>` : ''}
+                  ${publisherStatus ? `<div class="pub-meta">${publisherStatus}</div>` : ''}
 
-                  <!-- 7) Description -->
-                  ${p.desc ? `
+                  ${p.abstract ? `
                     <div class="pub-meta mt-sm">
-                      <strong>${state.lang === 'it' ? 'Descrizione' : 'Description'}:</strong> ${p.desc}
+                      <strong>${abstractLabel}:</strong> ${p.abstract}
                     </div>
                   ` : ''}
 
-                  <!-- 8) Keywords -->
-                  ${Array.isArray(p.keywords) && p.keywords.length ? `
-                    <div class="pub-meta mt-xs">
-                      <strong>Keywords:</strong>
-                    </div>
+                  ${topics.length ? `
+                    <div class="pub-meta mt-md"><strong>${topicsLabel}:</strong></div>
                     <div class="tags mt-sm">
-                      ${p.keywords.map((k) => `<span class="tag">${k}</span>`).join('')}
+                      ${topics.map((t) => `<span class="tag">${t}</span>`).join('')}
                     </div>
                   ` : ''}
 
-                  <!-- 9) Links -->
-                  ${(p.eventLink || p.arxiv || p.code || p.shortPdf || p.posterPdf) ? `
+                  ${links.length ? `
                     <div class="row mt-lg">
-                      ${p.eventLink ? `<a class="btn btn-outline" href="${p.eventLink}" target="_blank" rel="noopener">${labels.conference}</a>` : ''}
-                      ${p.arxiv ? `<a class="btn btn-outline" href="${p.arxiv}" target="_blank" rel="noopener">${labels.arxiv}</a>` : ''}
-                      ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank" rel="noopener">${labels.code}</a>` : ''}
-                      ${p.shortPdf ? `<a class="btn btn-outline" href="${p.shortPdf}" target="_blank" rel="noopener">${labels.short}</a>` : ''}
-                      ${p.posterPdf ? `<a class="btn btn-outline" href="${p.posterPdf}" target="_blank" rel="noopener">${labels.poster}</a>` : ''}
+                      ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
                     </div>
                   ` : ''}
                 </li>
@@ -1267,9 +1238,10 @@
       const res = pubs.filter((p) =>
         (!y || String(p.year) === String(y)) &&
         (
-          (p.title || '').toLowerCase().includes(q) ||
-          (p.authors || '').toLowerCase().includes(q) ||
-          (p.venue || '').toLowerCase().includes(q)
+          (p.title      || '').toLowerCase().includes(q) ||
+          (p.authors    || '').toLowerCase().includes(q) ||
+          (p.venue      || '').toLowerCase().includes(q) ||
+          (p.venueShort || '').toLowerCase().includes(q)
         )
       );
 
@@ -1381,19 +1353,21 @@
 
     const render = (items) => {
       $('#pubList').innerHTML = items
-        .map(
-          (p) => `
-          <article class="pub-card">
-            <h3>${p.title}</h3>
-            <div class="pub-meta">${p.authors} — ${p.venue || ''} (${p.year || ''})</div>
-            <div class="row">
-              ${p.pdf ? `<a class="btn" href="${p.pdf}" target="_blank">PDF</a>` : ''}
-              ${p.doi ? `<a class="btn btn-outline" href="${p.doi}" target="_blank">DOI</a>` : ''}
-              ${p.code ? `<a class="btn btn-outline" href="${p.code}" target="_blank">Code</a>` : ''}
-            </div>
-          </article>
-        `
-        )
+        .map((p) => {
+          const links = Array.isArray(p.links) ? p.links.filter((l) => l.url) : [];
+          return `
+            <article class="pub-card">
+              <h3>${p.title}</h3>
+              <div class="pub-meta">${p.authors || ''}</div>
+              <div class="pub-meta">${[p.venueShort || p.venue, p.year].filter(Boolean).join(' · ')}</div>
+              ${links.length ? `
+                <div class="row">
+                  ${links.map((l) => `<a class="btn btn-outline" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}
+                </div>
+              ` : ''}
+            </article>
+          `;
+        })
         .join('');
     };
 
