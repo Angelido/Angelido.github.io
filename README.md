@@ -3,6 +3,9 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fangelido.github.io&style=flat-square&label=website)](https://angelido.github.io/)
 [![Last commit](https://img.shields.io/github/last-commit/Angelido/Angelido.github.io?style=flat-square&label=last%20update)](https://github.com/Angelido/Angelido.github.io/commits/main)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![Hosted on GitHub Pages](https://img.shields.io/badge/hosted%20on-GitHub%20Pages-222?style=flat-square&logo=github)](https://angelido.github.io/)
+[![Repo size](https://img.shields.io/github/repo-size/Angelido/Angelido.github.io?style=flat-square&label=repo%20size)](https://github.com/Angelido/Angelido.github.io)
+[![Map: Leaflet](https://img.shields.io/badge/map-Leaflet-199900?style=flat-square&logo=leaflet)](https://leafletjs.com/)
 
 > A lightweight, static personal website built with **HTML**, **CSS**, and **vanilla JavaScript** — designed to present my academic profile, research, and writing in one place.
 
