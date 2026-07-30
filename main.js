@@ -1214,12 +1214,16 @@
       $('#pubList').innerHTML = items.length
         ? `<ul class="research-list">
             ${items.map((p) => {
-              const venueFull     = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
-              const locationDate  = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
-              const badge         = [p.year, p.badge].filter(Boolean).join(' · ');
-              const authorsHtml   = formatAuthors(p.authors);
-              const topics        = Array.isArray(p.topics) ? p.topics : [];
-              const links         = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
+              const venueFull    = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
+              const locationDate = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
+              const badge        = [p.year, p.badge].filter(Boolean).join(' · ');
+              const authorsHtml  = formatAuthors(p.authors);
+              const topics       = Array.isArray(p.topics) ? p.topics : [];
+              const confLabel    = isIt ? 'Conferenza' : 'Conference';
+              const links        = [
+                ...(p.venueLink ? [{ label: confLabel, url: p.venueLink }] : []),
+                ...(Array.isArray(p.links) ? p.links.filter((l) => l.url) : [])
+              ];
 
               return `
                 <li>
@@ -1228,11 +1232,9 @@
                       <div class="pub-summary-body">
                         <div><strong>${p.title}</strong></div>
                         ${authorsHtml ? `<div class="pub-meta">${authorsHtml}</div>` : ''}
+                        ${p.status    ? `<div class="pub-meta">${reviewBadge(p.status)}</div>` : ''}
                         ${venueFull   ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
-                        <div class="pub-meta pub-badge-row">
-                          ${badge ? `<span>${badge}</span>` : ''}
-                          ${reviewBadge(p.status)}
-                        </div>
+                        ${badge       ? `<div class="pub-meta">${badge}</div>` : ''}
                       </div>
                       <span class="pub-toggle" aria-hidden="true"></span>
                     </summary>

@@ -528,7 +528,6 @@ html[data-theme="dark"] .markdown-body figure img{
 
 .pub-meta{ color:var(--muted); font-size:.98rem; }
 .pub-meta--venue{ font-size:.88rem; font-style:italic; }
-.pub-badge-row{ display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
 .pub-review-badge{ font-size:.78rem; font-weight:600; letter-spacing:.02em; }
 .pub-review-badge--peer   { color:#1a7f37; }
 .pub-review-badge--preprint{ color:#9a6700; }
