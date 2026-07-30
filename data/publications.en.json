@@ -17,7 +17,7 @@
     "topics": ["Lossless Compression", "Source Code Compression", "Large Language Models", "Symbol Ranking", "Algorithms"],
     "links": [
       { "label": "arXiv", "url": "https://arxiv.org/abs/2607.24192" },
-      { "label": "PDF",   "url": "assets/pdf/aixia2026-paper-v1.pdf" }
+      { "label": "Paper", "url": "assets/pdf/aixia2026-paper-v1.pdf" }
     ],
     "bibtex": "@misc{nardone2026llmbasedsourcecodecompression,\n  title        = {LLM-based Source Code Compression via Thresholded Symbol Ranking},\n  author       = {Angelo Nardone and Paolo Ferragina},\n  year         = {2026},\n  eprint       = {2607.24192},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.IT},\n  url          = {https://arxiv.org/abs/2607.24192}\n}"
   },
