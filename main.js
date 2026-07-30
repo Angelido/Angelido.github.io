@@ -1219,11 +1219,7 @@
               const badge        = [p.year, p.badge].filter(Boolean).join(' · ');
               const authorsHtml  = formatAuthors(p.authors);
               const topics       = Array.isArray(p.topics) ? p.topics : [];
-              const confLabel    = isIt ? 'Conferenza' : 'Conference';
-              const links        = [
-                ...(p.venueLink ? [{ label: confLabel, url: p.venueLink }] : []),
-                ...(Array.isArray(p.links) ? p.links.filter((l) => l.url) : [])
-              ];
+              const links        = Array.isArray(p.links) ? p.links.filter((l) => l.url) : [];
 
               return `
                 <li>
@@ -1233,7 +1229,7 @@
                         <div><strong>${p.title}</strong></div>
                         ${authorsHtml ? `<div class="pub-meta">${authorsHtml}</div>` : ''}
                         ${p.status    ? `<div class="pub-meta">${reviewBadge(p.status)}</div>` : ''}
-                        ${venueFull   ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
+                        ${venueFull   ? `<div class="pub-meta pub-meta--venue">${p.venueLink ? `<a class="inline-link" href="${p.venueLink}" target="_blank" rel="noopener">${venueFull}</a>` : venueFull}</div>` : ''}
                         ${badge       ? `<div class="pub-meta">${badge}</div>` : ''}
                       </div>
                       <span class="pub-toggle" aria-hidden="true"></span>
