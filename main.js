@@ -140,7 +140,7 @@
   async function loadData() {
     const base = 'data';
 
-    const [profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv] = await Promise.all([
+    const [profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv, places] = await Promise.all([
       fetch(`${base}/profile.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/posts.${state.lang}.json`).then((r) => r.json()),
       fetch(`${base}/education.${state.lang}.json`).then((r) => r.json()),
@@ -154,10 +154,11 @@
       fetch(`${base}/schools.${state.lang}.json`).then((r) => r.json()),
 
       fetch(`${base}/social.json`).then((r) => r.json()),
-      fetch(`${base}/cv.json`).then((r) => r.json())
+      fetch(`${base}/cv.json`).then((r) => r.json()),
+      fetch(`${base}/places.json`).then((r) => r.json()),
     ]);
 
-    state.data = { profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv };
+    state.data = { profile, posts, education, experience, publications, topics, talks, projects, schools, social, cv, places };
 
   }
 
@@ -171,6 +172,7 @@
     '/research': renderResearch,
     '/experience': renderExperience,
     '/cv': renderCV,
+    '/map': renderMap,
     '/research/publications': renderPublications,
     '/privacy': renderPrivacy
   };
@@ -1303,6 +1305,107 @@
     };
 
     renderPubs(pubs);
+  }
+
+  /* =========================================================
+     Academic Map
+  ========================================================== */
+  function renderMap() {
+    const app = $('#app');
+    const places = state.data.places || [];
+
+    const isIt = state.lang === 'it';
+    const pageTitle  = isIt ? 'Mappa accademica' : 'Academic Map';
+    const pageIntro  = isIt
+      ? 'Luoghi che hanno fatto parte del mio percorso accademico.'
+      : 'Places that have shaped my academic journey.';
+
+    const typeLabels = {
+      conference: isIt ? 'Conferenza'    : 'Conference',
+      school:     isIt ? 'Scuola estiva' : 'Summer School',
+      workshop:   isIt ? 'Workshop'      : 'Workshop',
+      office:     isIt ? 'Sede di lavoro': 'Workplace',
+    };
+
+    const typeColors = {
+      conference: '#b85020',
+      school:     '#2563eb',
+      workshop:   '#7c3aed',
+      office:     '#059669',
+    };
+
+    app.innerHTML = `
+      ${pageHeaderHTML(pageTitle, pageIntro)}
+      <section class="section">
+        <div id="academic-map"></div>
+        <div class="map-legend">
+          ${Object.entries(typeLabels).map(([type, label]) => `
+            <span class="map-legend-item">
+              <span class="map-legend-dot" style="background:${typeColors[type]}"></span>
+              ${label}
+            </span>
+          `).join('')}
+        </div>
+      </section>
+    `;
+
+    requestAnimationFrame(() => {
+      const container = document.getElementById('academic-map');
+      if (!container || typeof L === 'undefined') return;
+
+      const map = L.map(container, { zoomControl: true }).setView([45, 8], 5);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19,
+      }).addTo(map);
+
+      const makeIcon = (type) => {
+        const c = typeColors[type] || '#6b7280';
+        return L.divIcon({
+          className: '',
+          html: `<svg width="26" height="34" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 0C5.82 0 0 5.82 0 13C0 22.75 13 34 13 34C13 34 26 22.75 26 13C26 5.82 20.18 0 13 0Z"
+                  fill="${c}" stroke="rgba(255,255,255,.75)" stroke-width="1.5"/>
+            <circle cx="13" cy="12.5" r="5" fill="white" opacity="0.55"/>
+          </svg>`,
+          iconSize:    [26, 34],
+          iconAnchor:  [13, 34],
+          popupAnchor: [0, -36],
+        });
+      };
+
+      places.forEach((place) => {
+        const dominantType = place.events?.[0]?.type || 'office';
+        const icon = makeIcon(dominantType);
+
+        const eventsHtml = (place.events || []).map((ev) => `
+          <li class="map-popup-event">
+            <span class="map-popup-badge" style="--badge-color:${typeColors[ev.type] || '#6b7280'}">
+              ${typeLabels[ev.type] || ev.type}
+            </span>
+            <div class="map-popup-title">${ev.title}</div>
+            ${ev.role       ? `<div class="map-popup-meta">${ev.role}${ev.institution ? ' &middot; ' + ev.institution : ''}</div>` : ''}
+            ${!ev.role && ev.institution ? `<div class="map-popup-meta">${ev.institution}</div>` : ''}
+            ${ev.note       ? `<div class="map-popup-note">${ev.note}</div>` : ''}
+            <div class="map-popup-date">${ev.date}</div>
+          </li>
+        `).join('');
+
+        const popup = `
+          <div class="map-popup">
+            <div class="map-popup-city">${place.city}<span class="map-popup-country">, ${place.country}</span></div>
+            <ul class="map-popup-events">${eventsHtml}</ul>
+          </div>
+        `;
+
+        L.marker([place.lat, place.lng], { icon })
+          .addTo(map)
+          .bindPopup(popup, { maxWidth: 290, className: 'academic-popup' });
+      });
+    });
   }
 
   function renderCV() {

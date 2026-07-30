@@ -1,0 +1,86 @@
+[
+  {
+    "city": "Pisa",
+    "country": "Italy",
+    "lat": 43.7215,
+    "lng": 10.3915,
+    "events": [
+      {
+        "type": "office",
+        "title": "University of Pisa — PhD Student",
+        "institution": "Room 304, Department of Computer Science",
+        "date": "2024 – present"
+      },
+      {
+        "type": "workshop",
+        "title": "A3Lab Inaugural Workshop: Algorithms, AI & Society",
+        "institution": "Scuola Superiore Sant'Anna",
+        "role": "Speaker",
+        "date": "January 21, 2026"
+      }
+    ]
+  },
+  {
+    "city": "London",
+    "country": "United Kingdom",
+    "lat": 51.5265,
+    "lng": -0.1025,
+    "events": [
+      {
+        "type": "workshop",
+        "title": "Sequences in London 2026",
+        "institution": "City, University of London (Bayes Business School)",
+        "role": "Speaker",
+        "note": "Lossless Compression of Source Code using Large Language Models",
+        "date": "February 5–6, 2026"
+      }
+    ]
+  },
+  {
+    "city": "Lipari",
+    "country": "Italy",
+    "lat": 38.4675,
+    "lng": 14.9539,
+    "events": [
+      {
+        "type": "school",
+        "title": "Lipari School on Computational Complex and Social Systems",
+        "institution": "Agentic AI: algorithms, tools and platforms",
+        "role": "Student",
+        "date": "June 28 – July 4, 2026"
+      }
+    ]
+  },
+  {
+    "city": "Milan",
+    "country": "Italy",
+    "lat": 45.4642,
+    "lng": 9.1900,
+    "events": [
+      {
+        "type": "conference",
+        "title": "CIBB 2025",
+        "institution": "Int'l Conference on Computational Intelligence Methods for Bioinformatics and Biostatistics",
+        "role": "Co-author",
+        "note": "MIEO: encoding clinical data to enhance cardiovascular event prediction",
+        "date": "September 10–12, 2025"
+      }
+    ]
+  },
+  {
+    "city": "Perugia",
+    "country": "Italy",
+    "lat": 43.1107,
+    "lng": 12.3909,
+    "events": [
+      {
+        "type": "conference",
+        "title": "AIxIA 2026",
+        "institution": "24th Int'l Conference of the Italian Association for Artificial Intelligence",
+        "role": "Author",
+        "note": "LLM-based Source Code Compression via Thresholded Symbol Ranking",
+        "date": "October 6–9, 2026"
+      }
+    ]
+  }
+]

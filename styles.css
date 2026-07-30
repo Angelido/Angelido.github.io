@@ -226,43 +226,44 @@ img{
   background:transparent;
 }
 
-/* Section divider heading — typographic anchor for expedu page */
-.expedu-panel-head h2 {
+/* Expedu accordion — matches research-section style */
+details.expedu-panel > summary { list-style: none; }
+details.expedu-panel > summary::-webkit-details-marker { display: none; }
+
+details.expedu-panel > summary.expedu-panel-head {
   display: flex;
   align-items: center;
   gap: .6rem;
+  margin: 0 0 1rem;
+  padding: .35rem 0 .35rem .75rem;
+  border-left: 3px solid var(--brand);
+  cursor: pointer;
+  user-select: none;
+}
+
+.expedu-panel-head h2 {
   margin: 0;
   font-size: .9rem;
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--muted);
-  flex: 1;
 }
 
-.expedu-panel-head h2::after {
+details.expedu-panel > summary.expedu-panel-head::after {
   content: '';
   flex: 1;
   height: 1px;
   background: rgba(0,0,0,.12);
+  order: 1;
 }
 
-html[data-theme="dark"] .expedu-panel-head h2::after {
+html[data-theme="dark"] details.expedu-panel > summary.expedu-panel-head::after {
   background: rgba(255,255,255,.18);
 }
 
-/* Expedu accordion */
-details.expedu-panel > summary { list-style: none; }
-details.expedu-panel > summary::-webkit-details-marker { display: none; }
-
-details.expedu-panel > summary.expedu-panel-head {
-  cursor: pointer;
-  user-select: none;
-  align-items: center;
-}
-
 details.expedu-panel > summary .section-toggle {
-  order: -1;
+  order: 2;
   font-size: .85rem;
   flex-shrink: 0;
   color: var(--muted);
@@ -1732,9 +1733,16 @@ html[data-theme="dark"] .expedu-count {
   grid-template-columns: auto 1fr;
   gap: 0 1rem;
   padding-left: 0;
-  border-radius: 12px;
-  padding-top: .35rem;
-  padding-bottom: .35rem;
+  padding-top: .55rem;
+  padding-bottom: .55rem;
+}
+
+.expedu-timeline .tl-item:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,.10);
+}
+
+html[data-theme="dark"] .expedu-timeline .tl-item:not(:last-child) {
+  border-bottom-color: rgba(255,255,255,.10);
 }
 
 .expedu-timeline .tl-year {
@@ -1758,12 +1766,6 @@ html[data-theme="dark"] .expedu-timeline .tl-year {
   border-color: rgba(255,255,255,.20);
 }
 
-.expedu-timeline .tl-item:hover{
-  background: rgba(255,255,255,.04);
-}
-html[data-theme="light"] .expedu-timeline .tl-item:hover{
-  background: rgba(15,23,42,.03);
-}
 
 
 @media (max-width: 900px){
@@ -2779,5 +2781,149 @@ html[data-theme="dark"] .example-box-title{
 
   .post-toc-link.active::before{
     background: var(--brand);
+  }
+}
+/* =========================================================
+   Academic Map page
+========================================================= */
+
+#academic-map {
+  width: 100%;
+  height: calc(100vh - 280px);
+  min-height: 380px;
+  max-height: 560px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.08);
+  margin-bottom: 1.2rem;
+}
+
+html[data-theme="dark"] #academic-map {
+  border-color: rgba(255,255,255,.09);
+}
+
+/* Map legend */
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.4rem;
+  margin-bottom: 2rem;
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .8rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Leaflet popup overrides */
+.academic-popup .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  border: 1px solid rgba(0,0,0,.07);
+}
+
+.academic-popup .leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+}
+
+.academic-popup .leaflet-popup-tip {
+  box-shadow: none;
+}
+
+/* Popup inner layout */
+.map-popup {
+  padding: .9rem 1rem 1rem;
+  min-width: 200px;
+}
+
+.map-popup-city {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #1c1410;
+  margin-bottom: .7rem;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  padding-bottom: .5rem;
+}
+
+.map-popup-country {
+  font-weight: 400;
+  color: #6b6560;
+  font-size: .85rem;
+}
+
+.map-popup-events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.map-popup-event {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+}
+
+.map-popup-event + .map-popup-event {
+  padding-top: .75rem;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.map-popup-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--badge-color) 12%, transparent);
+  color: var(--badge-color);
+  width: fit-content;
+}
+
+.map-popup-title {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #1c1410;
+  line-height: 1.35;
+}
+
+.map-popup-meta {
+  font-size: .75rem;
+  color: #6b6560;
+}
+
+.map-popup-note {
+  font-size: .75rem;
+  color: #6b6560;
+  font-style: italic;
+}
+
+.map-popup-date {
+  font-size: .72rem;
+  color: #9e9890;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  #academic-map {
+    height: 60vh;
+    min-height: 320px;
   }
 }

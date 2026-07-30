@@ -2,6 +2,10 @@
 
 > A lightweight, static personal website built with **HTML**, **CSS**, and **vanilla JavaScript** — designed to present my academic profile, research, and writing in one place.
 
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fangelido.github.io&style=flat-square&label=website)](https://angelido.github.io/)
+[![Last commit](https://img.shields.io/github/last-commit/Angelido/Angelido.github.io?style=flat-square&label=last%20update)](https://github.com/Angelido/Angelido.github.io/commits/main)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+
 ### 🌐 Live Website
 
 <a href="https://angelido.github.io/" target="_blank" rel="noopener">
@@ -25,17 +29,18 @@ The design philosophy is *minimalism with purpose* — fast to load, easy to nav
 ```
 /
 ├── index.html              # Main entry point
-├── style.css               # Stylesheet
-├── script.js               # JavaScript logic
+├── styles.css              # Stylesheet
+├── main.js                 # JavaScript logic
 │
 ├── data/                   # 📊 JSON files with site content
 │   ├── publications.json   #    Research publications
+│   ├── places.json         #    Academic map locations
 │   ├── projects.json       #    Academic projects & interests
 │   └── ...
 │
 ├── i18n/                   # 🌐 Internationalization & section labels
-│   ├── ui.en.json             #    English strings (titles, headings, UI)
-│   └── ui.it.json             #    Italian strings (titles, headings, UI)
+│   ├── ui.en.json          #    English strings (titles, headings, UI)
+│   └── ui.it.json          #    Italian strings (titles, headings, UI)
 │
 ├── posts/                  # ✍️ Blog & writing
 │   ├── post-title.md       #    Markdown files, one per post
