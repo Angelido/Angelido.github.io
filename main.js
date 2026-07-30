@@ -1182,6 +1182,31 @@
     // --- Publications render + filter ---
     const escHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+    const formatAuthors = (str) => {
+      if (!str) return '';
+      const authors = str.split(', ').map((name) => {
+        const tokens = name.trim().split(' ');
+        if (tokens.length < 2) return name;
+        const last     = tokens[tokens.length - 1];
+        const initials = tokens.slice(0, -1).map((t) => t[0] + '.').join(' ');
+        const abbr     = `${initials} ${last}`;
+        return abbr === 'A. Nardone'
+          ? `<strong>${abbr}</strong>`
+          : abbr;
+      });
+      if (authors.length === 1) return authors[0];
+      if (authors.length === 2) return authors.join(' and ');
+      return authors.slice(0, -1).join(', ') + ', and ' + authors[authors.length - 1];
+    };
+
+    const peerReviewedStatuses = new Set(['to appear', 'published', 'in pubblicazione']);
+    const reviewBadge = (status) => {
+      if (!status) return '';
+      return peerReviewedStatuses.has(status.toLowerCase())
+        ? `<span class="pub-review-badge pub-review-badge--peer">● Peer-reviewed</span>`
+        : `<span class="pub-review-badge pub-review-badge--preprint">● Preprint</span>`;
+    };
+
     const renderPubs = (items) => {
       const isIt = state.lang === 'it';
       const topicsLabel = isIt ? 'Temi' : 'Topics';
@@ -1189,11 +1214,12 @@
       $('#pubList').innerHTML = items.length
         ? `<ul class="research-list">
             ${items.map((p) => {
-              const venueFull = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
-              const locationDate = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
-              const badge  = [p.year, p.badge].filter(Boolean).join(' · ');
-              const topics = Array.isArray(p.topics) ? p.topics : [];
-              const links  = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
+              const venueFull     = [p.venue, p.venueShort ? `(${p.venueShort})` : null].filter(Boolean).join(' ');
+              const locationDate  = [[p.city, p.country].filter(Boolean).join(', '), p.date].filter(Boolean).join(' · ');
+              const badge         = [p.year, p.badge].filter(Boolean).join(' · ');
+              const authorsHtml   = formatAuthors(p.authors);
+              const topics        = Array.isArray(p.topics) ? p.topics : [];
+              const links         = Array.isArray(p.links)  ? p.links.filter((l) => l.url) : [];
 
               return `
                 <li>
@@ -1201,9 +1227,12 @@
                     <summary>
                       <div class="pub-summary-body">
                         <div><strong>${p.title}</strong></div>
-                        ${p.authors ? `<div class="pub-meta">${p.authors}</div>` : ''}
-                        ${venueFull ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
-                        ${badge     ? `<div class="pub-meta">${badge}</div>` : ''}
+                        ${authorsHtml ? `<div class="pub-meta">${authorsHtml}</div>` : ''}
+                        ${venueFull   ? `<div class="pub-meta pub-meta--venue">${venueFull}</div>` : ''}
+                        <div class="pub-meta pub-badge-row">
+                          ${badge ? `<span>${badge}</span>` : ''}
+                          ${reviewBadge(p.status)}
+                        </div>
                       </div>
                       <span class="pub-toggle" aria-hidden="true"></span>
                     </summary>
