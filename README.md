@@ -17,7 +17,7 @@
 
 ## 👤 About
 
-This site serves as my digital home base: a single-page application that brings together my **academic profile**, **research interests**, **publications**, **posts**, and personal background.
+This site serves as my digital home base: a single-page application that brings together my **academic profile**, **research interests**, **publications**, **posts**, an interactive **academic map**, and personal background.
 
 The design philosophy is *minimalism with purpose* — fast to load, easy to navigate, and focused entirely on content.
 
@@ -25,7 +25,8 @@ The design philosophy is *minimalism with purpose* — fast to load, easy to nav
 
 - **HTML5** — semantic, accessible markup  
 - **CSS3** — custom styling, no frameworks  
-- **Vanilla JavaScript** — lightweight interactivity, zero dependencies  
+- **Vanilla JavaScript** — lightweight interactivity, minimal dependencies  
+- **Leaflet.js** — interactive academic map (via CDN)  
 
 ## 📁 Project Structure
 
