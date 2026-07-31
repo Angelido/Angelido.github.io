@@ -685,21 +685,31 @@
     app.innerHTML = `
       ${pageHeaderHTML(pageTitle, intro)}
 
-      <section class="section posts-toolbar">
-        <div class="posts-toolbar-inner">
-          <div class="posts-toolbar-spacer"></div>
-
+      <section class="section posts-section">
+        <div class="posts-list-header">
+          <span class="posts-count" id="postsCount"></span>
           <div class="posts-filter">
-            <label class="posts-filter-label" for="tagSel">${filterLabel}</label>
-            <select id="tagSel" class="input posts-filter-select">
-              <option value="">${allTagsLabel}</option>
-              ${allTags.map(t => `<option value="${t}">${t}</option>`).join('')}
-            </select>
+            <button class="filter-toggle" id="filterToggle" aria-expanded="false">
+              <svg class="filter-toggle-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="13" height="13">
+                <line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="6" y1="12" x2="10" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <span class="filter-toggle-text">${filterLabel}</span>
+              <span class="filter-toggle-sep">·</span>
+              <span class="filter-toggle-value" id="filterValue">${allTagsLabel}</span>
+              <svg class="filter-toggle-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="12" height="12">
+                <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="tag-chips" id="tagChips">
+              <button class="tag-chip tag-chip--active" data-tag="">${allTagsLabel}</button>
+              ${allTags.map(t => `<button class="tag-chip" data-tag="${t}">${t}</button>`).join('')}
+            </div>
           </div>
         </div>
+        <div id="postsList"></div>
       </section>
-
-      <section class="section posts-flat-list" id="postsList"></section>
 
       <div class="posts-pagination" id="postsPagination"></div>
     `;
@@ -778,6 +788,9 @@
           }).join('')
         : `<p class="pub-meta">${emptyLabel}</p>`;
 
+      const countEl = $('#postsCount');
+      if (countEl) countEl.textContent = `${total} ${total === 1 ? 'post' : 'posts'}`;
+
       // Pagination
       if (totalPages > 1) {
         const prevDisabled = page <= 1;
@@ -816,14 +829,60 @@
       }
     };
 
+    const activeTags = new Set();
+
     const applyFilter = () => {
-      const sel = $('#tagSel').value;
-      currentItems = !sel ? posts : posts.filter(p => (p.tags || []).map(String).includes(sel));
+      currentItems = activeTags.size === 0
+        ? posts
+        : posts.filter(p => (p.tags || []).some(t => activeTags.has(String(t))));
       currentPage = 1;
       renderPage(currentItems, currentPage, readingMinutes);
     };
 
-    $('#tagSel').addEventListener('change', applyFilter);
+    const filterToggleEl = $('#filterToggle');
+    const tagChipsEl = $('#tagChips');
+    const filterValueEl = $('#filterValue');
+
+    const updateToggleLabel = () => {
+      if (activeTags.size === 0) {
+        filterValueEl.textContent = allTagsLabel;
+      } else if (activeTags.size === 1) {
+        filterValueEl.textContent = [...activeTags][0];
+      } else {
+        filterValueEl.textContent = `${activeTags.size} tags`;
+      }
+    };
+
+    filterToggleEl.addEventListener('click', () => {
+      const isOpen = tagChipsEl.classList.contains('is-open');
+      tagChipsEl.classList.toggle('is-open', !isOpen);
+      filterToggleEl.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    tagChipsEl.addEventListener('click', e => {
+      const chip = e.target.closest('.tag-chip');
+      if (!chip) return;
+      const tag = chip.dataset.tag || '';
+
+      if (tag === '') {
+        activeTags.clear();
+        $$('.tag-chip', tagChipsEl).forEach(c => c.classList.toggle('tag-chip--active', c.dataset.tag === ''));
+        tagChipsEl.classList.remove('is-open');
+        filterToggleEl.setAttribute('aria-expanded', 'false');
+      } else {
+        if (activeTags.has(tag)) {
+          activeTags.delete(tag);
+        } else {
+          activeTags.add(tag);
+        }
+        const allChip = tagChipsEl.querySelector('[data-tag=""]');
+        if (allChip) allChip.classList.toggle('tag-chip--active', activeTags.size === 0);
+        chip.classList.toggle('tag-chip--active', activeTags.has(tag));
+      }
+
+      updateToggleLabel();
+      applyFilter();
+    });
 
     // Fetch all markdown files in parallel to compute real reading times
     const readingMinutes = {};
@@ -883,6 +942,30 @@
     const readMins = mdText ? Math.max(1, Math.round(words / 200)) + 1 : 1;
     const minReadLabel = state.lang === 'it' ? 'min di lettura' : 'min read';
 
+    // Related posts
+    const relatedIds = Array.isArray(p.related) ? p.related : [];
+    const relatedPosts = relatedIds.map(id => posts.find(x => String(x.id) === String(id))).filter(Boolean);
+    const seeAlsoLabel = state.lang === 'it' ? 'Vedi anche' : 'See also';
+    const relatedHTML = relatedPosts.length ? `
+      <div class="post-related">
+        <div class="post-related-label">${seeAlsoLabel}</div>
+        <div class="post-related-list">
+          ${relatedPosts.map(rp => {
+            const rDate = formatPostDate(rp.date);
+            return `
+              <a class="post-related-item" href="#/posts/${encodeURIComponent(rp.id)}">
+                <div class="post-related-content">
+                  <div class="post-related-title">${rp.title || ''}</div>
+                  ${rp.abstract ? `<div class="post-related-abstract">${rp.abstract}</div>` : ''}
+                  ${rDate ? `<div class="post-related-meta">${rDate}</div>` : ''}
+                </div>
+              </a>
+            `;
+          }).join('<div class="post-related-sep"></div>')}
+        </div>
+      </div>
+    ` : '';
+
     app.innerHTML = `
     <section class="section post-shell">
       ${showTOC ? `<aside class="post-toc" aria-hidden="false"></aside>` : ``}
@@ -932,6 +1015,8 @@
         <div class="post-page-body markdown-body">
           ${bodyHtml}
         </div>
+
+        ${relatedHTML}
 
         <div class="post-page-footer">
           <a href="#/posts" class="post-back-link">
