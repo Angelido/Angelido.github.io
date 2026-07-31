@@ -14,10 +14,11 @@
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
     "abstract": "My first talk abroad, at Sequences in London. Research, new connections, and a return to London.",
-    "tags": ["talk", "conference", "lossless-compression"],
+    "tags": ["talk", "workshop", "lossless-compression", "travel"],
     "image": "assets/img/[2026]_London.jpg",
     "content": "posts/Sequences2026.en.md",
-    "showToc": false
+    "showToc": false,
+    "related": ["lipari-school-2026"]
   },
   {
     "id": "bentley_mcilroy",
@@ -28,5 +29,16 @@
     "image": "",
     "content": "posts/bentley_mcilroy.en.md",
     "showToc": true
+  },
+  {
+    "id": "lipari-school-2026",
+    "title": "Lipari School 2026 on Agentic AI",
+    "date": "2026-07-31",
+    "abstract": "A week at the Lipari School, between agentic AI, volcanic islands, and unexpected twists.",
+    "tags": ["talk", "summer-school", "artificial-intelligence", "travel"],
+    "image": "assets/img/[2026]_LipariGroup.JPG",
+    "content": "posts/Lipari2026.en.md",
+    "showToc": true,
+    "related": ["sequences-london-2026"]
   }
 ]

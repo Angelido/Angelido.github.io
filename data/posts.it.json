@@ -15,20 +15,32 @@
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
     "abstract": "Il mio primo talk all'estero, a Sequences in London. Ricerca, nuove connessioni, e un ritorno a Londra.",
-    "tags": ["talk", "conference", "lossless-compression"],
+    "tags": ["talk", "workshop", "lossless-compression", "travel"],
     "image": "assets/img/[2026]_London.jpg",
     "imageSide": "left",
     "content": "posts/Sequences2026.it.md",
-    "showToc": false
+    "showToc": false,
+    "related": ["lipari-school-2026"]
   },
   {
     "id": "bentley_mcilroy",
     "title": "L'algoritmo di compressione Bentley–McIlroy",
     "date": "2026-03-08",
-    "abstract": "Una breve panoramica dell’algoritmo di Bentley–McIlroy per la compressione lossless basata sulla ricerca di lunghe sottostringhe ripetute.",
+    "abstract": "Una breve panoramica dell'algoritmo di Bentley–McIlroy per la compressione lossless basata sulla ricerca di lunghe sottostringhe ripetute.",
     "tags": ["lossless-compression", "algorithm", "github"],
     "image": "",
     "content": "posts/bentley_mcilroy.it.md",
     "showToc": true
+  },
+  {
+    "id": "lipari-school-2026",
+    "title": "Lipari School 2026 sull'Agentic AI",
+    "date": "2026-07-31",
+    "abstract": "Una settimana alla Lipari School, tra agentic AI, isole vulcaniche e qualche imprevisto.",
+    "tags": ["talk", "summer-school", "artificial-intelligence", "travel"],
+    "image": "assets/img/[2026]_LipariGroup.JPG",
+    "content": "posts/Lipari2026.it.md",
+    "showToc": true,
+    "related": ["sequences-london-2026"]
   }
 ]
