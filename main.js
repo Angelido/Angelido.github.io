@@ -163,7 +163,7 @@
   }
 
   /* =========================================================
-     Router (hash-based)
+     Router (History API)
   ========================================================== */
   const routes = {
     '/home': renderAcademicHome,
@@ -177,13 +177,13 @@
     '/privacy': renderPrivacy
   };
 
-  function parseHash() {
-    const h = location.hash.replace(/^#/, '');
-    return h || '/home';
+  function parsePath() {
+    const p = location.pathname;
+    return p === '/' || p === '' ? '/home' : p;
   }
 
   function updateActiveNavLinks() {
-    const path = parseHash();
+    const path = parsePath();
     const navPath = path.startsWith('/posts/') ? '/posts' : path;
 
     $$('.nav-item[data-route]').forEach((link) => {
@@ -191,8 +191,13 @@
     });
   }
 
+  function navigate(href) {
+    if (href !== location.pathname) history.pushState({}, '', href);
+    onRouteChange();
+  }
+
   function onRouteChange() {
-    const path = parseHash();
+    const path = parsePath();
 
     // Dynamic post route: /posts/<id>
     if (path.startsWith('/posts/') && path.split('/').length >= 3) {
@@ -735,11 +740,48 @@
 
 
   /* =========================================================
+     Page meta helpers
+  ========================================================== */
+  function setPageMeta(title, description) {
+    const siteName = 'Angelo Nardone';
+    const fullTitle = title ? `${title} — ${siteName}` : siteName;
+    document.title = fullTitle;
+    const set = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+    set('meta[name="description"]',        description || '');
+    set('meta[property="og:title"]',       fullTitle);
+    set('meta[property="og:description"]', description || '');
+    set('meta[property="og:url"]',         location.href);
+    set('meta[name="twitter:title"]',      fullTitle);
+    set('meta[name="twitter:description"]',description || '');
+    const ldArticle = document.getElementById('ld-article');
+    if (ldArticle) ldArticle.remove();
+  }
+
+  function setArticleJsonLd(p) {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'ld-article';
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      'headline': p.title || '',
+      'description': p.abstract || '',
+      'datePublished': p.date || '',
+      'author': { '@type': 'Person', 'name': 'Angelo Nardone', 'url': 'https://angelido.github.io/' },
+      'url': location.href
+    });
+    document.head.appendChild(script);
+  }
+
+  /* =========================================================
      Views
   ========================================================== */
   function renderAcademicHome() {
     const { profile } = state.data;
     const app = $('#app');
+    setPageMeta(null, state.lang === 'it'
+      ? 'Dottorando in Informatica all\'Università di Pisa. Compressione lossless, algoritmi su stringhe e Large Language Models.'
+      : 'PhD Student in Computer Science at the University of Pisa. Lossless compression, string algorithms and Large Language Models.');
 
     // Latest post (first by date desc)
     const posts = (state.data.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
@@ -789,7 +831,7 @@
           <div class="home-latest-title">${latestTitle}</div>
 
           ${latest ? `
-            <a class="home-latest-card" href="#/posts/${encodeURIComponent(latest.id)}" aria-label="${latest.title || ''}">
+            <a class="home-latest-card" href="/posts/${encodeURIComponent(latest.id)}" aria-label="${latest.title || ''}">
               ${latest.title ? `<div class="home-latest-posttitle">${latest.title}</div>` : ''}
               ${latest.abstract ? `<div class="home-latest-abstract">${latest.abstract}</div>` : ''}
               ${(latest.tags||[]).length ? `
@@ -818,6 +860,12 @@
 
   async function renderAbout() {
     const app = $('#app');
+    setPageMeta(
+      state.lang === 'it' ? 'Chi sono' : 'About me',
+      state.lang === 'it'
+        ? 'Informazioni su Angelo Nardone: formazione, interessi di ricerca e contatti.'
+        : 'About Angelo Nardone: background, research interests and contact information.'
+    );
 
     const pageTitle = state.i18n?.aboutPage?.title || 'About me';
     const intro = state.i18n?.aboutPage?.intro || '';
@@ -862,6 +910,12 @@
 
   function renderPosts() {
     const app = $('#app');
+    setPageMeta(
+      state.lang === 'it' ? 'Post' : 'Posts',
+      state.lang === 'it'
+        ? 'Note tecniche, resoconti di conferenze e articoli di divulgazione sulla compressione dati e gli algoritmi.'
+        : 'Technical notes, conference reports and explainers on data compression and algorithms.'
+    );
 
     const POSTS_PER_PAGE = 5;
 
@@ -930,7 +984,7 @@
             const mins = readingMinutes[p.id] || 1;
             const isLast = idx === slice.length - 1;
 
-            const href = `#/posts/${encodeURIComponent(p.id)}`;
+            const href = `/posts/${encodeURIComponent(p.id)}`;
 
             return `
               <article class="post-flat-item${isLast ? ' post-flat-item--last' : ''}${p.image ? ' post-flat-item--hasimg' : ''}"
@@ -1114,6 +1168,9 @@
 
     if (!p) { renderNotFound(); return; }
 
+    setPageMeta(p.title, p.abstract || '');
+    setArticleJsonLd(p);
+
     const dateStr = formatPostDate(p.date);
     const tags = Array.isArray(p.tags) ? p.tags : [];
 
@@ -1156,7 +1213,7 @@
           ${relatedPosts.map(rp => {
             const rDate = formatPostDate(rp.date);
             return `
-              <a class="post-related-item" href="#/posts/${encodeURIComponent(rp.id)}">
+              <a class="post-related-item" href="/posts/${encodeURIComponent(rp.id)}">
                 <div class="post-related-content">
                   <div class="post-related-title">${rp.title || ''}</div>
                   ${rp.abstract ? `<div class="post-related-abstract">${rp.abstract}</div>` : ''}
@@ -1224,7 +1281,7 @@
         ${relatedHTML}
 
         <div class="post-page-footer">
-          <a href="#/posts" class="post-back-link">
+          <a href="/posts" class="post-back-link">
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="14" height="14">
               <line x1="13" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               <polyline points="7,4 3,8 7,12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1477,6 +1534,12 @@ li { margin-bottom: .15em; }
 
   function renderResearch() {
     const app = $('#app');
+    setPageMeta(
+      state.lang === 'it' ? 'Ricerca' : 'Research',
+      state.lang === 'it'
+        ? 'Pubblicazioni, talk, scuole estive e progetti di ricerca di Angelo Nardone.'
+        : 'Publications, talks, summer schools and research projects by Angelo Nardone.'
+    );
 
     const pubs = (state.data.publications || []).slice().sort((a, b) => (b.year || 0) - (a.year || 0));
     const topics = state.data.topics || [];
@@ -1842,6 +1905,7 @@ li { margin-bottom: .15em; }
     const pageIntro  = isIt
       ? 'Luoghi che hanno fatto parte del mio percorso accademico.'
       : 'Places that have shaped my academic journey.';
+    setPageMeta(pageTitle, pageIntro);
 
     const typeLabels = {
       conference: isIt ? 'Conferenza'    : 'Conference',
@@ -1933,6 +1997,10 @@ li { margin-bottom: .15em; }
 
   function renderCV() {
     const app = $('#app');
+    setPageMeta(
+      'Curriculum Vitae',
+      state.lang === 'it' ? 'Curriculum vitae di Angelo Nardone.' : 'Curriculum vitae of Angelo Nardone.'
+    );
 
     const title        = state.i18n?.cv?.title         || 'Curriculum Vitae';
     const intro        = state.i18n?.cv?.intro          || '';
@@ -1947,8 +2015,8 @@ li { margin-bottom: .15em; }
     const updated = state.data.cv?.lastUpdated || '';
 
     const noteHtml = state.lang === 'it'
-      ? `Il contenuto principale è già nelle sezioni <a class="inline-link" href="#/research">Ricerca</a> e <a class="inline-link" href="#/experience">Formazione &amp; Esperienza</a>.`
-      : `Most of the content is already in <a class="inline-link" href="#/research">Research</a> and <a class="inline-link" href="#/experience">Education &amp; Experience</a>.`;
+      ? `Il contenuto principale è già nelle sezioni <a class="inline-link" href="/research">Ricerca</a> e <a class="inline-link" href="/experience">Formazione &amp; Esperienza</a>.`
+      : `Most of the content is already in <a class="inline-link" href="/research">Research</a> and <a class="inline-link" href="/experience">Education &amp; Experience</a>.`;
 
     // SVG icons inline (no external dependency)
     const iconExternal = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
@@ -2006,6 +2074,7 @@ li { margin-bottom: .15em; }
   }
 
   function renderPublications() {
+    setPageMeta('Publications', 'Full list of academic publications by Angelo Nardone.');
     const app = $('#app');
     const pubs = state.data.publications.slice().sort((a, b) => (b.year || 0) - (a.year || 0));
 
@@ -2013,7 +2082,7 @@ li { margin-bottom: .15em; }
       <section class="section">
         <div class="row space-between">
           <h1 data-i18n="section.publications">Pubblicazioni</h1>
-          <a class="btn btn-outline" href="#/research">← <span data-i18n="action.back">Indietro</span></a>
+          <a class="btn btn-outline" href="/research">← <span data-i18n="action.back">Indietro</span></a>
         </div>
 
         <div class="toolbar">
@@ -2085,6 +2154,9 @@ li { margin-bottom: .15em; }
       state.i18n?.experiencePage?.title ||
       state.i18n?.section?.education ||
       'Education & Experience';
+    setPageMeta(pageTitle, state.lang === 'it'
+      ? 'Formazione accademica ed esperienze professionali di Angelo Nardone.'
+      : 'Academic background and professional experience of Angelo Nardone.');
 
     const expTitle = state.i18n?.experiencePage?.experienceTitle || 'Experience';
     const eduTitle = state.i18n?.experiencePage?.educationTitle || 'Education';
@@ -2208,6 +2280,7 @@ li { margin-bottom: .15em; }
 
   async function renderPrivacy() {
     const app = $('#app');
+    setPageMeta('Privacy Policy', '');
 
     // Load markdown (language-specific)
     const mdPath = `data/privacy.${state.lang}.md`;
@@ -2233,6 +2306,7 @@ li { margin-bottom: .15em; }
   }
 
   function renderNotFound() {
+    setPageMeta('404 — Page Not Found', '');
     const t = state.i18n?.errors?.notFoundTitle || '404';
     const p = state.i18n?.errors?.notFoundText || 'Page not found.';
     $('#app').innerHTML = `<section class="section"><h1>${t}</h1><p>${p}</p></section>`;
@@ -2321,15 +2395,24 @@ li { margin-bottom: .15em; }
       }
     });
 
-    // Route changes: render view + close mobile menu defensively
-    window.addEventListener('hashchange', () => {
+    // SPA click interceptor: intercept internal path links, use pushState
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || !href.startsWith('/') || href.startsWith('//')) return;
+      e.preventDefault();
+      navigate(href);
+    });
+
+    // Route changes via browser back/forward
+    window.addEventListener('popstate', () => {
       onRouteChange();
 
       mobileNav?.classList.remove('open');
       mobileNav?.setAttribute('aria-hidden', 'true');
       navToggle?.setAttribute('aria-expanded', 'false');
 
-      // NEW
       document.body.classList.remove('nav-open');
     });
 
@@ -2376,14 +2459,14 @@ li { margin-bottom: .15em; }
       const card = e.target.closest('.post-flat-item[role="link"]');
       if (!card || e.target.closest('a')) return;
       const link = card.querySelector('.post-flat-link');
-      if (link) location.href = link.getAttribute('href');
+      if (link) navigate(link.getAttribute('href'));
     });
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter') return;
       const card = e.target.closest('.post-flat-item[role="link"]');
       if (!card) return;
       const link = card.querySelector('.post-flat-link');
-      if (link) location.href = link.getAttribute('href');
+      if (link) navigate(link.getAttribute('href'));
     });
 
     // Initial render
