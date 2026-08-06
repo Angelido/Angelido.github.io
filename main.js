@@ -279,6 +279,35 @@
       return token;
     });
 
+    const mathBlocks = [];
+    // \[...\] first — captures any nested \begin{equation} as one unit
+    md = md.replace(/\\\[([\s\S]*?)\\\]/g, (_, inner) => {
+      const token = `@@MATH_${mathBlocks.length}@@`;
+      const trimmed = inner.trim();
+      const numberedEq = trimmed.match(/^\\begin\{equation\}([\s\S]*?)\\end\{equation\}$/);
+      const starEq     = trimmed.match(/^\\begin\{equation\*\}([\s\S]*?)\\end\{equation\*\}$/);
+      if (numberedEq) {
+        mathBlocks.push({ math: numberedEq[1].trim(), display: true, numbered: true });
+      } else if (starEq) {
+        mathBlocks.push({ math: starEq[1].trim(), display: true, numbered: false });
+      } else {
+        mathBlocks.push({ math: trimmed, display: true, numbered: false });
+      }
+      return `\n\n${token}\n\n`;
+    });
+    // Standalone \begin{environment}...\end{environment}
+    md = md.replace(/\\begin\{(equation\*?|align\*?|gather\*?|multline\*?|split)\}([\s\S]*?)\\end\{\1\}/g, (match, env, inner) => {
+      const token = `@@MATH_${mathBlocks.length}@@`;
+      const numbered = env === 'equation';
+      const math = /^equation/.test(env) ? inner.trim() : match;
+      mathBlocks.push({ math, display: true, numbered });
+      return `\n\n${token}\n\n`;
+    });
+    md = md.replace(/\\\(([\s\S]*?)\\\)/g, (_, inner) => {
+      const token = `@@MATH_${mathBlocks.length}@@`;
+      mathBlocks.push({ math: inner, display: false });
+      return token;
+    });
     const rawHtml = window.marked ? marked.parse(md) : md;
     let html = window.DOMPurify ? DOMPurify.sanitize(rawHtml) : rawHtml;
     html = html.replace(/<a\s+/g, '<a class="inline-link" ');
@@ -316,6 +345,25 @@
       }
     );
 
+    mathBlocks.forEach(({ math, display, numbered }, i) => {
+      let rendered;
+      if (window.katex) {
+        try {
+          rendered = katex.renderToString(math, { displayMode: display, throwOnError: false });
+        } catch (e) {
+          rendered = math;
+        }
+      } else {
+        rendered = display ? `$$${math}$$` : `$${math}$`;
+      }
+      if (display) {
+        const cls = numbered ? 'math-display math-eq-numbered' : 'math-display';
+        const wrapped = `<div class="${cls}">${rendered}</div>`;
+        html = html.replace(new RegExp(`<p>\\s*@@MATH_${i}@@\\s*<\\/p>`), wrapped);
+      }
+      html = html.replace(`@@MATH_${i}@@`, rendered);
+    });
+
     codeBlocks.forEach((block, i) => {
       html = html.replace(`@@CODEBLOCK_${i}@@`, block);
     });
@@ -324,43 +372,190 @@
   }
 
   async function renderMarkdown(md) {
-    const exampleBlocks = [];
+    // ── Extract and parse ## References / ## Riferimenti section ─────────
+    const refs = {};
+    let refsHtml = '';
 
-    md = await replaceAsync(md, /:::example\s*\n([\s\S]*?)\n:::/g, async (_, content) => {
-      const title = state.lang === 'it' ? 'Esempio' : 'Example';
-      const innerHtml = await renderMarkdownFragment(content.trim());
+    md = md.replace(/^## (?:References|Riferimenti)\b([\s\S]*)/m, (_, content) => {
+      const entryRe = /^\[([^\]]+)\]\s+(.+)$/gm;
+      const refEntries = [];
+      let em;
+      while ((em = entryRe.exec(content)) !== null) {
+        const key = em[1].trim();
+        const entry = em[2].trim();
+        const yearMatch = entry.match(/\((\d{4})\)/);
+        const year = yearMatch ? yearMatch[1] : '';
+        const beforeYear = yearMatch
+          ? entry.slice(0, yearMatch.index).trim().replace(/[,.]$/, '')
+          : entry;
+        const parts = beforeYear.split(/\s*&\s*/);
+        const lastNames = parts.map(a => {
+          const t = a.trim();
+          const ci = t.indexOf(',');
+          return ci > 0 ? t.slice(0, ci).trim() : (t.split(/\s+/).pop() || '');
+        }).filter(Boolean);
+        let inline;
+        if (!lastNames.length)           inline = year;
+        else if (lastNames.length === 1) inline = `${lastNames[0]}, ${year}`;
+        else if (lastNames.length === 2) inline = `${lastNames[0]} & ${lastNames[1]}, ${year}`;
+        else                             inline = `${lastNames[0]} et al., ${year}`;
+        refs[key] = { inlineCite: inline, entry };
+        refEntries.push({ key, entry });
+      }
+      if (refEntries.length) {
+        const label = state.lang === 'it' ? 'Riferimenti' : 'References';
+        refsHtml = `
+        <div class="post-references">
+          <div class="post-references-label">${label}</div>
+          <div class="post-references-list">
+            ${refEntries.map(({ key, entry }) => {
+              const eHtml = window.marked ? marked.parseInline(entry) : entry;
+              return `<div class="post-ref-item" id="ref-${key}">${eHtml}</div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }
+      return '';
+    });
+    md = md.trimEnd();
 
-      const wrapped = `
-  <div class="example-box">
-    <div class="example-box-title">${title}</div>
-    <div class="example-box-body">
-      ${innerHtml}
-    </div>
-  </div>
-      `.trim();
-
-      const token = `@@EXAMPLEBLOCK_${exampleBlocks.length}@@`;
-      exampleBlocks.push(wrapped);
+    // ── Figure blocks: :::figure[src] — svg inline / img / iframe, bypasses DOMPurify ─
+    const htmlFigs = [];
+    md = md.replace(/:::figure\[([^\]]+)\]\s*\n([\s\S]*?)\n:::/g, (_, src, caption) => {
+      const token = `@@HTMLFIG_${htmlFigs.length}@@`;
+      const trimSrc = src.trim();
+      const isSvg = /\.svg$/i.test(trimSrc);
+      const isImg = !isSvg && /\.(png|jpe?g|gif|webp)$/i.test(trimSrc);
+      htmlFigs.push({ src: trimSrc, caption: caption.trim(), isImg, isSvg });
       return token;
     });
 
+    // ── Process all theorem / definition / example / proof blocks ─────────
+    const TYPES = {
+      theorem:     { en: 'Theorem',     it: 'Teorema',       style: 'theorem',    noNum: false },
+      lemma:       { en: 'Lemma',       it: 'Lemma',         style: 'theorem',    noNum: false },
+      proposition: { en: 'Proposition', it: 'Proposizione',  style: 'theorem',    noNum: false },
+      corollary:   { en: 'Corollary',   it: 'Corollario',    style: 'theorem',    noNum: false },
+      claim:       { en: 'Claim',       it: 'Affermazione',  style: 'theorem',    noNum: false },
+      definition:  { en: 'Definition',  it: 'Definizione',   style: 'definition', noNum: false },
+      notation:    { en: 'Notation',    it: 'Notazione',     style: 'definition', noNum: false },
+      example:     { en: 'Example',     it: 'Esempio',       style: 'example',    noNum: false },
+      remark:      { en: 'Remark',      it: 'Osservazione',  style: 'remark',     noNum: false },
+      observation: { en: 'Observation', it: 'Osservazione',  style: 'remark',     noNum: false },
+      note:        { en: 'Note',        it: 'Nota',          style: 'remark',     noNum: false },
+      proof:       { en: 'Proof',       it: 'Dimostrazione', style: 'proof',      noNum: true  },
+    };
+    const counters = {};
+    const blocks = [];
+
+    md = await replaceAsync(md, /:::(\w+)(?:\[([^\]]*)\])?\s*\n([\s\S]*?)\n:::/g,
+      async (_, type, name, content) => {
+        const key = type.toLowerCase();
+        const info = TYPES[key];
+        if (!info) return _;
+        const lang = state.lang === 'it' ? 'it' : 'en';
+        let label = info[lang];
+        if (!info.noNum) {
+          counters[key] = (counters[key] || 0) + 1;
+          label += ` ${counters[key]}`;
+        }
+        if (name) label += ` (${name})`;
+
+        let inner = await renderMarkdownFragment(content.trim());
+        const labelHtml = info.style === 'proof'
+          ? `<em class="theorem-label">${label}.</em>&ensp;`
+          : `<strong class="theorem-label">${label}.</strong>&ensp;`;
+
+        const pIdx = inner.indexOf('<p>');
+        if (pIdx !== -1) {
+          inner = inner.slice(0, pIdx + 3) + labelHtml + inner.slice(pIdx + 3);
+        } else {
+          inner = `<p>${labelHtml}</p>` + inner;
+        }
+        if (info.style === 'proof') {
+          const lastEnd = inner.lastIndexOf('</p>');
+          if (lastEnd !== -1)
+            inner = inner.slice(0, lastEnd) + '<span class="theorem-qed">□</span>' + inner.slice(lastEnd);
+        }
+
+        const token = `@@BLOCK_${blocks.length}@@`;
+        blocks.push(`<div class="theorem-block theorem-block--${info.style}">${inner}</div>`);
+        return token;
+      }
+    );
+
     let html = await renderMarkdownFragment(md);
 
-    exampleBlocks.forEach((block, i) => {
-      html = html.replace(`@@EXAMPLEBLOCK_${i}@@`, block);
+    blocks.forEach((b, i) => {
+      html = html
+        .replace(`<p>@@BLOCK_${i}@@</p>`, b)
+        .replace(`@@BLOCK_${i}@@`, b);
     });
 
-    return html;
+    for (const [i, { src, caption, isImg, isSvg }] of htmlFigs.entries()) {
+      const capHtml = window.marked ? marked.parseInline(caption) : caption;
+      const safeTitle = caption.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+      let media;
+      if (isSvg) {
+        try {
+          const svgResp = await fetch(src);
+          let svgText = await svgResp.text();
+          svgText = svgText.replace(/<script[\s\S]*?<\/script>/gi, '');
+          svgText = svgText.replace('<svg ', '<svg class="post-html-figure__svg" ');
+          svgText = svgText.replace(/(<svg[^>]*>)/, '$1<rect width="100%" height="100%" class="post-html-figure__bg"/>');
+          media = svgText;
+        } catch {
+          media = `<img src="${src}" alt="${safeTitle}" class="post-html-figure__img">`;
+        }
+      } else if (isImg) {
+        media = `<img src="${src}" alt="${safeTitle}" class="post-html-figure__img">`;
+      } else {
+        media = `<iframe src="${src}" class="post-html-figure__frame" title="${safeTitle}" loading="lazy" scrolling="no"></iframe>`;
+      }
+      const fig = `<figure class="post-html-figure">` +
+        media +
+        `<figcaption class="post-html-figure__caption">${capHtml}</figcaption>` +
+        `</figure>`;
+      html = html.replace(`<p>@@HTMLFIG_${i}@@</p>`, fig).replace(`@@HTMLFIG_${i}@@`, fig);
+    }
+
+    // Replace [@key] citations in final HTML (after blocks are resolved)
+    html = html.replace(/\[@([^\]]+)\]/g, (_, key) => {
+      const ref = refs[key.trim()];
+      if (ref) return `<a class="cite-inline" href="#ref-${key.trim()}">(${ref.inlineCite})</a>`;
+      return `[@${key}]`;
+    });
+
+    return { bodyHtml: html, refsHtml };
   }
 
   function renderMath(container) {
-    if (!window.renderMathInElement) return;
+    if (window.renderMathInElement) {
     renderMathInElement(container, {
       delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$',  right: '$',  display: false }
+        { left: '$$',   right: '$$',   display: true  },
+        { left: '\\[',  right: '\\]',  display: true  },
+        { left: '$',    right: '$',    display: false },
+        { left: '\\(',  right: '\\)',  display: false },
+        { left: '\\begin{equation}',  right: '\\end{equation}',  display: true },
+        { left: '\\begin{equation*}', right: '\\end{equation*}', display: true },
+        { left: '\\begin{align}',     right: '\\end{align}',     display: true },
+        { left: '\\begin{align*}',    right: '\\end{align*}',    display: true },
+        { left: '\\begin{gather}',    right: '\\end{gather}',    display: true },
+        { left: '\\begin{gather*}',   right: '\\end{gather*}',   display: true },
+        { left: '\\begin{multline}',  right: '\\end{multline}',  display: true },
+        { left: '\\begin{multline*}', right: '\\end{multline*}', display: true }
       ],
       throwOnError: false
+    });
+    }
+    let eqN = 0;
+    container.querySelectorAll('.math-display.math-eq-numbered').forEach(div => {
+      eqN++;
+      const num = document.createElement('span');
+      num.className = 'math-eq-number';
+      num.textContent = `(${eqN})`;
+      div.appendChild(num);
     });
   }
 
@@ -633,7 +828,7 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      bodyHtml = await renderMarkdown(md);
+      bodyHtml = (await renderMarkdown(md)).bodyHtml;
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
         ? 'Impossibile caricare la pagina About me.'
@@ -687,25 +882,27 @@
 
       <section class="section posts-section">
         <div class="posts-list-header">
-          <span class="posts-count" id="postsCount"></span>
-          <div class="posts-filter">
-            <button class="filter-toggle" id="filterToggle" aria-expanded="false">
-              <svg class="filter-toggle-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="13" height="13">
-                <line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                <line x1="6" y1="12" x2="10" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-              </svg>
-              <span class="filter-toggle-text">${filterLabel}</span>
-              <span class="filter-toggle-sep">·</span>
-              <span class="filter-toggle-value" id="filterValue">${allTagsLabel}</span>
-              <svg class="filter-toggle-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="12" height="12">
-                <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="tag-chips" id="tagChips">
-              <button class="tag-chip tag-chip--active" data-tag="">${allTagsLabel}</button>
-              ${allTags.map(t => `<button class="tag-chip" data-tag="${t}">${t}</button>`).join('')}
+          <div class="posts-list-header-row">
+            <span class="posts-count" id="postsCount"></span>
+            <div class="posts-filter">
+              <button class="filter-toggle" id="filterToggle" aria-expanded="false">
+                <svg class="filter-toggle-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="13" height="13">
+                  <line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <line x1="6" y1="12" x2="10" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                <span class="filter-toggle-text">${filterLabel}</span>
+                <span class="filter-toggle-sep">·</span>
+                <span class="filter-toggle-value" id="filterValue">${allTagsLabel}</span>
+                <svg class="filter-toggle-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true" width="12" height="12">
+                  <polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
             </div>
+          </div>
+          <div class="tag-chips" id="tagChips">
+            <button class="tag-chip tag-chip--active" data-tag="">${allTagsLabel}</button>
+            ${allTags.map(t => `<button class="tag-chip" data-tag="${t}">${t}</button>`).join('')}
           </div>
         </div>
         <div id="postsList"></div>
@@ -922,12 +1119,13 @@
 
     let bodyHtml = '';
     let mdText = '';
+    let refsHtml = '';
 
     const mdPath = p.contentPath || p.content;
 
     if (mdPath && /\.md$/i.test(mdPath)) {
       mdText = await fetch(mdPath).then(r => r.text());
-      bodyHtml = await renderMarkdown(mdText);
+      ({ bodyHtml, refsHtml } = await renderMarkdown(mdText));
 
     } else {
       const paragraphs = splitParagraphs(String(p.content || ''));
@@ -936,11 +1134,16 @@
 
     const isMarkdown = !!(mdPath && /\.md$/i.test(mdPath));
     const showTOC = !!p.showToc;
+    const isPrintable = !!p.printable;
 
     // Minuti di lettura (stessa logica della lista, nessun fetch aggiuntivo)
     const words = mdText.trim().split(/\s+/).filter(Boolean).length;
     const readMins = mdText ? Math.max(1, Math.round(words / 200)) + 1 : 1;
     const minReadLabel = state.lang === 'it' ? 'min di lettura' : 'min read';
+
+    const authorName = (state.data.profile || {}).name || '';
+    const printLabel = state.lang === 'it' ? 'Stampa / PDF' : 'Print / PDF';
+    const keywordsLabel = state.lang === 'it' ? 'Parole chiave' : 'Keywords';
 
     // Related posts
     const relatedIds = Array.isArray(p.related) ? p.related : [];
@@ -1016,6 +1219,8 @@
           ${bodyHtml}
         </div>
 
+        ${refsHtml}
+
         ${relatedHTML}
 
         <div class="post-page-footer">
@@ -1026,7 +1231,17 @@
             </svg>
             ${state.lang === 'it' ? 'Torna ai post' : 'Back to posts'}
           </a>
-        </div>
+          ${isPrintable ? `
+          <button class="post-print-btn" id="postPrintBtn" aria-label="${printLabel}">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="15" height="15">
+              <rect x="3" y="1" width="10" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="3" y="9" width="10" height="6" rx="1" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M3 7h10M1 5h14v6a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5z" stroke="currentColor" stroke-width="1.4"/>
+              <circle cx="12" cy="8" r=".8" fill="currentColor"/>
+            </svg>
+            ${printLabel}
+          </button>
+          ` : ''}
 
        </div>
       </section>    
@@ -1035,6 +1250,229 @@
     if (showTOC) {
       setupPostTOC(app);
     }
+    if (isPrintable) {
+      const printBtn = app.querySelector('#postPrintBtn');
+      if (printBtn) {
+        printBtn.addEventListener('click', () => {
+          openPrintWindow({ p, dateStr, readMins, minReadLabel, authorName, keywordsLabel, tags, app });
+        });
+      }
+    }
+  }
+
+  function openPrintWindow({ p, dateStr, readMins, minReadLabel, authorName, keywordsLabel, tags, app }) {
+    const bodyEl = app.querySelector('.post-page-body');
+    const refsEl = app.querySelector('.post-references');
+    if (!bodyEl) return;
+
+    const bodyHtml = bodyEl.innerHTML;
+    const refsHtml = refsEl ? refsEl.outerHTML : '';
+
+    const win = window.open('', '_blank', 'width=900,height=700');
+    if (!win) { alert('Popup bloccato. Abilita i popup per questa pagina e riprova.'); return; }
+
+    const noticeText = document.documentElement.lang === 'it'
+      ? '⚠️ Nel dialogo di stampa, vai su <b>Altre impostazioni</b> e disattiva <b>Intestazioni e piè di pagina</b>. Il numero di pagina è già incluso nel foglio.'
+      : '⚠️ In the print dialog, open <b>More settings</b> and uncheck <b>Headers and footers</b>. Page numbers are already included in the sheet.';
+    const printNowText = document.documentElement.lang === 'it' ? 'Stampa' : 'Print';
+
+    win.document.write(`<!DOCTYPE html>
+<html lang="${document.documentElement.lang || 'en'}">
+<head>
+<meta charset="utf-8">
+<title>${p.title || ''}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+@page {
+  margin: 2cm 2.5cm;
+  size: A4;
+  @top-left    { content: ''; }
+  @top-center  { content: ''; }
+  @top-right   { content: ''; }
+  @bottom-left { content: ''; }
+  @bottom-right{ content: ''; }
+  @bottom-center {
+    content: counter(page);
+    font-family: 'STIX Two Text', Georgia, serif;
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+html, body {
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-size: 10pt;
+  line-height: 1.35;
+  color: #000;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* ── Screen-only notice ── */
+@media screen {
+  .notice {
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: 6px;
+    padding: .7rem 1rem;
+    margin: 1.2rem 2rem .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .notice-print-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+    padding: .35rem .9rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .notice-print-btn:hover { background: #f5f5f5; }
+  .content { padding: 1.5rem 2rem 2rem; }
+}
+@media print {
+  .notice { display: none; }
+  .content { padding: 0; }
+}
+
+/* ── Paper header ── */
+.ph { text-align: center; margin-bottom: 2rem; }
+.ph-title { font-size: 17pt; font-weight: 700; line-height: 1.25; margin: 0 0 .4rem; }
+.ph-author { font-size: 11pt; margin: 0 0 .15rem; }
+.ph-meta { font-size: 9.5pt; color: #444; margin: 0 0 .15rem; }
+.ph-keywords { font-size: 9pt; color: #444; margin: 0 0 .6rem; font-style: italic; }
+.ph-rule { border: none; border-top: 1px solid #bbb; width: 50%; margin: 0 auto; display: block; }
+
+/* ── Body ── */
+.body { font-size: 10pt; line-height: 1.35; text-align: justify; }
+
+p { margin: 0 0 .6em; orphans: 3; widows: 3; }
+
+h2 { font-size: 13pt; font-weight: 700; margin: 1.6em 0 .35em; page-break-after: avoid; }
+h3 { font-size: 11pt; font-weight: 700; margin: 1.2em 0 .3em; page-break-after: avoid; }
+h4 { font-size: 10pt; font-weight: 700; margin: 1em 0 .25em; page-break-after: avoid; }
+
+/* ── Horizontal rules: hidden ── */
+hr { display: none; }
+.ph-rule { display: block; }
+
+/* ── Links ── */
+a { color: #000; text-decoration: none; }
+a[href]::after { content: ' (' attr(href) ')'; font-size: 7.5pt; color: #555; word-break: break-all; }
+.cite-inline::after,
+.inline-link.cite-inline::after { content: none !important; }
+.inline-link { text-decoration: underline; }
+
+/* ── Theorem blocks ── */
+.theorem-block { margin: .9em 0; }
+.theorem-label { font-style: normal; font-weight: 700; font-size: 10pt; }
+.theorem-block--theorem .theorem-label { color: #7a1a10; }
+.theorem-block--definition .theorem-label { color: #0d3a5e; }
+.theorem-block--example .theorem-label { color: #5a3a10; }
+.theorem-block--remark .theorem-label { color: #3a1a6e; }
+.theorem-block--theorem p, .theorem-block--theorem li,
+.theorem-block--definition p, .theorem-block--definition li { font-style: italic; }
+.theorem-block--theorem code, .theorem-block--theorem .katex,
+.theorem-block--definition code, .theorem-block--definition .katex { font-style: normal; }
+.theorem-qed { float: right; }
+
+/* ── Blockquote ── */
+blockquote { border-left: 2px solid #999; margin: .9em 1.5em; padding: 0 0 0 .9em; color: #222; font-style: italic; }
+blockquote p { margin: 0; }
+blockquote p + p { font-style: normal; font-size: 9pt; text-align: right; margin-top: .3em; }
+
+/* ── Code blocks ── */
+.code-block {
+  background: #f5f5f5 !important;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: .45em .7em;
+  margin: .7em 0;
+  page-break-inside: avoid;
+  overflow: hidden;
+}
+.code-block-copy, .code-block-lang-badge { display: none !important; }
+.code-block pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.code-block pre, .code-block code, .code-block span {
+  font-family: 'Courier New', monospace !important;
+  font-size: 8pt !important;
+  background: transparent !important;
+  color: #000 !important;
+}
+
+/* ── Tables ── */
+table { border-collapse: collapse; width: 100%; margin: .8em 0; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid #bbb; padding: .3em .6em; text-align: left; }
+th { font-weight: 700; background: #f0f0f0; }
+tr:nth-child(even) td { background: #fafafa; }
+
+/* ── Math ── */
+.math-display { text-align: center; margin: .9em 0; }
+.katex-display { margin: 0 !important; }
+.katex, .katex * { color: #000 !important; }
+
+/* ── Lists ── */
+ul, ol { margin: 0 0 .6em; padding-left: 1.6em; }
+li { margin-bottom: .15em; }
+
+/* ── References ── */
+.post-references { margin-top: 1.8em; border-top: 1px solid #bbb; padding-top: .9em; }
+.post-references-label { font-size: 12pt; font-weight: 700; margin-bottom: .4em; display: block; }
+.post-ref-item { font-size: 9pt; margin-bottom: .3em; }
+
+/* ── Figures ── */
+.post-html-figure { margin: 1em 0; text-align: center; page-break-inside: avoid; }
+.post-html-figure__img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.post-html-figure__svg { width: 100%; height: auto; display: block; filter: none; }
+.post-html-figure__bg { fill: transparent; }
+.post-html-figure__frame { display: none !important; }
+.post-html-figure:has(.post-html-figure__frame)::before {
+  content: '[Figura interattiva — disponibile nella versione online]';
+  display: block;
+  font-style: italic;
+  font-size: 9pt;
+  color: #666;
+  border: 1px dashed #ccc;
+  padding: .35em .6em;
+  border-radius: 3px;
+  margin-bottom: .3em;
+}
+.post-html-figure__caption { font-size: 9pt; color: #444; margin-top: .4em; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="notice">
+  <span>${noticeText}</span>
+  <button class="notice-print-btn" onclick="window.print()">${printNowText}</button>
+</div>
+<div class="content">
+  <div class="ph">
+    <p class="ph-title">${p.title || ''}</p>
+    ${authorName ? `<p class="ph-author">${authorName}</p>` : ''}
+    <p class="ph-meta">${[dateStr, readMins + ' ' + minReadLabel].filter(Boolean).join(' &middot; ')}</p>
+    ${tags.length ? `<p class="ph-keywords">${keywordsLabel}: ${tags.join(', ')}</p>` : ''}
+    <hr class="ph-rule">
+  </div>
+  <div class="body">${bodyHtml}</div>
+  ${refsHtml}
+</div>
+</body>
+</html>`);
+    win.document.close();
   }
 
   function renderResearch() {
@@ -1777,7 +2215,7 @@
     let bodyHtml = '';
     try {
       const md = await fetch(mdPath).then(r => r.text());
-      bodyHtml = await renderMarkdown(md);
+      bodyHtml = (await renderMarkdown(md)).bodyHtml;
 
     } catch (e) {
       bodyHtml = `<p class="pub-meta">${state.lang === 'it'
@@ -1869,6 +2307,18 @@
         // NEW
         document.body.classList.remove('nav-open');
       });
+    });
+
+    // Intercept in-page anchor clicks (e.g. citation links) to prevent SPA routing
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a.cite-inline');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.getElementById(href.slice(1));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
 
     // Route changes: render view + close mobile menu defensively

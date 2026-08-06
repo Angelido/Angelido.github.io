@@ -14,7 +14,7 @@
     "title": "Sequences in London 2026",
     "date": "2026-02-10",
     "abstract": "My first talk abroad, at Sequences in London. Research, new connections, and a return to London.",
-    "tags": ["talk", "workshop", "lossless-compression", "travel"],
+    "tags": ["travel", "workshop", "algorithms", "talk"],
     "image": "assets/img/[2026]_London.jpg",
     "content": "posts/Sequences2026.en.md",
     "showToc": false,
@@ -25,20 +25,33 @@
     "title": "The Bentley–McIlroy Compression Algorithm",
     "date": "2026-03-08",
     "abstract": "A brief overview of the Bentley–McIlroy algorithm for lossless compression based on long repeated substrings.",
-    "tags": ["lossless-compression", "algorithm", "github"],
+    "tags": ["notes", "case-study", "lossless-compression", "algorithms", "github"],
     "image": "",
     "content": "posts/bentley_mcilroy.en.md",
-    "showToc": true
+    "showToc": true,
+    "printable": true
   },
   {
     "id": "lipari-school-2026",
     "title": "Lipari School 2026 on Agentic AI",
     "date": "2026-07-31",
     "abstract": "A week at the Lipari School, between agentic AI, volcanic islands, and unexpected twists.",
-    "tags": ["talk", "summer-school", "artificial-intelligence", "travel"],
+    "tags": ["travel", "summer-school", "artificial-intelligence", "talk"],
     "image": "assets/img/[2026]_LipariGroup.JPG",
     "content": "posts/Lipari2026.en.md",
     "showToc": true,
     "related": ["sequences-london-2026"]
+  },
+  {
+    "id": "entropy-and-compression",
+    "title": "Entropy and Lossless Compression",
+    "date": "2026-08-04",
+    "abstract": "Shannon's entropy as the theoretical limit of lossless compression, and how the main algorithmic families measure up to it.",
+    "tags": ["notes", "lossless-compression", "algorithms"],
+    "image": "",
+    "content": "posts/entropy.en.md",
+    "showToc": true,
+    "printable": true,
+    "related": ["bentley_mcilroy"]
   }
 ]

@@ -1841,8 +1841,8 @@ html[data-theme="dark"] .research-list li:not(:last-child) {
 
 .posts-list-header{
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: .5rem;
   padding-bottom: .75rem;
   border-bottom: 1px solid rgba(0,0,0,.10);
 }
@@ -1851,18 +1851,22 @@ html[data-theme="dark"] .posts-list-header{
   border-bottom-color: rgba(255,255,255,.10);
 }
 
+.posts-list-header-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .posts-count{
   font-size: .82rem;
   color: var(--muted);
   font-weight: 500;
-  padding-top: .12rem;
+  white-space: nowrap;
 }
 
 .posts-filter{
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: .5rem;
+  align-items: center;
 }
 
 /* Collapsible toggle trigger */
@@ -2382,8 +2386,6 @@ html[data-theme="dark"] .post-related-sep{
 ========================================================= */
 
 .post-page-body > p:first-of-type{
-  font-size: 1.12rem;
-  line-height: 1.85;
   color: var(--text);
   margin-bottom: 1.3rem;
 }
@@ -2392,17 +2394,33 @@ html[data-theme="dark"] .post-related-sep{
 .markdown-body blockquote,
 .post-page-body blockquote {
   border-left: 3px solid var(--accent);
-  margin: 1.4rem 0;
-  padding: 0.5rem 1rem;
-  color: var(--muted);
-  font-style: italic;
-  background: rgba(0,0,0,0.03);
+  margin: 1.8rem 0;
+  padding: .6rem 1rem .6rem 1.4rem;
+  background: rgba(0,0,0,.025);
   border-radius: 0 6px 6px 0;
+  color: var(--text);
+  font-style: italic;
+}
+
+.markdown-body blockquote p,
+.post-page-body blockquote p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* Attribution line: second paragraph inside blockquote */
+.markdown-body blockquote p + p,
+.post-page-body blockquote p + p {
+  margin-top: .55rem;
+  font-style: normal;
+  font-size: .86rem;
+  color: var(--muted);
+  text-align: right;
 }
 
 html[data-theme="dark"] .markdown-body blockquote,
 html[data-theme="dark"] .post-page-body blockquote {
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,.035);
 }
 
 /* ── Tabelle ─────────────────────────────────────────── */
@@ -2684,6 +2702,29 @@ html[data-theme="dark"] .post-page-body hr {
   color: var(--text);
 }
 
+/* Wrapper for \[...\] display math blocks */
+.math-display{
+  text-align: center;
+  margin: 1.3rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.math-display .katex-display{
+  margin: 0 !important;
+}
+.math-display.math-eq-numbered{
+  position: relative;
+}
+.math-eq-number{
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+  color: var(--text-muted, inherit);
+  user-select: none;
+}
+
 /* =========================================================
    Markdown Callouts (notes, warnings, ideas)
 ========================================================= */
@@ -2724,87 +2765,200 @@ html[data-theme="dark"] .callout{
    Example boxes
 ========================================================= */
 
-.example-box{
-  margin: 1.5rem 0;
-  border: 1px solid rgba(0,0,0,.10);
-  border-left: 4px solid var(--accent);
-  border-radius: 12px;
-  background: rgba(0,0,0,.025);
-  overflow: hidden;
+/* ── Theorem-like environments (LaTeX amsthm style) ───────────────────── */
+.theorem-block{
+  margin: 1.6rem 0;
+  padding: 0;
+  border: none;
+  background: transparent;
 }
 
-html[data-theme="dark"] .example-box{
-  border-color: rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
-  border-left: 4px solid var(--accent);
+.theorem-label{
+  font-style: normal;
+  font-size: 1.05rem;
 }
 
-.example-box-title{
-  padding: .7rem 1rem;
-  font-weight: 700;
-  color: var(--text);
-  background: rgba(0,0,0,.04);
-  border-bottom: 1px solid rgba(0,0,0,.08);
+/* Label color per type — light mode */
+.theorem-block--theorem .theorem-label{ color: rgb(146,43,33); }
+.theorem-block--definition .theorem-label{ color: rgb(26,82,118); }
+.theorem-block--example .theorem-label{ color: rgb(120,85,40); }
+.theorem-block--remark .theorem-label{ color: rgb(90,50,140); }
+
+/* Label color per type — dark mode */
+html[data-theme="dark"] .theorem-block--theorem .theorem-label{ color: rgb(210,100,85); }
+html[data-theme="dark"] .theorem-block--definition .theorem-label{ color: rgb(80,185,175); }
+html[data-theme="dark"] .theorem-block--example .theorem-label{ color: rgb(190,150,90); }
+html[data-theme="dark"] .theorem-block--remark .theorem-label{ color: rgb(160,110,220); }
+
+/* Italic body for theorem/definition environments */
+.theorem-block--theorem p,
+.theorem-block--theorem li,
+.theorem-block--definition p,
+.theorem-block--definition li{
+  font-style: italic;
+}
+.theorem-block--theorem code,
+.theorem-block--theorem .katex,
+.theorem-block--definition code,
+.theorem-block--definition .katex{
+  font-style: normal;
 }
 
-html[data-theme="dark"] .example-box-title{
-  background: rgba(255,255,255,.05);
-  border-bottom-color: rgba(255,255,255,.08);
+/* QED box (right-aligned, end of proof) */
+.theorem-qed{
+  float: right;
+  font-style: normal;
+  clear: right;
+  margin-left: .5rem;
 }
 
-.example-box-body{
-  padding: .95rem 1rem 1rem;
-  color: var(--muted);
+/* Inner vertical rhythm */
+.theorem-block > *:first-child{ margin-top: 0; }
+.theorem-block > *:last-child { margin-bottom: 0; }
+
+/* KaTeX display math — global centering */
+.post-page-body p:has(> .katex-display),
+.markdown-body p:has(> .katex-display){
+  text-align: center;
+  margin: 1.3rem 0;
+}
+.post-page-body .katex-display,
+.markdown-body .katex-display{
+  margin: 0 !important;
 }
 
-.example-box-body p,
-.example-box-body li{
-  color: color-mix(in srgb, var(--text) 85%, var(--muted));
-}
-
-
-.example-box-body .katex-display{
+/* KaTeX inside theorem blocks */
+.theorem-block .katex-display{
   display: block !important;
-  margin: 1rem auto !important;
+  margin: .9rem 0 !important;
 }
-
-.example-box-body .katex-display > .katex{
+.theorem-block .katex-display > .katex{
   display: block !important;
   text-align: center !important;
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
 }
-
-.example-box-body p:has(> .katex-display){
+.theorem-block p:has(> .katex-display){
   text-align: center;
-  margin: 1rem 0;
+  margin: .9rem 0;
 }
-
-.example-box-body p:has(> .katex-display) .katex-display{
+.theorem-block p:has(> .katex-display) .katex-display{
   margin: 0 !important;
 }
-
-.example-box-body .katex-display .tag{
+.theorem-block .katex-display .tag{
   background: transparent !important;
   color: var(--text) !important;
   border: none !important;
   box-shadow: none !important;
 }
 
-.example-box-body > *:first-child{
-  margin-top: 0;
-}
+/* =========================================================
+   HTML Figure (iframe-based interactive charts)
+========================================================= */
 
-.example-box-body > *:last-child{
-  margin-bottom: 0;
+.post-html-figure {
+  margin: 1.8rem 0;
+  display: block;
+}
+.post-html-figure__frame {
+  width: 100%;
+  height: 340px;
+  background: transparent;
+  display: block;
+}
+.post-html-figure__img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.post-html-figure__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.post-html-figure__bg {
+  fill: transparent;
+}
+html[data-theme="dark"] .post-html-figure__svg {
+  filter: invert(1) hue-rotate(180deg);
+}
+.post-html-figure__caption {
+  margin-top: .65rem;
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.5;
+  text-align: center;
+}
+@media print {
+  .post-html-figure__frame { display: none; }
+  .post-html-figure__svg { filter: none !important; }
+  .post-html-figure__caption::before {
+    content: '[Figura interattiva — consultare la versione online]';
+    display: block;
+    font-style: italic;
+    color: #666;
+    margin-bottom: .3em;
+  }
 }
 
 /* =========================================================
-   References / bibliography styling
+   Bibliography / References section (styled like See Also)
 ========================================================= */
 
-/* Slightly improve ordered lists inside markdown */
+.post-references{
+  margin-top: 2.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(0,0,0,.10);
+}
+html[data-theme="dark"] .post-references{
+  border-top-color: rgba(255,255,255,.12);
+}
+
+.post-references-label{
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .9rem;
+}
+
+.post-references-list{
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.post-ref-item{
+  font-size: .88rem;
+  color: var(--text);
+  line-height: 1.55;
+  padding-left: 1.4rem;
+  text-indent: -1.4rem;
+}
+
+.post-ref-item a{
+  color: var(--brand);
+  text-decoration: none;
+}
+.post-ref-item a:hover{
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Inline citation links: (Author & Author, Year) */
+.cite-inline{
+  color: var(--brand);
+  text-decoration: none;
+}
+.cite-inline:hover{
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Ordered lists inside markdown */
 .post-page-body ol,
 .markdown-body ol{
   padding-left: 1.35rem;
@@ -2813,54 +2967,6 @@ html[data-theme="dark"] .example-box-title{
 .post-page-body li + li,
 .markdown-body li + li{
   margin-top: .5rem;
-}
-
-/* Treat the last h2 + ordered list as a bibliography section */
-.post-page-body h2:last-of-type,
-.markdown-body h2:last-of-type{
-  margin-top: 2.5rem;
-  padding-top: .15rem;
-}
-
-.post-page-body h2:last-of-type + ol,
-.markdown-body h2:last-of-type + ol{
-  margin-top: .9rem;
-  padding: 0;
-  list-style: none;
-  counter-reset: refs;
-}
-
-.post-page-body h2:last-of-type + ol > li,
-.markdown-body h2:last-of-type + ol > li{
-  position: relative;
-  counter-increment: refs;
-  padding-left: 2.3rem;
-  color: var(--muted);
-  line-height: 1.72;
-}
-
-.post-page-body h2:last-of-type + ol > li::before,
-.markdown-body h2:last-of-type + ol > li::before{
-  content: "[" counter(refs) "]";
-  position: absolute;
-  left: 0;
-  top: 0;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-/* Links inside references */
-.post-page-body h2:last-of-type + ol a,
-.markdown-body h2:last-of-type + ol a{
-  color: var(--brand);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.post-page-body h2:last-of-type + ol a:hover,
-.markdown-body h2:last-of-type + ol a:hover{
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 /* =========================================================
@@ -2880,8 +2986,8 @@ html[data-theme="dark"] .example-box-title{
     display: block;
     position: fixed;
     top: 120px;
-    left: max(24px, calc((100vw - 85ch) / 2 - 260px));
-    width: 210px;
+    left: max(24px, calc((100vw - 85ch) / 2 - 288px));
+    width: 240px;
 
     max-height: calc(100vh - 160px);
     overflow: auto;
@@ -2910,7 +3016,7 @@ html[data-theme="dark"] .example-box-title{
   text-decoration: none;
   text-align: left;
   font: inherit;
-  font-size: .9rem;
+  font-size: .86rem;
   line-height: 1.35;
   cursor: pointer;
 
@@ -2919,7 +3025,7 @@ html[data-theme="dark"] .example-box-title{
 
   .post-toc-link--h3{
     padding-left: 1.55rem;
-    font-size: .84rem;
+    font-size: .8rem;
   }
 
   .post-toc-link::before{
@@ -3091,3 +3197,32 @@ html[data-theme="dark"] #academic-map {
     min-height: 320px;
   }
 }
+
+/* =========================================================
+   Print button (screen only)
+========================================================= */
+.post-page-footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.post-print-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .35rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: .84rem;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.post-print-btn:hover{
+  color: var(--text);
+  border-color: var(--text);
+}
+

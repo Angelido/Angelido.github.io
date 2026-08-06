@@ -1,17 +1,18 @@
-Di recente ho rilasciato su GitHub un'implementazione in **C++17** dell'algoritmo di compressione lossless di Bentley e McIlroy (disponibile [qui](https://github.com/Angelido/bentley_mcilroy)) [1].
+Di recente ho rilasciato su GitHub un'implementazione in **C++17** dell'algoritmo di compressione lossless di Bentley e McIlroy (disponibile [qui](https://github.com/Angelido/bentley_mcilroy)) [@nardone2026].
 Approfittando dell'occasione, mi piacerebbe parlare un po' di questo algoritmo: semplice nel suo nucleo, ma sorprendentemente elegante nelle idee che lo motivano.
 
 ---
 
 ## Usare solo lunghe stringhe comuni
 
-L'articolo che introduce l'algoritmo è stato pubblicato nel 1999 con il titolo *Data Compression Using Long Common Strings* [2]. L'idea alla base nasce da un'osservazione molto precisa: i metodi di compressione classici basati su **finestra scorrevole** — in particolare le varianti di [LZ77](https://it.wikipedia.org/wiki/LZ77_e_LZ78) [3] — cercano ripetizioni solo all'interno di una finestra di pochi kilobyte. Quando due stringhe identiche si trovano molto lontane nel testo, queste tecniche finiscono per trattarle come completamente indipendenti, perdendo un'importante opportunità di compressione.
+L'articolo che introduce l'algoritmo è stato pubblicato nel 1999 con il titolo *Data Compression Using Long Common Strings* [@bentley1999]. L'idea alla base nasce da un'osservazione molto precisa: i metodi di compressione classici basati su **finestra scorrevole** — in particolare le varianti di [LZ77](https://it.wikipedia.org/wiki/LZ77_e_LZ78) [@ziv1977] — cercano ripetizioni solo all'interno di una finestra di pochi kilobyte. Quando due stringhe identiche si trovano molto lontane nel testo, queste tecniche finiscono per trattarle come completamente indipendenti, perdendo un'importante opportunità di compressione.
 
 Gli autori illustrano questo limite con un esperimento piuttosto elegante: prendono la *Costituzione degli Stati Uniti* e la *Bibbia di Re Giacomo*, e comprimono sia il testo originale sia la versione concatenata con sé stessa. Con `gzip` (una delle implementazioni più diffuse basate su LZ77), il file raddoppiato viene compresso a **quasi il doppio della dimensione del file originale**. Il motivo è semplice: la finestra di contesto è troppo piccola per accorgersi che la seconda metà del file è quasi identica alla prima; di conseguenza, viene compressa quasi da zero, come se fosse testo nuovo.
 
 Gli autori commentano questo fenomeno con una frase piuttosto diretta:
 
-> *"Sliding windows do not find repeated strings that occur far apart in the input text. A major opportunity has been missed."*  
+> *"Sliding windows do not find repeated strings that occur far apart in the input text. A major opportunity has been missed."*
+>
 > — Bentley & McIlroy, 1999
 
 La proposta degli autori è quindi quella di adottare un approccio diverso: non usare una finestra di contesto di dimensione fissa, ma considerare **l'intero testo come contesto**. Questo introduce però un problema evidente di efficienza: cercare ogni ripetizione sull'intero testo richiederebbe tempi e memoria inaccettabili. 
@@ -27,8 +28,6 @@ Nella pratica si lavora con **blocchi di dimensione** $b$ e si mantiene una stru
 La scelta di $b$ introduce naturalmente un compromesso: un valore piccolo può migliorare la qualità della compressione, ma aumenta memoria e tempo di esecuzione; un valore grande riduce il costo computazionale, ma rischia di ignorare molte ripetizioni brevi. 
 
 Nelle prossime sezioni entreremo nel dettaglio dei componenti principali dell'algoritmo, delle proprietà che garantisce e delle sue complessità computazionali. Per aumentare la comprensibilità ci aiuteremo con esempi, che mostrano il funzionamento delle componenti principali. Chiuderemo poi il post parlando degli utilizzi odierni di questo algoritmo.
-
----
 
 ## L'algoritmo
 
@@ -56,7 +55,7 @@ Andiamo quindi ad analizzarli entrambi, per poi vedere come vengono gestiti i ma
 
 Iniziamo dal meccanismo centrale: il fingerprint. Si tratta di un valore numerico associato a ogni blocco di $b$ caratteri consecutivi, e funge da codice identificativo del blocco. L'idea è quella di associare a ogni blocco un valore numerico tale che blocchi uguali abbiano sempre lo stesso fingerprint, mentre blocchi distinti lo abbiano diverso con alta probabilità.
 
-Nel loro algoritmo di compressione, Bentley e McIlroy decidono di utilizzare il *fingerprint di Rabin–Karp* [4]. La loro scelta cade su questo algoritmo per diversi motivi. Il primo è ovviamente la semplicità della sua definizione. L'idea è interpretare una sequenza di $b$ caratteri come i coefficienti di un polinomio, e calcolarne il valore modulo un numero primo grande $p$. La formula è la seguente:
+Nel loro algoritmo di compressione, Bentley e McIlroy decidono di utilizzare il *fingerprint di Rabin–Karp* [@karp1987]. La loro scelta cade su questo algoritmo per diversi motivi. Il primo è ovviamente la semplicità della sua definizione. L'idea è interpretare una sequenza di $b$ caratteri come i coefficienti di un polinomio, e calcolarne il valore modulo un numero primo grande $p$. La formula è la seguente:
 
 $$
 \begin{equation}
@@ -179,7 +178,6 @@ Verifichiamo sia corretto decodificando ogni token:
 Ricostruito: `xyzabcd` + `yzabcd` + `plx` + `xyzab` + `q` = `xyzabcdyzabcdplxxyzabq` ✓
 :::
 
----
 
 ## Proprietà e Complessità
 
@@ -203,7 +201,6 @@ La tabella seguente riassume le complessità delle operazioni principali:
 
 Vale infine la pena notare che nelle implementazioni pratiche $b$ si sceglie tipicamente non troppo piccolo. I motivi sono diversi: un $b$ piccolo aumenta il numero di blocchi canonici da memorizzare, con conseguente aumento sia del tempo di store sia della memoria occupata dalla tabella hash; inoltre, con blocchi molto piccoli, la rappresentazione di un match può costare in memoria quanto — o più di — lasciare i byte come literal, annullando il beneficio della compressione. Infine, spesso l'obiettivo principale è proprio individuare le **macro-ripetizioni** nel testo, quelle a lunga distanza che i compressori classici non riescono a catturare: per questo tipo di ripetizioni un $b$ moderatamente grande è non solo accettabile, ma preferibile.
 
----
 
 ## Utilizzo moderno
 
@@ -213,9 +210,8 @@ Questo non significa però che l'algoritmo di Bentley–McIlroy sia rimasto conf
 
 Ma l'eredità più concreta dell'algoritmo si trova altrove: nella tecnica dei fingerprint di Rabin–Karp per identificare stringhe comuni tra due file distinti, cioè nel problema della **codifica di delta**. L'idea è semplice: dati due file — una versione vecchia e una nuova — un encoder di delta individua le porzioni in comune e rappresenta la versione nuova come un insieme di riferimenti alla vecchia più le modifiche. Il risultato è una rappresentazione molto compatta della differenza, utile ogni volta che si vuole trasmettere o memorizzare solo ciò che è cambiato.
 
-Uno degli esempi più concreti è [**open-vcdiff**](https://github.com/google/open-vcdiff) [5], l'implementazione di Google del formato [VCDIFF](https://datatracker.ietf.org/doc/html/rfc3284), uno standard IETF per la codifica di delta tra file binari. In questo contesto, il "dizionario sorgente" è la versione precedente del file e il "testo target" è la versione aggiornata. L'encoder — che si ispira direttamente alle idee di Bentley e McIlroy — usa fingerprint di Rabin–Karp per individuare in modo efficiente i blocchi comuni tra le due versioni, senza dover confrontare ogni coppia di posizioni. I match lunghi corrispondono alle parti rimaste invariate e vengono codificati come riferimenti; solo le parti effettivamente cambiate vengono trasmesse per intero. Google impiega questo schema, tra l'altro, per gli aggiornamenti software e la sincronizzazione di file su larga scala: invece di scaricare una nuova versione completa, il client riceve un delta compatto e ricostruisce il file localmente.
+Uno degli esempi più concreti è [**open-vcdiff**](https://github.com/google/open-vcdiff) [@openvcdiff], l'implementazione di Google del formato [VCDIFF](https://datatracker.ietf.org/doc/html/rfc3284), uno standard IETF per la codifica di delta tra file binari. In questo contesto, il "dizionario sorgente" è la versione precedente del file e il "testo target" è la versione aggiornata. L'encoder — che si ispira direttamente alle idee di Bentley e McIlroy — usa fingerprint di Rabin–Karp per individuare in modo efficiente i blocchi comuni tra le due versioni, senza dover confrontare ogni coppia di posizioni. I match lunghi corrispondono alle parti rimaste invariate e vengono codificati come riferimenti; solo le parti effettivamente cambiate vengono trasmesse per intero. Google impiega questo schema, tra l'altro, per gli aggiornamenti software e la sincronizzazione di file su larga scala: invece di scaricare una nuova versione completa, il client riceve un delta compatto e ricostruisce il file localmente.
 
----
 
 ## La mia implementazione
 
@@ -246,8 +242,6 @@ In ogni caso questa è solo una prima implementazione, e presenta diverse lacune
 
 Contributi e miglioramenti sono benvenuti tramite pull request.
 
----
-
 
 ## Conclusione
 
@@ -255,12 +249,10 @@ In questo post abbiamo visto come funziona l'algoritmo di compressione di Bentle
 
 Non è l'algoritmo più potente nel suo dominio, e non pretende di esserlo. Ma rappresenta, a mio avviso, un ottimo punto di ingresso per chiunque voglia avvicinarsi al mondo della compressione dati: abbastanza semplice da essere compreso nella sua interezza, abbastanza ricco da sollevare domande interessanti.
 
----
-
 ## Riferimenti
 
-1. **A. Nardone** - *Bentley–McIlroy Compressor (C++ Implementation)*, GitHub repository. (2026).
-2. **J. Bentley, D. McIlroy** — *Data Compression Using Long Common Strings*, IEEE Data Compression Conference (DCC). (1999).
-3. **J. Ziv, A. Lempel** — *A Universal Algorithm for Sequential Data Compression*, IEEE Transactions on Information Theory, 23(3). (1977).
-4. **R. Karp, M. Rabin** — *Efficient Randomized Pattern-Matching Algorithms*, IBM Journal of Research and Development, 31(2). (1987).
-5. **Google open-vcdiff** — [github.com/google/open-vcdiff](https://github.com/google/open-vcdiff)
+[nardone2026] Nardone, A. (2026). *Bentley–McIlroy Compressor: a C++17 implementation.* GitHub repository. Disponibile su: [github.com/Angelido/bentley_mcilroy](https://github.com/Angelido/bentley_mcilroy).
+[bentley1999] Bentley, J. & McIlroy, D. (1999). *Data Compression Using Long Common Strings.* In Proceedings of the IEEE Data Compression Conference (DCC), Snowbird, UT, USA, pp. 154–163.
+[ziv1977] Ziv, J. & Lempel, A. (1977). *A Universal Algorithm for Sequential Data Compression.* IEEE Transactions on Information Theory, 23(3), 337–343.
+[karp1987] Karp, R. & Rabin, M. (1987). *Efficient Randomized Pattern-Matching Algorithms.* IBM Journal of Research and Development, 31(2), 249–260.
+[openvcdiff] Google (2024). *open-vcdiff: An open-source implementation of the VCDIFF delta compression format (RFC 3284).* GitHub. Disponibile su: [github.com/google/open-vcdiff](https://github.com/google/open-vcdiff).

@@ -1,17 +1,18 @@
-I recently released a **C++17 implementation** of the Bentley–McIlroy lossless compression algorithm on GitHub (available [here](https://github.com/Angelido/bentley_mcilroy)) [1].
+I recently released a **C++17 implementation** of the Bentley–McIlroy lossless compression algorithm on GitHub (available [here](https://github.com/Angelido/bentley_mcilroy)) [@nardone2026].
 Taking the opportunity, I would like to talk a bit about this algorithm: simple at its core, yet surprisingly elegant in the ideas that motivate it.
 
 ---
 
 ## Using Only Long Common Strings
 
-The paper introducing the algorithm was published in 1999 under the title *Data Compression Using Long Common Strings* [2]. The core idea stems from a very precise observation: classical compression methods based on **sliding windows** — and in particular variants of [LZ77](https://en.wikipedia.org/wiki/LZ77_and_LZ78) [3] — search for repeated substrings only within a window of a few kilobytes. When two identical strings occur far apart in the text, these techniques end up treating them as completely independent, missing a significant compression opportunity.
+The paper introducing the algorithm was published in 1999 under the title *Data Compression Using Long Common Strings* [@bentley1999]. The core idea stems from a very precise observation: classical compression methods based on **sliding windows** — and in particular variants of [LZ77](https://en.wikipedia.org/wiki/LZ77_and_LZ78) [@ziv1977] — search for repeated substrings only within a window of a few kilobytes. When two identical strings occur far apart in the text, these techniques end up treating them as completely independent, missing a significant compression opportunity.
 
 The authors illustrate this limitation with a rather elegant experiment: they take the *United States Constitution* and the *King James Bible*, and compress both the original text and the version concatenated with itself. With `gzip` (one of the most widely used LZ77-based implementations), the doubled file is compressed to **almost twice the size of the original**. The reason is straightforward: the context window is too small to notice that the second half of the file is nearly identical to the first, so it is compressed almost from scratch, as if it were entirely new text.
 
 The authors comment on this with a direct remark:
 
-> *"Sliding windows do not find repeated strings that occur far apart in the input text. A major opportunity has been missed."*  
+> *"Sliding windows do not find repeated strings that occur far apart in the input text. A major opportunity has been missed."*
+>
 > — Bentley & McIlroy, 1999
 
 Their proposal is therefore to take a different approach: instead of using a fixed-size context window, consider **the entire text as the context**. This immediately raises an efficiency concern: searching for every repetition over the entire text would be prohibitively slow and memory-intensive.
@@ -28,7 +29,6 @@ The choice of $b$ naturally introduces a trade-off: a small value may improve co
 
 The following sections detail the main components of the algorithm, its guarantees, and its computational complexity. Examples are provided throughout to illustrate how each component works. The post concludes with a look at modern uses of this algorithm.
 
----
 
 ## The Algorithm
 
@@ -56,7 +56,7 @@ Let us examine both, before looking at how matches are handled.
 
 The central mechanism is the fingerprint: a numerical value associated with every window of $b$ consecutive characters, acting as a compact identifier. The idea is to assign to each block a numerical value such that equal blocks always have the same fingerprint, while distinct blocks have different fingerprints with high probability.
 
-Bentley and McIlroy use the *Rabin–Karp fingerprint* [4]. Their choice is motivated by several reasons. The first is the simplicity of the construction: a sequence of $b$ characters is interpreted as the coefficients of a polynomial, evaluated modulo a large prime $p$. The formula is:
+Bentley and McIlroy use the *Rabin–Karp fingerprint* [@karp1987]. Their choice is motivated by several reasons. The first is the simplicity of the construction: a sequence of $b$ characters is interpreted as the coefficients of a polynomial, evaluated modulo a large prime $p$. The formula is:
 
 $$
 \begin{equation}
@@ -175,7 +175,6 @@ Let us verify by decoding each token:
 Reconstructed: `xyzabcd` + `yzabcd` + `plx` + `xyzab` + `q` = `xyzabcdyzabcdplxxyzabq` ✓
 :::
 
----
 
 ## Properties and Complexity
 
@@ -199,8 +198,6 @@ The table below summarises the complexity of the main operations:
 
 Finally, it is worth noting that in practice $b$ is typically chosen not too small. The reasons are several: a small $b$ increases the number of canonical blocks to store, with a corresponding increase in both `store` time and hash table memory; with very small blocks, encoding a match can cost as much as — or more than — leaving the bytes as literals, cancelling out any compression benefit. And often the main goal is precisely to detect **macro-repetitions** — the long-range ones that classical compressors cannot capture — for which a moderately large $b$ is not just acceptable, but preferable.
 
----
-
 ## Modern Usage
 
 The Bentley–McIlroy algorithm is interesting from several angles, but it must be said that in direct compression applications it is rarely used on its own: more mature and battle-tested methods are preferred, whether dictionary-based (`zstd`, `brotli`) or block-sorted (`bzip2`).
@@ -209,9 +206,7 @@ This does not mean the algorithm has stayed confined to academia. It is still us
 
 But the most concrete legacy of the algorithm lies elsewhere: in the technique of Rabin–Karp fingerprints for identifying common strings between two distinct files, that is, in the **delta encoding** problem. The idea is simple: given two files — an old version and a new one — a delta encoder identifies the shared portions and represents the new version as a set of references to the old one, plus the changes. The result is a very compact representation of the difference, useful whenever one wants to transmit or store only what has changed.
 
-One of the most concrete examples is [**open-vcdiff**](https://github.com/google/open-vcdiff) [5], Google's implementation of the [VCDIFF](https://datatracker.ietf.org/doc/html/rfc3284) format, an IETF standard for binary file delta encoding. In this context, the "source dictionary" is the previous version of the file and the "target text" is the updated version. The encoder — directly inspired by Bentley and McIlroy's ideas — uses Rabin–Karp fingerprints to efficiently identify common blocks between the two versions, without comparing every pair of positions. Long matches correspond to unchanged parts and are encoded as references; only the parts that actually changed are transmitted in full. Google uses this scheme, among other things, for software updates and large-scale file synchronisation: instead of downloading a complete new version, the client receives a compact delta and reconstructs the file locally.
-
----
+One of the most concrete examples is [**open-vcdiff**](https://github.com/google/open-vcdiff) [@openvcdiff], Google's implementation of the [VCDIFF](https://datatracker.ietf.org/doc/html/rfc3284) format, an IETF standard for binary file delta encoding. In this context, the "source dictionary" is the previous version of the file and the "target text" is the updated version. The encoder — directly inspired by Bentley and McIlroy's ideas — uses Rabin–Karp fingerprints to efficiently identify common blocks between the two versions, without comparing every pair of positions. Long matches correspond to unchanged parts and are encoded as references; only the parts that actually changed are transmitted in full. Google uses this scheme, among other things, for software updates and large-scale file synchronisation: instead of downloading a complete new version, the client receives a compact delta and reconstructs the file locally.
 
 ## My Implementation
 
@@ -242,20 +237,16 @@ This is a first implementation and has several known limitations:
 
 Contributions and improvements are welcome via pull request.
 
----
-
 ## Conclusion
 
 In this post we have seen how the Bentley–McIlroy compression algorithm works. It is a good example of how a simple idea — sampling fingerprints instead of comparing every position — can lead to a method that is both effective and practically useful. Its elegance lies in the balance between memory ($O(n/b)$), time ($O(n)$), and compression quality, all governed by a single parameter $b$, and in the use of rolling hashing as the tool that makes all of this possible without sacrificing simplicity.
 
 It is not the most powerful algorithm in its domain, and it makes no claim to be. But it represents, in my view, an excellent entry point for anyone approaching the world of data compression: simple enough to be understood in its entirety, rich enough to raise interesting questions.
 
----
-
 ## References
 
-1. **A. Nardone** — *Bentley–McIlroy Compressor (C++ Implementation)*, GitHub repository. (2026).
-2. **J. Bentley, D. McIlroy** — *Data Compression Using Long Common Strings*, IEEE Data Compression Conference (DCC). (1999).
-3. **J. Ziv, A. Lempel** — *A Universal Algorithm for Sequential Data Compression*, IEEE Transactions on Information Theory, 23(3). (1977).
-4. **R. Karp, M. Rabin** — *Efficient Randomized Pattern-Matching Algorithms*, IBM Journal of Research and Development, 31(2). (1987).
-5. **Google open-vcdiff** — [github.com/google/open-vcdiff](https://github.com/google/open-vcdiff)
+[nardone2026] Nardone, A. (2026). *Bentley–McIlroy Compressor: a C++17 implementation.* GitHub repository. Available at: [github.com/Angelido/bentley_mcilroy](https://github.com/Angelido/bentley_mcilroy).
+[bentley1999] Bentley, J. & McIlroy, D. (1999). *Data Compression Using Long Common Strings.* In Proceedings of the IEEE Data Compression Conference (DCC), Snowbird, UT, USA, pp. 154–163.
+[ziv1977] Ziv, J. & Lempel, A. (1977). *A Universal Algorithm for Sequential Data Compression.* IEEE Transactions on Information Theory, 23(3), 337–343.
+[karp1987] Karp, R. & Rabin, M. (1987). *Efficient Randomized Pattern-Matching Algorithms.* IBM Journal of Research and Development, 31(2), 249–260.
+[openvcdiff] Google (2024). *open-vcdiff: An open-source implementation of the VCDIFF delta compression format (RFC 3284).* GitHub. Available at: [github.com/google/open-vcdiff](https://github.com/google/open-vcdiff).
