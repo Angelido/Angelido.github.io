@@ -27,16 +27,22 @@ The design philosophy is *minimalism with purpose* — fast to load, easy to nav
 - **CSS3** — custom styling, no frameworks  
 - **Vanilla JavaScript** — lightweight interactivity, minimal dependencies  
 - **Leaflet.js** — interactive academic map (via CDN)  
+- **marked.js** — Markdown rendering  
+- **KaTeX** — math typesetting  
+- **Shiki** — syntax highlighting  
 
 ## 📁 Project Structure
 
 ```
 /
 ├── index.html              # Main entry point
+├── 404.html                # GitHub Pages SPA redirect
 ├── styles.css              # Stylesheet
-├── main.js                 # JavaScript logic
+├── main.js                 # JavaScript logic (SPA router, rendering)
 │
 ├── data/                   # 📊 JSON files with site content
+│   ├── posts.en.json       #    Post metadata (English)
+│   ├── posts.it.json       #    Post metadata (Italian)
 │   ├── publications.json   #    Research publications
 │   ├── places.json         #    Academic map locations
 │   ├── projects.json       #    Academic projects & interests
@@ -47,7 +53,8 @@ The design philosophy is *minimalism with purpose* — fast to load, easy to nav
 │   └── ui.it.json          #    Italian strings (titles, headings, UI)
 │
 ├── posts/                  # ✍️ Blog & writing
-│   ├── post-title.md       #    Markdown files, one per post
+│   ├── post-title.en.md    #    Markdown files, one per post per language
+│   ├── post-title.it.md
 │   └── ...
 │
 ├── robots.txt              # 🤖 Crawler directives
@@ -63,6 +70,8 @@ The site is hosted on **GitHub Pages** and automatically re-deployed on every pu
 ```
 main branch → GitHub Pages → angelido.github.io
 ```
+
+Routing uses the **History API** (`/posts/id` instead of `#/posts/id`). Direct URL access and page refreshes are handled via `404.html`, which saves the requested path to `sessionStorage` and redirects to `/`, where the SPA router restores the correct view.
 
 ## License
 
