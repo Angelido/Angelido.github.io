@@ -179,7 +179,7 @@
 
   function parsePath() {
     const p = location.pathname;
-    return p === '/' || p === '' ? '/home' : p;
+    return p === '/' || p === '' || p === '/index.html' ? '/home' : p;
   }
 
   function updateActiveNavLinks() {
