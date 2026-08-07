@@ -178,7 +178,8 @@
   };
 
   function parsePath() {
-    const p = location.pathname;
+    let p = location.pathname;
+    if (p !== '/') p = p.replace(/\/$/, '');
     return p === '/' || p === '' || p === '/index.html' ? '/home' : p;
   }
 
