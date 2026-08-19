@@ -1,5 +1,20 @@
 [
   {
+    "title": "Diffuse to Compress: Leveraging Diffusion LMs for Lossless Compression",
+    "authors": "Angelo Nardone, Paolo Ferragina",
+    "type": "Preprint",
+    "status": "Preprint",
+    "badge": "arXiv Preprint",
+    "year": 2026,
+    "abstract": "We introduce Diffusion Language Models (DLMs) as the first alternative inference paradigm to autoregressive LLMs for lossless neural text compression. By addressing the algorithmic challenges of applying DLMs in the lossless setting — where the number and positions of encoded symbols per forward pass are decided dynamically — our framework advances the state of the art in lossless text compression, overcoming in particular the throughput bottleneck of autoregressive neural compressors. Experiments on enwik8 validate the approach.",
+    "topics": ["Lossless Compression", "Text Compression", "Diffusion Language Models", "Neural Compression", "Algorithms"],
+    "links": [
+      { "label": "arXiv", "url": "https://arxiv.org/abs/2608.11249" },
+      { "label": "Paper", "url": "assets/pdf/diffuse_to_compress2026-arXiv.pdf" }
+    ],
+    "bibtex": "@misc{nardone2026diffusetocompress,\n  title        = {Diffuse to Compress: Leveraging Diffusion {LM}s for Lossless Compression},\n  author       = {Angelo Nardone and Paolo Ferragina},\n  year         = {2026},\n  eprint       = {2608.11249},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.IT},\n  url          = {https://arxiv.org/abs/2608.11249}\n}"
+  },
+  {
     "title": "LLM-based Source Code Compression via Thresholded Symbol Ranking",
     "authors": "Angelo Nardone, Paolo Ferragina",
     "venue": "24th International Conference of the Italian Association for Artificial Intelligence",
@@ -20,21 +35,6 @@
       { "label": "Paper", "url": "assets/pdf/aixia2026-paper-v1.pdf" }
     ],
     "bibtex": "@misc{nardone2026llmbasedsourcecodecompression,\n  title        = {LLM-based Source Code Compression via Thresholded Symbol Ranking},\n  author       = {Angelo Nardone and Paolo Ferragina},\n  year         = {2026},\n  eprint       = {2607.24192},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.IT},\n  url          = {https://arxiv.org/abs/2607.24192}\n}"
-  },
-  {
-    "title": "Diffuse to Compress: Leveraging Diffusion LMs for Lossless Compression",
-    "authors": "Angelo Nardone, Paolo Ferragina",
-    "type": "Preprint",
-    "status": "Preprint",
-    "badge": "arXiv Preprint",
-    "year": 2026,
-    "abstract": "We introduce Diffusion Language Models (DLMs) as the first alternative inference paradigm to autoregressive LLMs for lossless neural text compression. By addressing the algorithmic challenges of applying DLMs to the lossless setting — where the number and positions of encoded symbols per forward pass are decided dynamically — our framework advances the state of the art on enwik8 while opening a path toward overcoming the throughput bottleneck of existing neural compressors.",
-    "topics": ["Lossless Compression", "Text Compression", "Diffusion Language Models", "Neural Compression", "Algorithms"],
-    "links": [
-      { "label": "arXiv", "url": "https://arxiv.org/abs/2608.11249" },
-      { "label": "Paper", "url": "assets/pdf/diffuse_to_compress2026-arXiv.pdf" }
-    ],
-    "bibtex": "@misc{nardone2026diffusetocompress,\n  title        = {Diffuse to Compress: Leveraging Diffusion {LM}s for Lossless Compression},\n  author       = {Angelo Nardone and Paolo Ferragina},\n  year         = {2026},\n  eprint       = {2608.11249},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.IT},\n  url          = {https://arxiv.org/abs/2608.11249}\n}"
   },
   {
     "title": "MIEO: encoding clinical data to enhance cardiovascular event prediction",
